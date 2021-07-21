@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="sizeTextSolveTask1">25sp</dimen>
+    <dimen name="margin_Left_Right_text">15dp</dimen>
+    <dimen name="ButtonCircle_radius">130dp</dimen>
+    <dimen name="StandartButtonNumber_width">63dp</dimen>
+    <dimen name="StandartButtonNumber_height">63dp</dimen>
+    <dimen name="StandartButtonAction_width">43dp</dimen>
+    <dimen name="StandartButtonAction_height">43dp</dimen>
+    <dimen name="textButtonNumbers_size">32sp</dimen>
+    <dimen name="textButtonActions_size">19sp</dimen>
+    <dimen name="ButtonsRight_margin">0dp</dimen>
+    <dimen name="ResultHistoryText_size">24sp</dimen>
+    <dimen name="InputHistoryMargin_left">0dp</dimen>
+    <dimen name="coners_radius">45dp</dimen>
+    <dimen name="text_in_button_padding">0dp</dimen>
+    <dimen name="height_result_text">43dp</dimen>
+    <dimen name="padding_output_text">5dp</dimen>
+    <dimen name="title_menu_theme_size">34sp</dimen>
+    <dimen name="light_theme_button_width">150dp</dimen>
+    <dimen name="dark_theme_button_width">150dp</dimen>
+    <dimen name="light_theme_button_margin">60dp</dimen>
+    <dimen name="dark_theme_button_margin">10dp</dimen>
+</resources>

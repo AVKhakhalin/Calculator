@@ -7,4 +7,13 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="red">#D50000</color>
+    <color name="red_erase">#6F0000</color>
+    <color name="green">#669900</color>
+    <color name="backgroundActivity_main">#4C22BDFF</color>
+    <color name="backgroundColor">#FF6D00</color>
+    <color name="BackgroundInputHistory_color">#FFD600</color>
+    <color name="InputHistory_color">#1E1E1E</color>
+    <color name="Result_color">#1E1E1E</color>
+    <color name="red_middle">#D53900</color>
 </resources>

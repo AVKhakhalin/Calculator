@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="numbers_style" xmlns:app="http://schemas.android.com/apk/res-auto">
+        <item name="android:layout_width">@dimen/StandartButtonNumber_width</item>
+        <item name="android:layout_height">@dimen/StandartButtonNumber_height</item>
+        <item name="android:textSize">@dimen/textButtonNumbers_size</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/BackgroundInputHistory_color</item>
+        <item name="android:padding">@dimen/text_in_button_padding</item>
+        <item name="android:background">@drawable/buttons_with_numbers_mg</item>
+        <item name="backgroundTint">@null</item>
+        <item name="layout_constraintCircle">@id/_RESULT</item>
+        <item name="layout_constraintCircleRadius">@dimen/ButtonCircle_radius</item>
+    </style>
+    <style name="actions_style">
+        <item name="android:layout_width">@dimen/StandartButtonAction_width</item>
+        <item name="android:layout_height">@dimen/StandartButtonAction_height</item>
+        <item name="android:textSize">@dimen/textButtonActions_size</item>
+        <item name="android:textColor">@color/red_erase</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:padding">@dimen/text_in_button_padding</item>
+        <item name="android:background">@drawable/buttons_with_actions_mg</item>
+        <item name="backgroundTint">@null</item>
+    </style>
+    <style name="menu_style">
+        <item name="android:layout_width">@dimen/StandartButtonAction_width</item>
+        <item name="android:layout_height">@dimen/StandartButtonAction_height</item>
+        <item name="android:textSize">@dimen/textButtonActions_size</item>
+        <item name="android:textColor">@color/red_erase</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:padding">@dimen/text_in_button_padding</item>
+        <item name="android:background">@drawable/buttons_with_menu_mg</item>
+        <item name="backgroundTint">@null</item>
+    </style>
+</resources>

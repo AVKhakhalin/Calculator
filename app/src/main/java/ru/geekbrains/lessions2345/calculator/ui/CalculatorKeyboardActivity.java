@@ -10,15 +10,14 @@ import android.widget.Toast;
 
 import java.util.Locale;
 
+import ru.geekbrains.lessions2345.calculator.R;
+import ru.geekbrains.lessions2345.calculator.calculator_logic.CalcLogic;
 import ru.geekbrains.lessions2345.calculator.calculator_logic.Constants;
 
 public class CalculatorKeyboardActivity extends Activity implements View.OnClickListener, Constants {
     private TextView outputResultText;
     private TextView inputedHistoryText;
     private CalcLogic calcLogic;
-
-    private ThemeStorage themeStorage = new ThemeStorage();
-    private View view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,9 +166,7 @@ public class CalculatorKeyboardActivity extends Activity implements View.OnClick
                 inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
                 break;
             case R.id._menu_theme:
-                Intent menuIntent = new Intent(CalculatorKeyboardActivity.this, MenuActivity.class);
-                menuIntent.putExtra("settingTheme", themeStorage.getIsLightTheme());
-                startActivity(menuIntent);
+                Toast.makeText(this, "Здесь будет реализовано меню управления темой калькулятора", Toast.LENGTH_SHORT).show();
                 break;
             default:
                 break;

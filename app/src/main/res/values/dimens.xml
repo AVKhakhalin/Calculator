@@ -11,7 +11,7 @@
     <dimen name="textButtonActions_size">19sp</dimen>
     <dimen name="ButtonsRight_margin">0dp</dimen>
     <dimen name="ResultHistoryText_size">24sp</dimen>
-    <dimen name="InputHistoryMargin_left">0dp</dimen>
+    <dimen name="InputHistoryMargin_start">0dp</dimen>
     <dimen name="coners_radius">45dp</dimen>
     <dimen name="text_in_button_padding">0dp</dimen>
     <dimen name="height_result_text">43dp</dimen>

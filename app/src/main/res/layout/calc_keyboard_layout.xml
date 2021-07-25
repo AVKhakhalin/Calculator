@@ -254,7 +254,7 @@
             android:id="@+id/_inputed_history_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/InputHistoryMargin_left"
+            android:layout_marginStart="@dimen/InputHistoryMargin_start"
             android:background="@drawable/background_input_history"
             android:ems="13"
             android:paddingStart="@dimen/padding_output_text"

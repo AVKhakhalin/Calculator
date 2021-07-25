@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import java.util.Locale;
 
+import ru.geekbrains.lessions2345.calculator.calculator_logic.Constants;
+
 public class CalculatorKeyboardActivity extends Activity implements View.OnClickListener, Constants {
     private TextView outputResultText;
     private TextView inputedHistoryText;

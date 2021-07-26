@@ -234,7 +234,7 @@
         android:textColor="@color/red_erase"
         android:paddingStart="@dimen/padding_output_text"
         android:paddingEnd="@dimen/padding_output_text"
-        android:ems="6"
+        android:ems="@integer/number_output_symbols_forEMS"
         android:gravity="end|center"
         android:background="@drawable/background_result_textview"
         app:layout_constraintTop_toTopOf="@id/_zapitay"

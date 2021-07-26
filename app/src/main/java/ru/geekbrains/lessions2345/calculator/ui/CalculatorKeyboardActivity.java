@@ -1,6 +1,7 @@
 package ru.geekbrains.lessions2345.calculator.ui;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -98,7 +99,7 @@ public class CalculatorKeyboardActivity extends Activity implements View.OnClick
             case R.id._equal:
                 calcLogic.calculate();
                 errorInfo();
-                outputResultText.setText(calcLogic.getFinalResult());
+                outputResultText.setText(calcLogic.getFinalResult(getApplicationContext()));
                 break;
             case R.id._zapitay:
                 calcLogic.setCurZapitay();
@@ -115,13 +116,13 @@ public class CalculatorKeyboardActivity extends Activity implements View.OnClick
                 inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
                 calcLogic.calculate();
                 errorInfo();
-                outputResultText.setText(calcLogic.getFinalResult());
+                outputResultText.setText(calcLogic.getFinalResult(getApplicationContext()));
                 break;
             case R.id._backspace_one:
                 if (calcLogic.clearOne() == false) {
                     calcLogic.calculate();
                     errorInfo();
-                    outputResultText.setText(calcLogic.getFinalResult());
+                    outputResultText.setText(calcLogic.getFinalResult(getApplicationContext()));
                 }
                 inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
                 break;
@@ -129,7 +130,7 @@ public class CalculatorKeyboardActivity extends Activity implements View.OnClick
                 if (calcLogic.clearTwo() == false) {
                     calcLogic.calculate();
                     errorInfo();
-                    outputResultText.setText(calcLogic.getFinalResult());
+                    outputResultText.setText(calcLogic.getFinalResult(getApplicationContext()));
                 }
                 inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
                 break;
@@ -178,7 +179,7 @@ public class CalculatorKeyboardActivity extends Activity implements View.OnClick
         outputResultText = findViewById(R.id._RESULT);
         calcLogic.calculate();
         errorInfo();
-        outputResultText.setText(calcLogic.getFinalResult());
+        outputResultText.setText(calcLogic.getFinalResult(getApplicationContext()));
         inputedHistoryText = findViewById(R.id._inputed_history_text);
         inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
     }

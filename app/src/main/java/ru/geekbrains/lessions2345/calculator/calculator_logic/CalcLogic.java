@@ -1,5 +1,6 @@
 package ru.geekbrains.lessions2345.calculator.calculator_logic;
 
+import java.text.DecimalFormat;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Locale;
@@ -10,7 +11,7 @@ public class CalcLogic implements Constants {
     int curBracketLevel;                           // Создание переменной с текущим максимальный уровнем вложенности скобок
     int curNumber;                                 // Текущий индекс создаваемой операции (в операцию входит как сама операция, так и число в ней участвующее)
     LinkedList<Dates> inputNumbersForBracketCalc;  // Класс со значениями вместе со скобками;
-    // в результате всех вычислений, в данном классе не останется ни одной скобки
+                                                   // в результате всех вычислений, в данном классе не останется ни одной скобки
     LinkedList<Dates> inputNumbersForBaseCalc;     // Класс со значениями для вычислений внутри скобок
     ListIterator<Dates> iterInputNumbersForCalc;   // Создание итератора для навигации по списку со значениями
     boolean pressedZapitay = false;                // Признак нажатой кнопки запятой
@@ -749,9 +750,146 @@ public class CalcLogic implements Constants {
     public String getFinalResult() {
         String finalResult_String = "";
         if (errorCode == ERRORS.NO) {
-            finalResult_String = String.format(Locale.getDefault(), "%e", finalResult);
+//            finalResult_String = String.format(Locale.getDefault(), "%e", finalResult);
+            finalResult_String = numberFormatOutput(finalResult);
         }
         return finalResult_String;
+    }
+
+    public static String numberFormatOutput(double number)
+    {
+        String result = "";
+        DecimalFormat df;
+        if (number > 0)
+        {
+            if (number < 10d)
+            {
+                df = new DecimalFormat("#.##########");
+                result = df.format(number);
+            }
+            else if (number < 100d)
+            {
+                df = new DecimalFormat("##.#########");
+                result = df.format(number);
+            }
+            else if (number < 1000d)
+            {
+                df = new DecimalFormat("###.########");
+                result = df.format(number);
+            }
+            else if (number < 10000d)
+            {
+                df = new DecimalFormat("####.#######");
+                result = df.format(number);
+            }
+            else if (number < 100000d)
+            {
+                df = new DecimalFormat("#####.######");
+                result = df.format(number);
+            }
+            else if (number < 1000000d)
+            {
+                df = new DecimalFormat("######.#####");
+                result = df.format(number);
+            }
+            else if (number < 10000000d)
+            {
+                df = new DecimalFormat("#######.####");
+                result = df.format(number);
+            }
+            else if (number < 100000000d)
+            {
+                df = new DecimalFormat("########.###");
+                result = df.format(number);
+            }
+            else if (number < 1000000000d)
+            {
+                df = new DecimalFormat("#########.##");
+                result = df.format(number);
+            }
+            else if (number < 10000000000d)
+            {
+                df = new DecimalFormat("##########.#");
+                result = df.format(number);
+            }
+            else if (number < 100000000000d)
+            {
+                df = new DecimalFormat("###########");
+                result = df.format(number);
+            }
+            else if (number < 1000000000000d)
+            {
+                df = new DecimalFormat("###########");
+                result = (df.format(number).length() > 12 ? String.format(Locale.getDefault(), "%e", number) : df.format(number));
+            }
+            else
+            {
+                result = String.format(Locale.getDefault(), "%e", number);
+            }
+        }
+        else
+        {
+            if (Math.abs(number) < 10d)
+            {
+                df = new DecimalFormat("#.#########");
+                result = df.format(number);
+            }
+            else if (Math.abs(number) < 100d)
+            {
+                df = new DecimalFormat("##.########");
+                result = df.format(number);
+            }
+            else if (Math.abs(number) < 1000d)
+            {
+                df = new DecimalFormat("###.#######");
+                result = df.format(number);
+            }
+            else if (Math.abs(number) < 10000d)
+            {
+                df = new DecimalFormat("####.######");
+                result = df.format(number);
+            }
+            else if (Math.abs(number) < 100000d)
+            {
+                df = new DecimalFormat("#####.#####");
+                result = df.format(number);
+            }
+            else if (Math.abs(number) < 1000000d)
+            {
+                df = new DecimalFormat("######.####");
+                result = df.format(number);
+            }
+            else if (Math.abs(number) < 10000000d)
+            {
+                df = new DecimalFormat("#######.###");
+                result = df.format(number);
+            }
+            else if (Math.abs(number) < 100000000d)
+            {
+                df = new DecimalFormat("########.##");
+                result = df.format(number);
+            }
+            else if (Math.abs(number) < 1000000000d)
+            {
+                df = new DecimalFormat("#########.#");
+                result = df.format(number);
+            }
+            else if (Math.abs(number) < 10000000000d)
+            {
+                df = new DecimalFormat("##########");
+                result = df.format(number);
+            }
+            else if (Math.abs(number) < 100000000000d)
+            {
+                df = new DecimalFormat("###########");
+                result = (df.format(number).length() > 12 ? String.format(Locale.getDefault(), "%e", number) : df.format(number));
+            }
+            else
+            {
+                result = String.format(Locale.getDefault(), "%e", number);
+            }
+        }
+        return result;
     }
 
     public ERRORS getErrorCode() {

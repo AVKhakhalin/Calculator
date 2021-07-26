@@ -232,8 +232,9 @@
         android:layout_height="@dimen/height_result_text"
         android:background="@drawable/background_result_textview"
         android:ems="6"
-        android:gravity="center_vertical"
+        android:gravity="end|center"
         android:paddingStart="@dimen/padding_output_text"
+        android:paddingEnd="@dimen/padding_output_text"
         android:text="@string/RESULT_text"
         android:textColor="@color/red_erase"
         android:textSize="@dimen/ResultHistoryText_size"
@@ -258,6 +259,7 @@
             android:background="@drawable/background_input_history"
             android:ems="13"
             android:paddingStart="@dimen/padding_output_text"
+            android:paddingEnd="@dimen/padding_output_text"
             android:text="@string/InputHistory_text"
             android:textColor="@color/red_erase"
             android:textSize="@dimen/ResultHistoryText_size" />

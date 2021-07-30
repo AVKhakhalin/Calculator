@@ -2,15 +2,33 @@
     <!-- Base application theme. -->
     <style name="Theme.Calculator" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorPrimary">@color/red_night</item>
+        <item name="colorPrimaryVariant">@color/red_erase_night</item>
+        <item name="colorOnPrimary">@color/background_input_history_color_night</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSecondary">@color/green_night</item>
+        <item name="colorSecondaryVariant">@color/red_center_night</item>
+        <item name="colorOnSecondary">@color/red_erase_night</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <!-- User element color -->
+        <item name="colorAccent">@color/green_night</item>
+    </style>
+
+    <style name="Day" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/red_night</item>
+        <item name="colorPrimaryVariant">@color/red_erase_night</item>
+        <item name="colorOnPrimary">@color/background_input_history_color_night</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/green_night</item>
+        <item name="colorSecondaryVariant">@color/red_center_night</item>
+        <item name="colorOnSecondary">@color/red_erase_night</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+        <!-- User element color -->
+        <item name="colorAccent">@color/green_night</item>
     </style>
 </resources>

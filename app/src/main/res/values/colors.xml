@@ -7,13 +7,21 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="red">#D50000</color>
-    <color name="red_erase">#6F0000</color>
-    <color name="green">#669900</color>
-    <color name="backgroundActivity_main">#4C22BDFF</color>
-    <color name="backgroundColor">#FF6D00</color>
-    <color name="BackgroundInputHistory_color">#FFD600</color>
-    <color name="InputHistory_color">#1E1E1E</color>
-    <color name="Result_color">#1E1E1E</color>
-    <color name="red_middle">#D53900</color>
+    <color name="input_history_color">#1E1E1E</color>
+    <color name="result_color">#1E1E1E</color>
+    <color name="background_activity_main">#4C22BDFF</color>
+    <!-- Main theme colors day -->
+    <color name="red_day">#D50000</color>
+    <color name="red_center_day">#D53900</color>
+    <color name="red_erase_day">#6F0000</color>
+    <color name="green_day">#669900</color>
+    <color name="background_color_day">#FF6D00</color>
+    <color name="background_input_history_color_day">#FFD600</color>
+    <!-- Main theme colors night -->
+    <color name="red_night">#B70000</color>
+    <color name="red_center_night">#B63000</color>
+    <color name="red_erase_night">#660000</color>
+    <color name="green_night">#A28800</color>
+    <color name="background_color_night">#A84800</color>
+    <color name="background_input_history_color_night">#EEC801</color>
 </resources>

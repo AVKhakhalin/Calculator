@@ -17,6 +17,7 @@
         style="@style/Night.Numbers_style"
         android:text="@string/_0"
         android:visibility="visible"
+        app:layout_constraintCircle="@id/_RESULT_night"
         app:layout_constraintCircleAngle="0"
         app:layout_constraintEnd_toStartOf="@id/_1_night"
         app:layout_constraintTop_toTopOf="parent" />
@@ -26,6 +27,7 @@
         style="@style/Day.Numbers_style"
         android:text="@string/_0"
         android:visibility="gone"
+        app:layout_constraintCircle="@id/_RESULT"
         app:layout_constraintCircleAngle="0"
         app:layout_constraintEnd_toStartOf="@id/_1"
         app:layout_constraintTop_toTopOf="parent" />
@@ -36,6 +38,7 @@
         android:text="@string/_1"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@id/_2_night"
+        app:layout_constraintCircle="@id/_RESULT_night"
         app:layout_constraintCircleAngle="30"
         app:layout_constraintStart_toEndOf="@id/_0_night" />
 
@@ -45,6 +48,7 @@
         android:text="@string/_1"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/_2"
+        app:layout_constraintCircle="@id/_RESULT"
         app:layout_constraintCircleAngle="30"
         app:layout_constraintStart_toEndOf="@id/_0" />
 
@@ -54,6 +58,7 @@
         android:text="@string/_2"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@id/_RESULT_night"
+        app:layout_constraintCircle="@id/_RESULT_night"
         app:layout_constraintCircleAngle="60"
         app:layout_constraintStart_toEndOf="@id/_RESULT_night" />
 
@@ -63,6 +68,7 @@
         android:text="@string/_2"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/_RESULT"
+        app:layout_constraintCircle="@id/_RESULT"
         app:layout_constraintCircleAngle="60"
         app:layout_constraintStart_toEndOf="@id/_RESULT" />
 
@@ -71,6 +77,7 @@
         style="@style/Night.Numbers_style"
         android:text="@string/_3"
         android:visibility="visible"
+        app:layout_constraintCircle="@id/_RESULT_night"
         app:layout_constraintCircleAngle="90"
         app:layout_constraintStart_toEndOf="@id/_RESULT_night"
         app:layout_constraintTop_toBottomOf="@id/_2_night" />
@@ -80,6 +87,7 @@
         style="@style/Day.Numbers_style"
         android:text="@string/_3"
         android:visibility="gone"
+        app:layout_constraintCircle="@id/_RESULT"
         app:layout_constraintCircleAngle="90"
         app:layout_constraintStart_toEndOf="@id/_RESULT"
         app:layout_constraintTop_toBottomOf="@id/_2" />
@@ -89,6 +97,7 @@
         style="@style/Night.Numbers_style"
         android:text="@string/_4"
         android:visibility="visible"
+        app:layout_constraintCircle="@id/_RESULT_night"
         app:layout_constraintCircleAngle="120"
         app:layout_constraintStart_toEndOf="@id/_RESULT_night"
         app:layout_constraintTop_toBottomOf="@id/_3_night" />
@@ -98,6 +107,7 @@
         style="@style/Day.Numbers_style"
         android:text="@string/_4"
         android:visibility="gone"
+        app:layout_constraintCircle="@id/_RESULT"
         app:layout_constraintCircleAngle="120"
         app:layout_constraintStart_toEndOf="@id/_RESULT"
         app:layout_constraintTop_toBottomOf="@id/_3" />
@@ -107,6 +117,7 @@
         style="@style/Night.Numbers_style"
         android:text="@string/_5"
         android:visibility="visible"
+        app:layout_constraintCircle="@id/_RESULT_night"
         app:layout_constraintCircleAngle="150"
         app:layout_constraintEnd_toStartOf="@id/_4_night"
         app:layout_constraintTop_toBottomOf="@id/_4_night" />
@@ -116,6 +127,7 @@
         style="@style/Day.Numbers_style"
         android:text="@string/_5"
         android:visibility="gone"
+        app:layout_constraintCircle="@id/_RESULT"
         app:layout_constraintCircleAngle="150"
         app:layout_constraintEnd_toStartOf="@id/_4"
         app:layout_constraintTop_toBottomOf="@id/_4" />
@@ -125,6 +137,7 @@
         style="@style/Night.Numbers_style"
         android:text="@string/_6"
         android:visibility="visible"
+        app:layout_constraintCircle="@id/_RESULT_night"
         app:layout_constraintCircleAngle="180"
         app:layout_constraintEnd_toStartOf="@id/_5_night"
         app:layout_constraintTop_toBottomOf="@id/_equal_night" />
@@ -134,6 +147,7 @@
         style="@style/Day.Numbers_style"
         android:text="@string/_6"
         android:visibility="gone"
+        app:layout_constraintCircle="@id/_RESULT"
         app:layout_constraintCircleAngle="180"
         app:layout_constraintEnd_toStartOf="@id/_5"
         app:layout_constraintTop_toBottomOf="@id/_equal" />
@@ -143,6 +157,7 @@
         style="@style/Night.Numbers_style"
         android:text="@string/_7"
         android:visibility="visible"
+        app:layout_constraintCircle="@id/_RESULT_night"
         app:layout_constraintCircleAngle="210"
         app:layout_constraintEnd_toStartOf="@id/_6_night"
         app:layout_constraintTop_toBottomOf="@id/_8_night" />
@@ -152,6 +167,7 @@
         style="@style/Day.Numbers_style"
         android:text="@string/_7"
         android:visibility="gone"
+        app:layout_constraintCircle="@id/_RESULT"
         app:layout_constraintCircleAngle="210"
         app:layout_constraintEnd_toStartOf="@id/_6"
         app:layout_constraintTop_toBottomOf="@id/_8" />
@@ -162,6 +178,7 @@
         android:text="@string/_8"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@id/_7_night"
+        app:layout_constraintCircle="@id/_RESULT_night"
         app:layout_constraintCircleAngle="240"
         app:layout_constraintEnd_toStartOf="@id/_7_night" />
 
@@ -171,6 +188,7 @@
         android:text="@string/_8"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/_7"
+        app:layout_constraintCircle="@id/_RESULT"
         app:layout_constraintCircleAngle="240"
         app:layout_constraintEnd_toStartOf="@id/_7" />
 
@@ -180,6 +198,7 @@
         android:text="@string/_9"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@id/_8_night"
+        app:layout_constraintCircle="@id/_RESULT_night"
         app:layout_constraintCircleAngle="270"
         app:layout_constraintEnd_toStartOf="@id/_RESULT_night" />
 
@@ -189,6 +208,7 @@
         android:text="@string/_9"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/_8"
+        app:layout_constraintCircle="@id/_RESULT"
         app:layout_constraintCircleAngle="270"
         app:layout_constraintEnd_toStartOf="@id/_RESULT" />
 

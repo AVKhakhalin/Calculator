@@ -24,4 +24,8 @@ public interface Constants {
                  BRACKET_DISBALANCE,  // количество открытых скобок и закрытых скобок не равно друг другу
                  ZERO_DIVIDE,         // деление на ноль
                  BRACKETS_EMPTY};     // внутри скобок отсутствует число
+
+    // Названия тем
+    enum THEMES {DAY_THEME,           // Дневная тема
+                 NIGHT_THEME};        // Ночная тема
 }

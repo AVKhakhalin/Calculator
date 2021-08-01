@@ -1,6 +1,8 @@
 package ru.geekbrains.lessions2345.calculator.ui;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -17,40 +19,43 @@ public class CalculatorKeyboardActivity extends Activity implements View.OnClick
     private TextView outputResultText;
     private TextView inputedHistoryText;
     private CalcLogic calcLogic;
-    Button button_0;
-    Button button_1;
-    Button button_2;
-    Button button_3;
-    Button button_4;
-    Button button_5;
-    Button button_6;
-    Button button_7;
-    Button button_8;
-    Button button_9;
-    Button button_equal;
-    Button button_zapitay;
-    Button button_bracket_close;
-    Button button_backspace;
-    Button button_backspace_one;
-    Button button_backspace_two;
-    Button button_bracket_open;
-    Button button_divide;
-    Button button_minus;
-    Button button_multiply;
-    Button button_percent;
-    Button button_plus;
-    Button button_plus_minus;
-    Button button_sqrt;
-    Button button_stepen;
-    Button button_change_theme;
+    private Button button_0;
+    private Button button_1;
+    private Button button_2;
+    private Button button_3;
+    private Button button_4;
+    private Button button_5;
+    private Button button_6;
+    private Button button_7;
+    private Button button_8;
+    private Button button_9;
+    private Button button_equal;
+    private Button button_zapitay;
+    private Button button_bracket_close;
+    private Button button_backspace;
+    private Button button_backspace_one;
+    private Button button_backspace_two;
+    private Button button_bracket_open;
+    private Button button_divide;
+    private Button button_minus;
+    private Button button_multiply;
+    private Button button_percent;
+    private Button button_plus;
+    private Button button_plus_minus;
+    private Button button_sqrt;
+    private Button button_stepen;
+    private Button button_change_theme;
 
+    static final String KEY_SETTINGS = "Settings";
     static final String KEY_CURRENT_THEME = "CurrentTheme";
+    private THEMES currentTheme;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(R.style.Night); // Переключение на ночную тему приложения
-                                 // Сделаю переключение между темами в следующем домашнем задании
+        // Установка темы
+        currentTheme = getCurrentTheme();
+        setCalculatorTheme(currentTheme);
         setContentView(R.layout.calc_keyboard_layout);
 
         // Восстановление класса сalcLogic после поворота экрана
@@ -62,10 +67,17 @@ public class CalculatorKeyboardActivity extends Activity implements View.OnClick
         initTextFields();
         // Инициализация кнопок
         initButtons();
+    }
 
-        // Вывод сообщения приветстия
-        if (savedInstanceState == null) {
-            Toast.makeText(this, "Разработчик научного калькулятора Хахалин Андрей Владимирович, 2021 г.", Toast.LENGTH_SHORT).show();
+    // Установка темы калькулятора
+    private void setCalculatorTheme(THEMES currentTheme) {
+        if (currentTheme == THEMES.DAY_THEME)
+        {
+            setTheme(R.style.Day);
+        }
+        else
+        {
+            setTheme(R.style.Night);
         }
     }
 
@@ -220,16 +232,16 @@ public class CalculatorKeyboardActivity extends Activity implements View.OnClick
         }
         else if (v.getId() == button_change_theme.getId())
         {
-
-            setContentView(R.layout.menu_layout);
-//            Toast.makeText(this, "Здесь будет реализовано меню управления темой калькулятора", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(CalculatorKeyboardActivity.this, MenuActivity.class);
+            startActivity(intent);
+            finish();
         }
         buttonZapitayChange();
     }
 
     private void initTextFields() {
-//        if (getTheme().equals(R.style.Night) == true)
-//        {
+        if (currentTheme == THEMES.NIGHT_THEME)
+        {
             outputResultText = findViewById(R.id._RESULT_night);
             calcLogic.calculate();
             errorInfo();
@@ -240,28 +252,38 @@ public class CalculatorKeyboardActivity extends Activity implements View.OnClick
             // Show night text
             outputResultText.setVisibility(View.VISIBLE);
             inputedHistoryText.setVisibility(View.VISIBLE);
+            findViewById(R.id._input_history_night).setVisibility(View.VISIBLE);
 
-            // Hide day text
-            findViewById(R.id._RESULT).setVisibility(View.INVISIBLE);
-            findViewById(R.id._inputed_history_text).setVisibility(View.INVISIBLE);
-//        }
-//        else
-//        {
-/*
+            // Hide (remove) day text
+            findViewById(R.id._RESULT).setVisibility(View.GONE);
+            findViewById(R.id._inputed_history_text).setVisibility(View.GONE);
+            findViewById(R.id._input_history).setVisibility(View.GONE);
+        }
+        else
+        {
             outputResultText = findViewById(R.id._RESULT);
             calcLogic.calculate();
             errorInfo();
             outputResultText.setText(calcLogic.getFinalResult(getApplicationContext()));
             inputedHistoryText = findViewById(R.id._inputed_history_text);
             inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
-*/
-//        }
+
+            // Show day text
+            outputResultText.setVisibility(View.VISIBLE);
+            inputedHistoryText.setVisibility(View.VISIBLE);
+            findViewById(R.id._input_history).setVisibility(View.VISIBLE);
+
+            // Hide (remove) night text
+            findViewById(R.id._RESULT_night).setVisibility(View.GONE);
+            findViewById(R.id._inputed_history_text_night).setVisibility(View.GONE);
+            findViewById(R.id._input_history_night).setVisibility(View.GONE);
+        }
     }
 
     private void initButtons() {
         // Numbers
-//        if (getTheme().equals(R.style.Night) == true)
-//        {
+        if (currentTheme == THEMES.NIGHT_THEME)
+        {
             button_0 = findViewById(R.id._0_night);
             button_0.setOnClickListener(this);
             button_0.setVisibility(View.VISIBLE);
@@ -346,35 +368,35 @@ public class CalculatorKeyboardActivity extends Activity implements View.OnClick
             findViewById(R.id._stepen_night).setVisibility(View.VISIBLE);
             findViewById(R.id._menu_theme_night).setVisibility(View.VISIBLE);
 
-            // Hide day buttons
-            findViewById(R.id._0).setVisibility(View.INVISIBLE);
-            findViewById(R.id._1).setVisibility(View.INVISIBLE);
-            findViewById(R.id._2).setVisibility(View.INVISIBLE);
-            findViewById(R.id._3).setVisibility(View.INVISIBLE);
-            findViewById(R.id._4).setVisibility(View.INVISIBLE);
-            findViewById(R.id._5).setVisibility(View.INVISIBLE);
-            findViewById(R.id._6).setVisibility(View.INVISIBLE);
-            findViewById(R.id._7).setVisibility(View.INVISIBLE);
-            findViewById(R.id._8).setVisibility(View.INVISIBLE);
-            findViewById(R.id._9).setVisibility(View.INVISIBLE);
-            findViewById(R.id._equal).setVisibility(View.INVISIBLE);
-            findViewById(R.id._zapitay).setVisibility(View.INVISIBLE);
-            findViewById(R.id._bracket_close).setVisibility(View.INVISIBLE);
-            findViewById(R.id._backspace).setVisibility(View.INVISIBLE);
-            findViewById(R.id._backspace_one).setVisibility(View.INVISIBLE);
-            findViewById(R.id._backspace_two).setVisibility(View.INVISIBLE);
-            findViewById(R.id._bracket_open).setVisibility(View.INVISIBLE);
-            findViewById(R.id._divide).setVisibility(View.INVISIBLE);
-            findViewById(R.id._minus).setVisibility(View.INVISIBLE);
-            findViewById(R.id._multiply).setVisibility(View.INVISIBLE);
-            findViewById(R.id._percent).setVisibility(View.INVISIBLE);
-            findViewById(R.id._plus).setVisibility(View.INVISIBLE);
-            findViewById(R.id._plus_minus).setVisibility(View.INVISIBLE);
-            findViewById(R.id._sqrt).setVisibility(View.INVISIBLE);
-            findViewById(R.id._stepen).setVisibility(View.INVISIBLE);
-            findViewById(R.id._menu_theme).setVisibility(View.INVISIBLE);
-//        }
-/*        else
+            // Hide (remove) day buttons
+            findViewById(R.id._0).setVisibility(View.GONE);
+            findViewById(R.id._1).setVisibility(View.GONE);
+            findViewById(R.id._2).setVisibility(View.GONE);
+            findViewById(R.id._3).setVisibility(View.GONE);
+            findViewById(R.id._4).setVisibility(View.GONE);
+            findViewById(R.id._5).setVisibility(View.GONE);
+            findViewById(R.id._6).setVisibility(View.GONE);
+            findViewById(R.id._7).setVisibility(View.GONE);
+            findViewById(R.id._8).setVisibility(View.GONE);
+            findViewById(R.id._9).setVisibility(View.GONE);
+            findViewById(R.id._equal).setVisibility(View.GONE);
+            findViewById(R.id._zapitay).setVisibility(View.GONE);
+            findViewById(R.id._bracket_close).setVisibility(View.GONE);
+            findViewById(R.id._backspace).setVisibility(View.GONE);
+            findViewById(R.id._backspace_one).setVisibility(View.GONE);
+            findViewById(R.id._backspace_two).setVisibility(View.GONE);
+            findViewById(R.id._bracket_open).setVisibility(View.GONE);
+            findViewById(R.id._divide).setVisibility(View.GONE);
+            findViewById(R.id._minus).setVisibility(View.GONE);
+            findViewById(R.id._multiply).setVisibility(View.GONE);
+            findViewById(R.id._percent).setVisibility(View.GONE);
+            findViewById(R.id._plus).setVisibility(View.GONE);
+            findViewById(R.id._plus_minus).setVisibility(View.GONE);
+            findViewById(R.id._sqrt).setVisibility(View.GONE);
+            findViewById(R.id._stepen).setVisibility(View.GONE);
+            findViewById(R.id._menu_theme).setVisibility(View.GONE);
+        }
+        else
         {
             button_0 = findViewById(R.id._0);
             button_0.setOnClickListener(this);
@@ -430,16 +452,86 @@ public class CalculatorKeyboardActivity extends Activity implements View.OnClick
             button_stepen.setOnClickListener(this);
             button_change_theme = findViewById(R.id._menu_theme);
             button_change_theme.setOnClickListener(this);
-        }*/
+
+            // Show day buttons
+            findViewById(R.id._0).setVisibility(View.VISIBLE);
+            findViewById(R.id._1).setVisibility(View.VISIBLE);
+            findViewById(R.id._2).setVisibility(View.VISIBLE);
+            findViewById(R.id._3).setVisibility(View.VISIBLE);
+            findViewById(R.id._4).setVisibility(View.VISIBLE);
+            findViewById(R.id._5).setVisibility(View.VISIBLE);
+            findViewById(R.id._6).setVisibility(View.VISIBLE);
+            findViewById(R.id._7).setVisibility(View.VISIBLE);
+            findViewById(R.id._8).setVisibility(View.VISIBLE);
+            findViewById(R.id._9).setVisibility(View.VISIBLE);
+            findViewById(R.id._equal).setVisibility(View.VISIBLE);
+            findViewById(R.id._zapitay).setVisibility(View.VISIBLE);
+            findViewById(R.id._bracket_close).setVisibility(View.VISIBLE);
+            findViewById(R.id._backspace).setVisibility(View.VISIBLE);
+            findViewById(R.id._backspace_one).setVisibility(View.VISIBLE);
+            findViewById(R.id._backspace_two).setVisibility(View.VISIBLE);
+            findViewById(R.id._bracket_open).setVisibility(View.VISIBLE);
+            findViewById(R.id._divide).setVisibility(View.VISIBLE);
+            findViewById(R.id._minus).setVisibility(View.VISIBLE);
+            findViewById(R.id._multiply).setVisibility(View.VISIBLE);
+            findViewById(R.id._percent).setVisibility(View.VISIBLE);
+            findViewById(R.id._plus).setVisibility(View.VISIBLE);
+            findViewById(R.id._plus_minus).setVisibility(View.VISIBLE);
+            findViewById(R.id._sqrt).setVisibility(View.VISIBLE);
+            findViewById(R.id._stepen).setVisibility(View.VISIBLE);
+            findViewById(R.id._menu_theme).setVisibility(View.VISIBLE);
+
+            // Hide (remove) night buttons
+            findViewById(R.id._0_night).setVisibility(View.GONE);
+            findViewById(R.id._1_night).setVisibility(View.GONE);
+            findViewById(R.id._2_night).setVisibility(View.GONE);
+            findViewById(R.id._3_night).setVisibility(View.GONE);
+            findViewById(R.id._4_night).setVisibility(View.GONE);
+            findViewById(R.id._5_night).setVisibility(View.GONE);
+            findViewById(R.id._6_night).setVisibility(View.GONE);
+            findViewById(R.id._7_night).setVisibility(View.GONE);
+            findViewById(R.id._8_night).setVisibility(View.GONE);
+            findViewById(R.id._9_night).setVisibility(View.GONE);
+            findViewById(R.id._equal_night).setVisibility(View.GONE);
+            findViewById(R.id._zapitay_night).setVisibility(View.GONE);
+            findViewById(R.id._bracket_close_night).setVisibility(View.GONE);
+            findViewById(R.id._backspace_night).setVisibility(View.GONE);
+            findViewById(R.id._backspace_one_night).setVisibility(View.GONE);
+            findViewById(R.id._backspace_two_night).setVisibility(View.GONE);
+            findViewById(R.id._bracket_open_night).setVisibility(View.GONE);
+            findViewById(R.id._divide_night).setVisibility(View.GONE);
+            findViewById(R.id._minus_night).setVisibility(View.GONE);
+            findViewById(R.id._multiply_night).setVisibility(View.GONE);
+            findViewById(R.id._percent_night).setVisibility(View.GONE);
+            findViewById(R.id._plus_night).setVisibility(View.GONE);
+            findViewById(R.id._plus_minus_night).setVisibility(View.GONE);
+            findViewById(R.id._sqrt_night).setVisibility(View.GONE);
+            findViewById(R.id._stepen_night).setVisibility(View.GONE);
+            findViewById(R.id._menu_theme_night).setVisibility(View.GONE);
+        }
     }
 
     private void buttonZapitayChange() {
         if (calcLogic.getPressedZapitay() == false) {
-            button_zapitay.setBackgroundResource(R.drawable.buttons_with_actions_mg_night);
-//            button_zapitay.setBackgroundResource(R.drawable.buttons_with_actions_mg_day);
-        } else {
-            button_zapitay.setBackgroundResource(R.drawable.buttons_with_numbers_mg_night);
-//            button_zapitay.setBackgroundResource(R.drawable.buttons_with_numbers_mg_day);
+            if (currentTheme == THEMES.NIGHT_THEME)
+            {
+                button_zapitay.setBackgroundResource(R.drawable.buttons_with_actions_mg_night);
+            }
+            else
+            {
+                button_zapitay.setBackgroundResource(R.drawable.buttons_with_actions_mg_day);
+            }
+        }
+        else
+        {
+            if (currentTheme == THEMES.NIGHT_THEME)
+            {
+                button_zapitay.setBackgroundResource(R.drawable.buttons_with_numbers_mg_night);
+            }
+            else
+            {
+                button_zapitay.setBackgroundResource(R.drawable.buttons_with_numbers_mg_day);
+            }
         }
     }
 
@@ -463,6 +555,20 @@ public class CalculatorKeyboardActivity extends Activity implements View.OnClick
                 break;
             default:
                 break;
+        }
+    }
+
+    private THEMES getCurrentTheme()
+    {
+        SharedPreferences sharedPreferences = getSharedPreferences(KEY_SETTINGS, MODE_PRIVATE);
+        int currentTheme = sharedPreferences.getInt(KEY_CURRENT_THEME, -1);
+        if (currentTheme == 0)
+        {
+            return THEMES.NIGHT_THEME;
+        }
+        else
+        {
+            return THEMES.DAY_THEME; // Установка по умолчанию - дневная тема, если в настройках стоит 1 или ничего не будет стоять
         }
     }
 }

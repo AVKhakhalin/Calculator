@@ -775,13 +775,18 @@ public class CalcLogic implements Constants {
         } else {
             for (int i = 0; i < numberSymbols - 1; i++) {
                 comparedNumber *= 10d;
-                if (number < comparedNumber) {
+                if (Math.abs(number) < comparedNumber) {
                     df = new DecimalFormat(createFormat(numberSymbols, i));
                     return (df.format(number).length() > numberSymbols ? String.format(Locale.getDefault(), "%e", number) : df.format(number));
                 }
             }
         }
-        return String.format(Locale.getDefault(), "%e", number);
+        if (number > 0) {
+            return String.format(Locale.getDefault(), (number < 10E99d ? "%.6e" : "%.5e"), number);
+        }
+        else {
+            return String.format(Locale.getDefault(), (Math.abs(number) < 10E99d ? "%.6e" : "%.5e"), number);
+        }
     }
 
     private static String createFormat(int numberSymbols, int i) {

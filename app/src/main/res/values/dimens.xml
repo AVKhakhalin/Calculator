@@ -35,4 +35,5 @@
     <dimen name="large_circle_width">65dp</dimen>
     <dimen name="large_circle_height">65dp</dimen>
     <dimen name="menu_button_width">150dp</dimen>
+    <dimen name="menu_message_text_size">30sp</dimen>
 </resources>

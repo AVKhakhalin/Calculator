@@ -6,12 +6,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import ru.geekbrains.lessions2345.calculator.R;
 
-public class MainActivity extends AppCompatActivity {
+public class MenuActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-        setContentView(R.layout.calc_keyboard_layout);
+        setContentView(R.layout.menu_layout);
     }
 }

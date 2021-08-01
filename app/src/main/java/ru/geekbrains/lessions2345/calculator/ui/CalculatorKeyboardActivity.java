@@ -44,6 +44,8 @@ public class CalculatorKeyboardActivity extends Activity implements View.OnClick
     Button button_stepen;
     Button button_change_theme;
 
+    static final String KEY_CURRENT_THEME = "CurrentTheme";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -218,125 +220,10 @@ public class CalculatorKeyboardActivity extends Activity implements View.OnClick
         }
         else if (v.getId() == button_change_theme.getId())
         {
-            Toast.makeText(this, "Здесь будет реализовано меню управления темой калькулятора", Toast.LENGTH_SHORT).show();
+
+            setContentView(R.layout.menu_layout);
+//            Toast.makeText(this, "Здесь будет реализовано меню управления темой калькулятора", Toast.LENGTH_SHORT).show();
         }
-/*        switch (v.getId()) {
-            case R.id._0:
-                calcLogic.addNumeral(0);
-                inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
-                break;
-            case R.id._1:
-                calcLogic.addNumeral(1);
-                inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
-                break;
-            case R.id._2:
-                calcLogic.addNumeral(2);
-                inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
-                break;
-            case R.id._3:
-                calcLogic.addNumeral(3);
-                inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
-                break;
-            case R.id._4:
-                calcLogic.addNumeral(4);
-                inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
-                break;
-            case R.id._5:
-                calcLogic.addNumeral(5);
-                inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
-                break;
-            case R.id._6:
-                calcLogic.addNumeral(6);
-                inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
-                break;
-            case R.id._7:
-                calcLogic.addNumeral(7);
-                inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
-                break;
-            case R.id._8:
-                calcLogic.addNumeral(8);
-                inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
-                break;
-            case R.id._9:
-                calcLogic.addNumeral(9);
-                inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
-                break;
-            case R.id._equal:
-                calcLogic.calculate();
-                errorInfo();
-                outputResultText.setText(calcLogic.getFinalResult(getApplicationContext()));
-                break;
-            case R.id._zapitay:
-                calcLogic.setCurZapitay();
-                inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
-                break;
-            case R.id._bracket_open:
-                inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.setNewFunction(FUNCTIONS.FUNC_NO)));
-                break;
-            case R.id._bracket_close:
-                inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.closeBracket()));
-                break;
-            case R.id._backspace:
-                calcLogic.clearAll();
-                inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
-                calcLogic.calculate();
-                errorInfo();
-                outputResultText.setText(calcLogic.getFinalResult(getApplicationContext()));
-                break;
-            case R.id._backspace_one:
-                if (calcLogic.clearOne() == false) {
-                    calcLogic.calculate();
-                    errorInfo();
-                    outputResultText.setText(calcLogic.getFinalResult(getApplicationContext()));
-                }
-                inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
-                break;
-            case R.id._backspace_two:
-                if (calcLogic.clearTwo() == false) {
-                    calcLogic.calculate();
-                    errorInfo();
-                    outputResultText.setText(calcLogic.getFinalResult(getApplicationContext()));
-                }
-                inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
-                break;
-            case R.id._divide:
-                calcLogic.setNewAction(ACTIONS.ACT_DIV);
-                inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
-                break;
-            case R.id._minus:
-                calcLogic.setNewAction(ACTIONS.ACT_MINUS);
-                inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
-                break;
-            case R.id._multiply:
-                calcLogic.setNewAction(ACTIONS.ACT_MULTY);
-                inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
-                break;
-            case R.id._plus:
-                calcLogic.setNewAction(ACTIONS.ACT_PLUS);
-                inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
-                break;
-            case R.id._percent:
-                calcLogic.setNewAction(ACTIONS.ACT_PERS_MULTY); // Задаётся универсальное значение ACT_PERS_MULTY и оно уточняется в методе setNewAction
-                inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
-                break;
-            case R.id._plus_minus:
-                calcLogic.changeSign();
-                inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
-                break;
-            case R.id._stepen:
-                calcLogic.setNewAction(ACTIONS.ACT_STEP);
-                inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
-                break;
-            case R.id._sqrt:
-                calcLogic.setNewFunction(FUNCTIONS.FUNC_SQRT);
-                inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
-                break;
-            case R.id._menu_theme:
-                Toast.makeText(this, "Здесь будет реализовано меню управления темой калькулятора", Toast.LENGTH_SHORT).show();
-                break;
-            default:
-                break;
-        }*/
         buttonZapitayChange();
     }
 

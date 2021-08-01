@@ -1,27 +1,25 @@
 package ru.geekbrains.lessions2345.calculator.calculator_logic;
 
 import android.content.Context;
-import android.content.res.Resources;
 
 import java.text.DecimalFormat;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Locale;
 
-import ru.geekbrains.lessions2345.calculator.R;
-
 public class CalcLogic implements Constants {
-    LinkedList<Dates> inputNumbers;                // Создание класса со значениями
-    int maxBracketLevel;                           // Максимальный уровень вложенности во всех скобках
-    int curBracketLevel;                           // Создание переменной с текущим максимальный уровнем вложенности скобок
-    int curNumber;                                 // Текущий индекс создаваемой операции (в операцию входит как сама операция, так и число в ней участвующее)
-    LinkedList<Dates> inputNumbersForBracketCalc;  // Класс со значениями вместе со скобками;
+    private LinkedList<Dates> inputNumbers;                // Создание класса со значениями
+    private int maxBracketLevel;                           // Максимальный уровень вложенности во всех скобках
+    private int curBracketLevel;                           // Создание переменной с текущим максимальный уровнем вложенности скобок
+    private int curNumber;                                 // Текущий индекс создаваемой операции (в операцию входит как сама операция, так и число в ней участвующее)
+    private LinkedList<Dates> inputNumbersForBracketCalc;  // Класс со значениями вместе со скобками;
                                                    // в результате всех вычислений, в данном классе не останется ни одной скобки
-    LinkedList<Dates> inputNumbersForBaseCalc;     // Класс со значениями для вычислений внутри скобок
-    ListIterator<Dates> iterInputNumbersForCalc;   // Создание итератора для навигации по списку со значениями
-    boolean pressedZapitay = false;                // Признак нажатой кнопки запятой
-    double finalResult = 0d;                       // Переменная, хранящая окончательный результат вычислений
+    private LinkedList<Dates> inputNumbersForBaseCalc;     // Класс со значениями для вычислений внутри скобок
+    private ListIterator<Dates> iterInputNumbersForCalc;   // Создание итератора для навигации по списку со значениями
+    private boolean pressedZapitay = false;                // Признак нажатой кнопки запятой
+    private double finalResult = 0d;                       // Переменная, хранящая окончательный результат вычислений
     private ERRORS errorCode = ERRORS.NO;          // Ошибки вычислений
+    private int maxNumberSymbolsInOutputTextField = 12;    // Максимальное количество символов, допустимое для вывода в поле с резуьлтатами вычислений
 
     public CalcLogic() {
         inputNumbers = new LinkedList<>();
@@ -33,6 +31,10 @@ public class CalcLogic implements Constants {
 
         // Создание первого пустого элемента
         add(false, false, FUNCTIONS.FUNC_NO, 1, 0d, false, ACTIONS.ACT_PLUS, false);
+    }
+
+    public void setMaxNumberSymbolsInOutputTextField(int maxNumberSymbolsInOutputTextField) {
+        this.maxNumberSymbolsInOutputTextField = maxNumberSymbolsInOutputTextField;
     }
 
     public double addNumeral(int newNumeral) {
@@ -755,8 +757,7 @@ public class CalcLogic implements Constants {
     public String getFinalResult(Context context) {
         String finalResult_String = "";
         if (errorCode == ERRORS.NO) {
-            Resources resources = context.getResources();
-            finalResult_String = numberFormatOutput(finalResult, resources.getInteger(R.integer.number_output_symbols_forEMS) * 2); // Умножаем на 2, потому что ширина чисел вдвое меньше величины EMS
+            finalResult_String = numberFormatOutput(finalResult, maxNumberSymbolsInOutputTextField);
         }
         return finalResult_String;
     }

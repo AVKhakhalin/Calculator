@@ -31,6 +31,7 @@
     <string name="title_menu_themes_text">Выберите тему оформления экрана:</string>
     <string name="turn_on_day_them_button_text">Дневная тема</string>
     <string name="turn_on_night_them_button_text">Ночная тема</string>
-    <string name="return_button_text">Вернуться</string>
+    <string name="return_button_text">Установить</string>
     <string name="menu_message_text">Выбиретие тему калькулятора</string>
+    <string name="author_info_text">Разработчик научного калькулятора Хахалин Андрей Владимирович, 2021 г.</string>
 </resources>

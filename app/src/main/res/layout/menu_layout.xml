@@ -11,7 +11,7 @@
         android:id="@+id/_background_theme"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/back_calc" />
+        android:background="@drawable/back_calc_menu" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/_menu_message"
@@ -63,7 +63,7 @@
         android:textStyle="normal"
         android:visibility="visible"
         app:layout_constraintTop_toBottomOf="@id/_night_theme"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/_author_info"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -76,8 +76,22 @@
         android:textStyle="normal"
         android:visibility="invisible"
         app:layout_constraintTop_toBottomOf="@id/_night_theme"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/_author_info"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/_author_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/author_info_text"
+        android:textSize="@dimen/author_info_text_size"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textColor="@color/red_erase_night"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

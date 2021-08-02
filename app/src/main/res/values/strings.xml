@@ -35,8 +35,9 @@
     <string name="menu_message_text">Выбиретие тему калькулятора</string>
     <string name="author_info_text">Разработчик научного калькулятора Хахалин Андрей Владимирович, 2021 г.</string>
     <string name="set_radius_buttons_text">
-        Можно ещё задать РАДИУС <br></br>
-        расположения кнопок в dp <br></br>
-        (по-умолчанию 177 dp):
+        <br>Можно ещё задать РАДИУС</br>
+        <br>расположения кнопок в dp</br>
+        <br>(по-умолчанию 177 dp):</br>
     </string>
+    <string name="default_radius_text">177</string>
 </resources>

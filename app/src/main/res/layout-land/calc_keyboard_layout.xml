@@ -19,6 +19,7 @@
         android:visibility="visible"
         app:layout_constraintCircle="@id/_RESULT_night"
         app:layout_constraintCircleAngle="0"
+        app:layout_constraintCircleRadius="@dimen/button_circle_radius"
         app:layout_constraintEnd_toStartOf="@id/_1_night"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -29,6 +30,7 @@
         android:visibility="gone"
         app:layout_constraintCircle="@id/_RESULT"
         app:layout_constraintCircleAngle="0"
+        app:layout_constraintCircleRadius="@dimen/button_circle_radius"
         app:layout_constraintEnd_toStartOf="@id/_1"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -40,6 +42,7 @@
         app:layout_constraintBottom_toTopOf="@id/_2_night"
         app:layout_constraintCircle="@id/_RESULT_night"
         app:layout_constraintCircleAngle="30"
+        app:layout_constraintCircleRadius="@dimen/button_circle_radius"
         app:layout_constraintStart_toEndOf="@id/_0_night" />
 
     <com.google.android.material.button.MaterialButton
@@ -50,6 +53,7 @@
         app:layout_constraintBottom_toTopOf="@id/_2"
         app:layout_constraintCircle="@id/_RESULT"
         app:layout_constraintCircleAngle="30"
+        app:layout_constraintCircleRadius="@dimen/button_circle_radius"
         app:layout_constraintStart_toEndOf="@id/_0" />
 
     <com.google.android.material.button.MaterialButton
@@ -60,6 +64,7 @@
         app:layout_constraintBottom_toTopOf="@id/_RESULT_night"
         app:layout_constraintCircle="@id/_RESULT_night"
         app:layout_constraintCircleAngle="60"
+        app:layout_constraintCircleRadius="@dimen/button_circle_radius"
         app:layout_constraintStart_toEndOf="@id/_RESULT_night" />
 
     <com.google.android.material.button.MaterialButton
@@ -70,6 +75,7 @@
         app:layout_constraintBottom_toTopOf="@id/_RESULT"
         app:layout_constraintCircle="@id/_RESULT"
         app:layout_constraintCircleAngle="60"
+        app:layout_constraintCircleRadius="@dimen/button_circle_radius"
         app:layout_constraintStart_toEndOf="@id/_RESULT" />
 
     <com.google.android.material.button.MaterialButton
@@ -79,6 +85,7 @@
         android:visibility="visible"
         app:layout_constraintCircle="@id/_RESULT_night"
         app:layout_constraintCircleAngle="90"
+        app:layout_constraintCircleRadius="@dimen/button_circle_radius"
         app:layout_constraintStart_toEndOf="@id/_RESULT_night"
         app:layout_constraintTop_toBottomOf="@id/_2_night" />
 
@@ -89,6 +96,7 @@
         android:visibility="gone"
         app:layout_constraintCircle="@id/_RESULT"
         app:layout_constraintCircleAngle="90"
+        app:layout_constraintCircleRadius="@dimen/button_circle_radius"
         app:layout_constraintStart_toEndOf="@id/_RESULT"
         app:layout_constraintTop_toBottomOf="@id/_2" />
 
@@ -99,6 +107,7 @@
         android:visibility="visible"
         app:layout_constraintCircle="@id/_RESULT_night"
         app:layout_constraintCircleAngle="120"
+        app:layout_constraintCircleRadius="@dimen/button_circle_radius"
         app:layout_constraintStart_toEndOf="@id/_RESULT_night"
         app:layout_constraintTop_toBottomOf="@id/_3_night" />
 
@@ -109,6 +118,7 @@
         android:visibility="gone"
         app:layout_constraintCircle="@id/_RESULT"
         app:layout_constraintCircleAngle="120"
+        app:layout_constraintCircleRadius="@dimen/button_circle_radius"
         app:layout_constraintStart_toEndOf="@id/_RESULT"
         app:layout_constraintTop_toBottomOf="@id/_3" />
 
@@ -119,6 +129,7 @@
         android:visibility="visible"
         app:layout_constraintCircle="@id/_RESULT_night"
         app:layout_constraintCircleAngle="150"
+        app:layout_constraintCircleRadius="@dimen/button_circle_radius"
         app:layout_constraintEnd_toStartOf="@id/_4_night"
         app:layout_constraintTop_toBottomOf="@id/_4_night" />
 
@@ -129,6 +140,7 @@
         android:visibility="gone"
         app:layout_constraintCircle="@id/_RESULT"
         app:layout_constraintCircleAngle="150"
+        app:layout_constraintCircleRadius="@dimen/button_circle_radius"
         app:layout_constraintEnd_toStartOf="@id/_4"
         app:layout_constraintTop_toBottomOf="@id/_4" />
 
@@ -139,6 +151,7 @@
         android:visibility="visible"
         app:layout_constraintCircle="@id/_RESULT_night"
         app:layout_constraintCircleAngle="180"
+        app:layout_constraintCircleRadius="@dimen/button_circle_radius"
         app:layout_constraintEnd_toStartOf="@id/_5_night"
         app:layout_constraintTop_toBottomOf="@id/_equal_night" />
 
@@ -149,6 +162,7 @@
         android:visibility="gone"
         app:layout_constraintCircle="@id/_RESULT"
         app:layout_constraintCircleAngle="180"
+        app:layout_constraintCircleRadius="@dimen/button_circle_radius"
         app:layout_constraintEnd_toStartOf="@id/_5"
         app:layout_constraintTop_toBottomOf="@id/_equal" />
 
@@ -159,6 +173,7 @@
         android:visibility="visible"
         app:layout_constraintCircle="@id/_RESULT_night"
         app:layout_constraintCircleAngle="210"
+        app:layout_constraintCircleRadius="@dimen/button_circle_radius"
         app:layout_constraintEnd_toStartOf="@id/_6_night"
         app:layout_constraintTop_toBottomOf="@id/_8_night" />
 
@@ -169,6 +184,7 @@
         android:visibility="gone"
         app:layout_constraintCircle="@id/_RESULT"
         app:layout_constraintCircleAngle="210"
+        app:layout_constraintCircleRadius="@dimen/button_circle_radius"
         app:layout_constraintEnd_toStartOf="@id/_6"
         app:layout_constraintTop_toBottomOf="@id/_8" />
 
@@ -180,6 +196,7 @@
         app:layout_constraintBottom_toTopOf="@id/_7_night"
         app:layout_constraintCircle="@id/_RESULT_night"
         app:layout_constraintCircleAngle="240"
+        app:layout_constraintCircleRadius="@dimen/button_circle_radius"
         app:layout_constraintEnd_toStartOf="@id/_7_night" />
 
     <com.google.android.material.button.MaterialButton
@@ -190,6 +207,7 @@
         app:layout_constraintBottom_toTopOf="@id/_7"
         app:layout_constraintCircle="@id/_RESULT"
         app:layout_constraintCircleAngle="240"
+        app:layout_constraintCircleRadius="@dimen/button_circle_radius"
         app:layout_constraintEnd_toStartOf="@id/_7" />
 
     <com.google.android.material.button.MaterialButton
@@ -200,6 +218,7 @@
         app:layout_constraintBottom_toTopOf="@id/_8_night"
         app:layout_constraintCircle="@id/_RESULT_night"
         app:layout_constraintCircleAngle="270"
+        app:layout_constraintCircleRadius="@dimen/button_circle_radius"
         app:layout_constraintEnd_toStartOf="@id/_RESULT_night" />
 
     <com.google.android.material.button.MaterialButton
@@ -210,6 +229,7 @@
         app:layout_constraintBottom_toTopOf="@id/_8"
         app:layout_constraintCircle="@id/_RESULT"
         app:layout_constraintCircleAngle="270"
+        app:layout_constraintCircleRadius="@dimen/button_circle_radius"
         app:layout_constraintEnd_toStartOf="@id/_RESULT" />
 
     <com.google.android.material.button.MaterialButton
@@ -544,7 +564,7 @@
         android:id="@+id/_input_history_night"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintHeight_max="153dp"
+        app:layout_constraintHeight_max="@dimen/default_input_history_max_height_landscape"
         android:visibility="visible"
         app:layout_constraintTop_toBottomOf="@id/_menu_theme_night"
         app:layout_constraintEnd_toStartOf="@id/_stepen_night"
@@ -569,7 +589,7 @@
         android:id="@+id/_input_history"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintHeight_max="153dp"
+        app:layout_constraintHeight_max="@dimen/default_input_history_max_height_landscape"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/_menu_theme"
         app:layout_constraintEnd_toStartOf="@id/_stepen"

@@ -4,10 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.View;
 import android.widget.Button;
@@ -54,16 +52,24 @@ public class CalculatorKeyboardActivity extends Activity implements View.OnClick
     private Button button_stepen;
     private Button button_change_theme;
 
-    static final float KOEFF_RESIZE_HEIGHT = 2.2f;
+    static final int DEFAULT_BUTTON_RADIUS = 177;
+    final float KOEFF_RESIZE_HEIGHT = 2.2f;
     static final String KEY_SETTINGS = "Settings";
     static final String KEY_CURRENT_THEME = "CurrentTheme";
+    static final String KEY_CURRENT_RADIUS = "Radius";
+    static final String KEY_DOCHANGE_RADIUS = "DoRedraw";
     private THEMES currentTheme;
+
+    private int koeff_DP;
+    private int curRadiusButtons;
+    private boolean doChangeRadius = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Установка темы
-        currentTheme = getCurrentTheme();
+        koeff_DP = (int) getApplicationContext().getResources().getDisplayMetrics().density;
+        currentTheme = getSettings();
         setCalculatorTheme(currentTheme);
         setContentView(R.layout.calc_keyboard_layout);
 
@@ -84,6 +90,8 @@ public class CalculatorKeyboardActivity extends Activity implements View.OnClick
         buttonZapitayChange();
         // Установка обновлённого максимального значения высоты текстового поля с историей ввода (_input_history и _input_history_night)
         setNewMaxHeightForInputHistory();
+        // Установка обновлённого значения радиуса окружности кнопок
+        setNewRadiusButtons(curRadiusButtons * koeff_DP);
     }
 
     // Установка новых значений высоты для полей _input_history и _input_history_night (важно при повороте экрана)
@@ -123,7 +131,11 @@ public class CalculatorKeyboardActivity extends Activity implements View.OnClick
         super.onResume();
 
         // Установка темы
-        if (currentTheme != getCurrentTheme()) {
+        THEMES savedTheme = getSettings();
+        if ((currentTheme != savedTheme) || (doChangeRadius == true)) {
+            currentTheme = savedTheme;
+            doChangeRadius = false;
+            saveSettings(currentTheme);
             recreate();
         }
     }
@@ -544,14 +556,67 @@ public class CalculatorKeyboardActivity extends Activity implements View.OnClick
         }
     }
 
-    // Считать информацию о текущей теме
-    private THEMES getCurrentTheme() {
+    // Считать информацию о текущих настройках программы (теме и радиусе кнопок)
+    private THEMES getSettings() {
         SharedPreferences sharedPreferences = getSharedPreferences(KEY_SETTINGS, MODE_PRIVATE);
-        int currentTheme = sharedPreferences.getInt(KEY_CURRENT_THEME, -1);
+        int currentTheme = sharedPreferences.getInt(KEY_CURRENT_THEME, 1);
+        curRadiusButtons = sharedPreferences.getInt(KEY_CURRENT_RADIUS, DEFAULT_BUTTON_RADIUS);
+        doChangeRadius = sharedPreferences.getBoolean(KEY_DOCHANGE_RADIUS, false);
         if (currentTheme == 0) {
             return THEMES.NIGHT_THEME;
         } else {
             return THEMES.DAY_THEME; // Установка по умолчанию - дневная тема, если в настройках стоит 1 или ничего не будет стоять
         }
+    }
+
+    private void saveSettings(THEMES currentTheme) {
+        SharedPreferences sharedPreferences = getSharedPreferences(KEY_SETTINGS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        // Сохранение темы
+        if (currentTheme == THEMES.DAY_THEME) {
+            editor.putInt(KEY_CURRENT_THEME, 1);
+        } else if (currentTheme == THEMES.NIGHT_THEME) {
+            editor.putInt(KEY_CURRENT_THEME, 0);
+        }
+        // Сохранение радиуса кнопок
+        int newRadius = curRadiusButtons;
+        editor.putInt(KEY_CURRENT_RADIUS, newRadius);
+        editor.putBoolean(KEY_DOCHANGE_RADIUS, false); // Ставим false, что говорит о том, что изменения радиуса отработали
+        editor.apply();
+    }
+
+    private void setNewRadiusButtons(int newRadius)
+    {
+        // Смена значения поля в constraintLayout
+        ConstraintLayout constraintLayout = findViewById(R.id.run_calculator);
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(constraintLayout);
+        constraintSet.constrainCircle(R.id._0, R.id._RESULT, newRadius, 0);
+        constraintSet.constrainCircle(R.id._0_night, R.id._RESULT_night, newRadius, 0);
+        constraintSet.constrainCircle(R.id._1, R.id._RESULT, newRadius, 30);
+        constraintSet.constrainCircle(R.id._1_night, R.id._RESULT_night, newRadius, 30);
+        constraintSet.constrainCircle(R.id._2, R.id._RESULT, newRadius, 60);
+        constraintSet.constrainCircle(R.id._2_night, R.id._RESULT_night, newRadius, 60);
+        constraintSet.constrainCircle(R.id._3, R.id._RESULT, newRadius, 90);
+        constraintSet.constrainCircle(R.id._3_night, R.id._RESULT_night, newRadius, 90);
+        constraintSet.constrainCircle(R.id._4, R.id._RESULT, newRadius, 120);
+        constraintSet.constrainCircle(R.id._4_night, R.id._RESULT_night, newRadius, 120);
+        constraintSet.constrainCircle(R.id._5, R.id._RESULT, newRadius, 150);
+        constraintSet.constrainCircle(R.id._5_night, R.id._RESULT_night, newRadius, 150);
+        constraintSet.constrainCircle(R.id._6, R.id._RESULT, newRadius, 180);
+        constraintSet.constrainCircle(R.id._6_night, R.id._RESULT_night, newRadius, 180);
+        constraintSet.constrainCircle(R.id._7, R.id._RESULT, newRadius, 210);
+        constraintSet.constrainCircle(R.id._7_night, R.id._RESULT_night, newRadius, 210);
+        constraintSet.constrainCircle(R.id._8, R.id._RESULT, newRadius, 240);
+        constraintSet.constrainCircle(R.id._8_night, R.id._RESULT_night, newRadius, 240);
+        constraintSet.constrainCircle(R.id._9, R.id._RESULT, newRadius, 270);
+        constraintSet.constrainCircle(R.id._9_night, R.id._RESULT_night, newRadius, 270);
+        constraintSet.constrainCircle(R.id._divide, R.id._RESULT, newRadius, 300);
+        constraintSet.constrainCircle(R.id._divide_night, R.id._RESULT_night, newRadius, 300);
+        constraintSet.constrainCircle(R.id._minus, R.id._RESULT, newRadius, 330);
+        constraintSet.constrainCircle(R.id._minus_night, R.id._RESULT_night, newRadius, 330);
+        constraintSet.constrainCircle(R.id._minus, R.id._RESULT, newRadius, 330);
+        constraintSet.constrainCircle(R.id._minus_night, R.id._RESULT_night, newRadius, 330);
+        constraintSet.applyTo(constraintLayout);
     }
 }

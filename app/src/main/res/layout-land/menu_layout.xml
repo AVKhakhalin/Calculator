@@ -62,8 +62,8 @@
         android:textSize="@dimen/request_radius_buttons_text_size"
         android:textColor="@color/background_input_history_color_day"
         android:gravity="center"
-        app:layout_constraintEnd_toEndOf="@id/_request_radius_buttons_input"
-        app:layout_constraintBottom_toTopOf="@id/_request_radius_buttons_input" />
+        app:layout_constraintEnd_toStartOf="@id/_request_radius_buttons_input"
+        app:layout_constraintBottom_toBottomOf="@id/_return_day" />
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/_request_radius_buttons_input"
@@ -74,8 +74,8 @@
         android:ems="2"
         android:textColor="@color/background_input_history_color_day"
         android:inputType="numberDecimal"
-        app:layout_constraintStart_toEndOf="@id/_return_day"
-        app:layout_constraintBottom_toTopOf="@id/_return_day" />
+        app:layout_constraintEnd_toStartOf="@id/_return_day"
+        app:layout_constraintBottom_toBottomOf="@id/_return_day" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/_return_day"

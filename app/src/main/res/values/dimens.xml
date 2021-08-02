@@ -37,4 +37,7 @@
     <dimen name="menu_button_width">150dp</dimen>
     <dimen name="menu_message_text_size">30sp</dimen>
     <dimen name="author_info_text_size">20sp</dimen>
+    <dimen name="default_input_history_max_height_portrait">252dp</dimen>
+    <dimen name="default_input_history_max_height_landscape">153dp</dimen>
+    <dimen name="request_radius_buttons_text_size">16sp</dimen>
 </resources>

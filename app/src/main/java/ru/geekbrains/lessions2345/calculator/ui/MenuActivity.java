@@ -86,9 +86,9 @@ public class MenuActivity extends AppCompatActivity implements Constants, View.O
         }
         // Сохранение радиуса кнопок
         int newRadius = Integer.parseInt(editTextWithNewRadius.getText().toString());
-        if (newRadius < 150) // Поменять значение на константу
+        if (newRadius < 70) // Поменять значение на константу
         {
-            newRadius = 150;
+            newRadius = 70;
         } else if (newRadius > 300)
         {
             newRadius = 300;

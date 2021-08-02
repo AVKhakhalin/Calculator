@@ -1,13 +1,21 @@
 package ru.geekbrains.lessions2345.calculator.ui;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 
 import java.util.Locale;
 
@@ -46,6 +54,7 @@ public class CalculatorKeyboardActivity extends Activity implements View.OnClick
     private Button button_stepen;
     private Button button_change_theme;
 
+    static final float KOEFF_RESIZE_HEIGHT = 2.2f;
     static final String KEY_SETTINGS = "Settings";
     static final String KEY_CURRENT_THEME = "CurrentTheme";
     private THEMES currentTheme;
@@ -73,6 +82,31 @@ public class CalculatorKeyboardActivity extends Activity implements View.OnClick
         initButtons();
         // Проверка режима ввода вещественных чисел
         buttonZapitayChange();
+        // Установка обновлённого максимального значения высоты текстового поля с историей ввода (_input_history и _input_history_night)
+        setNewMaxHeightForInputHistory();
+    }
+
+    // Установка новых значений высоты для полей _input_history и _input_history_night (важно при повороте экрана)
+    private void setNewMaxHeightForInputHistory()
+    {
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int height = size.y;
+        int newMaxHeight_dp = Math.round(convertPixelsToDp(getApplicationContext(), Math.round(height / KOEFF_RESIZE_HEIGHT)));
+
+        // Смена значения поля в constraintLayout
+        ConstraintLayout constraintLayout = findViewById(R.id.run_calculator);
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(constraintLayout);
+        constraintSet.constrainMaxHeight(R.id._input_history, newMaxHeight_dp);
+        constraintSet.constrainMaxHeight(R.id._input_history_night, newMaxHeight_dp);
+        constraintSet.applyTo(constraintLayout);
+    }
+
+    // Конвертирование px в dp
+    private float convertPixelsToDp(Context context, float pixels) {
+        return pixels / context.getResources().getDisplayMetrics().density;
     }
 
     // Установка темы калькулятора

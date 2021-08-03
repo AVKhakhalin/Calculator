@@ -245,10 +245,10 @@ public class CalculatorKeyboardActivity extends Activity implements View.OnClick
     private void buttonZapitayChange() {
         Button changeZapitay;
         changeZapitay = ((Button) findViewById(R.id._zapitay));
-        if (calcLogic.getPressedZapitay() == false) {
-            changeZapitay.setBackgroundResource(R.drawable.buttons_with_actions_mg);
-        } else {
+        if (calcLogic.getPressedZapitay()) {
             changeZapitay.setBackgroundResource(R.drawable.buttons_with_numbers_mg);
+        } else {
+            changeZapitay.setBackgroundResource(R.drawable.buttons_with_actions_mg);
         }
     }
 

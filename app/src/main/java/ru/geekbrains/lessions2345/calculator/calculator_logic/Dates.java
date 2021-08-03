@@ -19,6 +19,19 @@ public class Dates implements Serializable, Constants {
     private LinkedList<Integer> realPartValue;      // Список цифр вещественной части вводимого числа
     private boolean isValue;        // признак задания числа; по-умолчанию, все числа задаются 0d; если хотя бы одну цифру в число внесли, то isValue = true; по-умолчанию isValue = false
     private ACTIONS action;        // производимые действия над числом (по-умолчанию стоит сумма ACT_PLUS):
+
+    /*Список цифр целой части вводимого числа*/
+    private LinkedList<Integer> integerPartValue;
+    /* Список цифр вещественной части вводимого числа */
+    private LinkedList<Integer> realPartValue;
+
+    /**  признак задания числа; по-умолчанию,
+    все числа задаются 0d; если хотя бы
+    одну цифру в число внесли,
+    то isValue = true;
+    по-умолчанию isValue = false**/
+    private boolean isValue;        // признак задания числа; по-умолчанию, все числа задаются 0d; если хотя бы одну цифру в число внесли, то isValue = true; по-умолчанию isValue = false
+    private ACTIONS action;        // производимые действия над числом (по-умолчанию стоит сумма ACT_PLUS):
     // ACT_STEP         - возведение в степень (ACT_STEP);
     // ACT_PERS_MULTY   - вычисление произведения на процент от числа (ACT_PERS_MULTY);
     // ACT_PERS_DIV     - вычисление деления на процент от числа (ACT_PERS_DIV);

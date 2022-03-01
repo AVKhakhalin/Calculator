@@ -1,7 +1,9 @@
-package ru.geekbrains.lessions2345.calculator.calculator_logic;
+package ru.geekbrains.lessions2345.calculator.model;
 
 import java.util.LinkedList;
 import java.util.ListIterator;
+
+import ru.geekbrains.lessions2345.calculator.core.Constants;
 
 // Класс для хранения единичных данных, используется в списке
 public class Dates implements Constants {
@@ -35,7 +37,7 @@ public class Dates implements Constants {
     // если один раз нажать на запятую, то turnOffZapitay = false и начнут вводиться цифры после запятой;
     // если ещё раз нажать на запятую, то turnOffZapitay = false опять начнут вводиться цифры только в целую часть числа и т.д.
 
-    Dates(boolean _isBracket, boolean _isClose, FUNCTIONS _typeFuncInBracket, int _bracketLevel, int _sign, double _value, boolean _isValue, ACTIONS _action, boolean _isPercent) {
+    public Dates(boolean _isBracket, boolean _isClose, FUNCTIONS _typeFuncInBracket, int _bracketLevel, int _sign, double _value, boolean _isValue, ACTIONS _action, boolean _isPercent) {
         isBracket = _isBracket;
         isClose = _isClose;
         typeFuncInBracket = _typeFuncInBracket;
@@ -51,7 +53,7 @@ public class Dates implements Constants {
         turnOffZapitay = true;
     }
 
-    Dates(boolean _isBracket, boolean _isClose, FUNCTIONS _typeFuncInBracket, int _bracketLevel, int _sign, double _value, boolean _isValue, ACTIONS _action, boolean _isPercent, int _numberZapitay, boolean _turnOffZapitay) {
+    public Dates(boolean _isBracket, boolean _isClose, FUNCTIONS _typeFuncInBracket, int _bracketLevel, int _sign, double _value, boolean _isValue, ACTIONS _action, boolean _isPercent, int _numberZapitay, boolean _turnOffZapitay) {
         isBracket = _isBracket;
         isClose = _isClose;
         typeFuncInBracket = _typeFuncInBracket;

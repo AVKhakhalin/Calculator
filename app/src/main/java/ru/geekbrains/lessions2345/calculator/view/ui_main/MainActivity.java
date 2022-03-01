@@ -1,4 +1,4 @@
-package ru.geekbrains.lessions2345.calculator.ui;
+package ru.geekbrains.lessions2345.calculator.view.ui_main;
 
 import android.app.Activity;
 import android.content.Context;
@@ -18,13 +18,16 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import java.util.Locale;
 
 import ru.geekbrains.lessions2345.calculator.R;
-import ru.geekbrains.lessions2345.calculator.calculator_logic.CalcLogic;
-import ru.geekbrains.lessions2345.calculator.calculator_logic.Constants;
+import ru.geekbrains.lessions2345.calculator.core.CalcLogic;
+import ru.geekbrains.lessions2345.calculator.core.Constants;
+import ru.geekbrains.lessions2345.calculator.presenter.main.MainPresenter;
+import ru.geekbrains.lessions2345.calculator.view.ViewContract;
+import ru.geekbrains.lessions2345.calculator.view.ui_menu.MenuActivity;
 
-public class CalculatorKeyboardActivity extends Activity implements View.OnClickListener, Constants {
+public class MainActivity extends Activity implements View.OnClickListener,
+        Constants, ViewMainContract {
     private TextView outputResultText;
     private TextView inputedHistoryText;
-    private CalcLogic calcLogic;
     private Button button_0;
     private Button button_1;
     private Button button_2;
@@ -52,14 +55,10 @@ public class CalculatorKeyboardActivity extends Activity implements View.OnClick
     private Button button_stepen;
     private Button button_change_theme;
 
-    static final int DEFAULT_BUTTON_RADIUS = 177;
-    final float KOEFF_RESIZE_HEIGHT = 2.2f;
-    static final String KEY_SETTINGS = "Settings";
-    static final String KEY_CURRENT_THEME = "CurrentTheme";
-    static final String KEY_CURRENT_RADIUS = "Radius";
-    static final String KEY_DOCHANGE_RADIUS = "DoRedraw";
     private THEMES currentTheme;
 
+    private CalcLogic calcLogic;
+    private MainPresenter mainPresenter = new MainPresenter(this);
     private int koeff_DP;
     private int curRadiusButtons;
     private boolean doChangeRadius = false;
@@ -76,7 +75,11 @@ public class CalculatorKeyboardActivity extends Activity implements View.OnClick
         // Восстановление класса сalcLogic после поворота экрана
         if (calcLogic == null) {
             calcLogic = new CalcLogic();
-            calcLogic.setMaxNumberSymbolsInOutputTextField(getResources().getInteger(R.integer.number_output_symbols_forEMS) * 2); // Умножаем на 2, потому что ширина чисел вдвое меньше величины EMS
+            // Умножаем на 2, потому что ширина чисел вдвое меньше величины EMS
+            calcLogic.setMaxNumberSymbolsInOutputTextField(
+                    getResources().getInteger(R.integer.number_output_symbols_forEMS) * 2);
+            mainPresenter.setMaxNumberSymbolsInOutputTextField(
+                    getResources().getInteger(R.integer.number_output_symbols_forEMS) * 2);
         }
         if ((CalcLogic) getLastNonConfigurationInstance() != null) {
             calcLogic = (CalcLogic) getLastNonConfigurationInstance();
@@ -88,20 +91,23 @@ public class CalculatorKeyboardActivity extends Activity implements View.OnClick
         initButtons();
         // Проверка режима ввода вещественных чисел
         buttonZapitayChange();
-        // Установка обновлённого максимального значения высоты текстового поля с историей ввода (_input_history и _input_history_night)
+        // Установка обновлённого максимального значения высоты текстового поля с историей ввода
+        // (_input_history и _input_history_night)
         setNewMaxHeightForInputHistory();
         // Установка обновлённого значения радиуса окружности кнопок
         setNewRadiusButtons(curRadiusButtons * koeff_DP);
     }
 
-    // Установка новых значений высоты для полей _input_history и _input_history_night (важно при повороте экрана)
+    // Установка новых значений высоты для полей _input_history и _input_history_night
+    // (важно при повороте экрана)
     private void setNewMaxHeightForInputHistory()
     {
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
         int height = size.y;
-        int newMaxHeight_dp = Math.round(convertPixelsToDp(getApplicationContext(), Math.round(height / KOEFF_RESIZE_HEIGHT)));
+        int newMaxHeight_dp = Math.round(convertPixelsToDp(getApplicationContext(),
+                Math.round(height / KOEFF_RESIZE_HEIGHT)));
 
         // Смена значения поля в constraintLayout
         ConstraintLayout constraintLayout = findViewById(R.id.run_calculator);
@@ -132,7 +138,7 @@ public class CalculatorKeyboardActivity extends Activity implements View.OnClick
 
         // Установка темы
         THEMES savedTheme = getSettings();
-        if ((currentTheme != savedTheme) || (doChangeRadius == true)) {
+        if ((currentTheme != savedTheme) || (doChangeRadius)) {
             currentTheme = savedTheme;
             doChangeRadius = false;
             saveSettings(currentTheme);
@@ -156,48 +162,62 @@ public class CalculatorKeyboardActivity extends Activity implements View.OnClick
     public void onClick(View v) {
         if (v.getId() == button_0.getId()) {
             calcLogic.addNumeral(0);
-            inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
+            inputedHistoryText.setText(String.format(Locale.getDefault(),
+                    "%s", calcLogic.createOutput()));
         } else if (v.getId() == button_1.getId()) {
             calcLogic.addNumeral(1);
-            inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
+            inputedHistoryText.setText(String.format(Locale.getDefault(),
+                    "%s", calcLogic.createOutput()));
         } else if (v.getId() == button_2.getId()) {
             calcLogic.addNumeral(2);
-            inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
+            inputedHistoryText.setText(String.format(Locale.getDefault(),
+                    "%s", calcLogic.createOutput()));
         } else if (v.getId() == button_3.getId()) {
             calcLogic.addNumeral(3);
-            inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
+            inputedHistoryText.setText(String.format(Locale.getDefault(),
+                    "%s", calcLogic.createOutput()));
         } else if (v.getId() == button_4.getId()) {
             calcLogic.addNumeral(4);
-            inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
+            inputedHistoryText.setText(String.format(Locale.getDefault(),
+                    "%s", calcLogic.createOutput()));
         } else if (v.getId() == button_5.getId()) {
             calcLogic.addNumeral(5);
-            inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
+            inputedHistoryText.setText(String.format(Locale.getDefault(),
+                    "%s", calcLogic.createOutput()));
         } else if (v.getId() == button_6.getId()) {
             calcLogic.addNumeral(6);
-            inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
+            inputedHistoryText.setText(String.format(Locale.getDefault(),
+                    "%s", calcLogic.createOutput()));
         } else if (v.getId() == button_7.getId()) {
             calcLogic.addNumeral(7);
-            inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
+            inputedHistoryText.setText(String.format(Locale.getDefault(),
+                    "%s", calcLogic.createOutput()));
         } else if (v.getId() == button_8.getId()) {
             calcLogic.addNumeral(8);
-            inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
+            inputedHistoryText.setText(String.format(Locale.getDefault(),
+                    "%s", calcLogic.createOutput()));
         } else if (v.getId() == button_9.getId()) {
             calcLogic.addNumeral(9);
-            inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
+            inputedHistoryText.setText(String.format(Locale.getDefault(),
+                    "%s", calcLogic.createOutput()));
         } else if (v.getId() == button_equal.getId()) {
             calcLogic.calculate();
             errorInfo();
             outputResultText.setText(calcLogic.getFinalResult(getApplicationContext()));
         } else if (v.getId() == button_zapitay.getId()) {
             calcLogic.setCurZapitay();
-            inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
+            inputedHistoryText.setText(String.format(Locale.getDefault(),
+                    "%s", calcLogic.createOutput()));
         } else if (v.getId() == button_bracket_open.getId()) {
-            inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.setNewFunction(FUNCTIONS.FUNC_NO)));
+            inputedHistoryText.setText(String.format(Locale.getDefault(),
+                    "%s", calcLogic.setNewFunction(FUNCTIONS.FUNC_NO)));
         } else if (v.getId() == button_bracket_close.getId()) {
-            inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.closeBracket()));
+            inputedHistoryText.setText(String.format(Locale.getDefault(),
+                    "%s", calcLogic.closeBracket()));
         } else if (v.getId() == button_backspace.getId()) {
             calcLogic.clearAll();
-            inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
+            inputedHistoryText.setText(String.format(Locale.getDefault(),
+                    "%s", calcLogic.createOutput()));
             calcLogic.calculate();
             errorInfo();
             outputResultText.setText(calcLogic.getFinalResult(getApplicationContext()));
@@ -207,40 +227,52 @@ public class CalculatorKeyboardActivity extends Activity implements View.OnClick
                 errorInfo();
                 outputResultText.setText(calcLogic.getFinalResult(getApplicationContext()));
             }
-            inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
+            inputedHistoryText.setText(String.format(Locale.getDefault(),
+                    "%s", calcLogic.createOutput()));
         } else if (v.getId() == button_backspace_two.getId()) {
             if (calcLogic.clearTwo() == false) {
                 calcLogic.calculate();
                 errorInfo();
                 outputResultText.setText(calcLogic.getFinalResult(getApplicationContext()));
             }
-            inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
+            inputedHistoryText.setText(String.format(Locale.getDefault(),
+                    "%s", calcLogic.createOutput()));
         } else if (v.getId() == button_divide.getId()) {
             calcLogic.setNewAction(ACTIONS.ACT_DIV);
-            inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
+            inputedHistoryText.setText(String.format(Locale.getDefault(),
+                    "%s", calcLogic.createOutput()));
         } else if (v.getId() == button_minus.getId()) {
             calcLogic.setNewAction(ACTIONS.ACT_MINUS);
-            inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
+            inputedHistoryText.setText(String.format(Locale.getDefault(),
+                    "%s", calcLogic.createOutput()));
         } else if (v.getId() == button_multiply.getId()) {
             calcLogic.setNewAction(ACTIONS.ACT_MULTY);
-            inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
+            inputedHistoryText.setText(String.format(Locale.getDefault(),
+                    "%s", calcLogic.createOutput()));
         } else if (v.getId() == button_plus.getId()) {
             calcLogic.setNewAction(ACTIONS.ACT_PLUS);
-            inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
+            inputedHistoryText.setText(String.format(Locale.getDefault(),
+                    "%s", calcLogic.createOutput()));
         } else if (v.getId() == button_percent.getId()) {
-            calcLogic.setNewAction(ACTIONS.ACT_PERS_MULTY); // Задаётся универсальное значение ACT_PERS_MULTY и оно уточняется в методе setNewAction
-            inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
+            // Задаётся универсальное значение ACT_PERS_MULTY и оно уточняется в методе setNewAction
+            calcLogic.setNewAction(ACTIONS.ACT_PERS_MULTY);
+            inputedHistoryText.setText(String.format(Locale.getDefault(),
+                    "%s", calcLogic.createOutput()));
         } else if (v.getId() == button_plus_minus.getId()) {
             calcLogic.changeSign();
-            inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
+            inputedHistoryText.setText(String.format(Locale.getDefault(),
+                    "%s", calcLogic.createOutput()));
         } else if (v.getId() == button_stepen.getId()) {
             calcLogic.setNewAction(ACTIONS.ACT_STEP);
-            inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
+            inputedHistoryText.setText(String.format(Locale.getDefault(),
+                    "%s", calcLogic.createOutput()));
         } else if (v.getId() == button_sqrt.getId()) {
             calcLogic.setNewFunction(FUNCTIONS.FUNC_SQRT);
-            inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
+            inputedHistoryText.setText(String.format(Locale.getDefault(),
+                    "%s", calcLogic.createOutput()));
         } else if (v.getId() == button_change_theme.getId()) {
-            Intent intent = new Intent(CalculatorKeyboardActivity.this, MenuActivity.class);
+            Intent intent = new Intent(
+                    MainActivity.this, MenuActivity.class);
             startActivity(intent);
         }
         buttonZapitayChange();
@@ -254,7 +286,8 @@ public class CalculatorKeyboardActivity extends Activity implements View.OnClick
             errorInfo();
             outputResultText.setText(calcLogic.getFinalResult(getApplicationContext()));
             inputedHistoryText = findViewById(R.id._inputed_history_text_night);
-            inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
+            inputedHistoryText.setText(String.format(Locale.getDefault(),
+                    "%s", calcLogic.createOutput()));
 
             // Показать текстовые поля с ночной темой
             outputResultText.setVisibility(View.VISIBLE);
@@ -271,7 +304,8 @@ public class CalculatorKeyboardActivity extends Activity implements View.OnClick
             errorInfo();
             outputResultText.setText(calcLogic.getFinalResult(getApplicationContext()));
             inputedHistoryText = findViewById(R.id._inputed_history_text);
-            inputedHistoryText.setText(String.format(Locale.getDefault(), "%s", calcLogic.createOutput()));
+            inputedHistoryText.setText(String.format(Locale.getDefault(),
+                    "%s", calcLogic.createOutput()));
 
             // Показать текстовые поля с дневной темой
             outputResultText.setVisibility(View.VISIBLE);
@@ -517,7 +551,7 @@ public class CalculatorKeyboardActivity extends Activity implements View.OnClick
 
     // Отобразить индикатор ввода вещественного числа
     private void buttonZapitayChange() {
-        if (calcLogic.getPressedZapitay() == false) {
+        if (!calcLogic.getPressedZapitay()) {
             if (currentTheme == THEMES.NIGHT_THEME) {
                 button_zapitay.setBackgroundResource(R.drawable.buttons_with_actions_mg_night);
             } else {
@@ -536,19 +570,23 @@ public class CalculatorKeyboardActivity extends Activity implements View.OnClick
     private void errorInfo() {
         switch (calcLogic.getErrorCode()) {
             case BRACKET_DISBALANCE:
-                Toast.makeText(this, "Ошибка: различное количество открытых и закрытых скобок.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getResources().getString(
+                        R.string.error_different_number_brackets), Toast.LENGTH_SHORT).show();
                 calcLogic.clearErrorCode();
                 break;
             case SQRT_MINUS:
-                Toast.makeText(this, "Ошибка: подкоренное выражение меньше нуля.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getResources().getString(
+                        R.string.error_undersquare_low_zero), Toast.LENGTH_SHORT).show();
                 calcLogic.clearErrorCode();
                 break;
             case ZERO_DIVIDE:
-                Toast.makeText(this, "Ошибка: деление на ноль.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getResources().getString(R.string.error_divide_on_zero),
+                        Toast.LENGTH_SHORT).show();
                 calcLogic.clearErrorCode();
                 break;
             case BRACKETS_EMPTY:
-                Toast.makeText(this, "Ошибка: внутри скобок ничего нет.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getResources().getString(
+                        R.string.error_inside_brackets_empty), Toast.LENGTH_SHORT).show();
                 calcLogic.clearErrorCode();
                 break;
             default:
@@ -565,7 +603,9 @@ public class CalculatorKeyboardActivity extends Activity implements View.OnClick
         if (currentTheme == 0) {
             return THEMES.NIGHT_THEME;
         } else {
-            return THEMES.DAY_THEME; // Установка по умолчанию - дневная тема, если в настройках стоит 1 или ничего не будет стоять
+            // Установка по умолчанию - дневная тема,
+            // если в настройках стоит 1 или ничего не будет стоять
+            return THEMES.DAY_THEME;
         }
     }
 
@@ -581,7 +621,8 @@ public class CalculatorKeyboardActivity extends Activity implements View.OnClick
         // Сохранение радиуса кнопок
         int newRadius = curRadiusButtons;
         editor.putInt(KEY_CURRENT_RADIUS, newRadius);
-        editor.putBoolean(KEY_DOCHANGE_RADIUS, false); // Ставим false, что говорит о том, что изменения радиуса отработали
+        // Ставим false, что говорит о том, что изменения радиуса отработали
+        editor.putBoolean(KEY_DOCHANGE_RADIUS, false);
         editor.apply();
     }
 

@@ -1,29 +1,26 @@
-package ru.geekbrains.lessions2345.calculator.ui;
+package ru.geekbrains.lessions2345.calculator.view.ui_menu;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import ru.geekbrains.lessions2345.calculator.R;
-import ru.geekbrains.lessions2345.calculator.calculator_logic.CalcLogic;
-import ru.geekbrains.lessions2345.calculator.calculator_logic.Constants;
+import ru.geekbrains.lessions2345.calculator.core.Constants;
+import ru.geekbrains.lessions2345.calculator.view.ViewContract;
+import ru.geekbrains.lessions2345.calculator.view.ui_main.MainActivity;
 
-public class MenuActivity extends AppCompatActivity implements Constants, View.OnClickListener {
+public class MenuActivity extends AppCompatActivity implements Constants, View.OnClickListener,
+        ViewMenuContract {
 
     Button button_setDayTheme;
     Button button_setNightTheme;
     Button button_returnToCalculator;
     EditText editTextWithNewRadius;
 
-    static final String KEY_SETTINGS = "Settings";
-    static final String KEY_CURRENT_THEME = "CurrentTheme";
-    static final String KEY_CURRENT_RADIUS = "Radius";
-    static final String KEY_DOCHANGE_RADIUS = "DoRedraw";
     private THEMES currentTheme;
 
     private int curRadiusButtons = 177;
@@ -101,7 +98,7 @@ public class MenuActivity extends AppCompatActivity implements Constants, View.O
     private THEMES getSettings() {
         SharedPreferences sharedPreferences = getSharedPreferences(KEY_SETTINGS, MODE_PRIVATE);
         int currentTheme = sharedPreferences.getInt(KEY_CURRENT_THEME, 1);
-        curRadiusButtons = sharedPreferences.getInt(KEY_CURRENT_RADIUS, CalculatorKeyboardActivity.DEFAULT_BUTTON_RADIUS);
+        curRadiusButtons = sharedPreferences.getInt(KEY_CURRENT_RADIUS, MainActivity.DEFAULT_BUTTON_RADIUS);
         if (currentTheme == 0) {
             return THEMES.NIGHT_THEME;
         } else {

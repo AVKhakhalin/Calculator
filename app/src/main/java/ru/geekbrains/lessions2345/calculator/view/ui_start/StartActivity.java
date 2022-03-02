@@ -1,11 +1,10 @@
 package ru.geekbrains.lessions2345.calculator.view.ui_start;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 
-import ru.geekbrains.lessions2345.calculator.view.ViewContract;
+import androidx.appcompat.app.AppCompatActivity;
+
 import ru.geekbrains.lessions2345.calculator.view.ui_main.MainActivity;
 
 public class StartActivity extends AppCompatActivity implements ViewStartContract {

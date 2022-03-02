@@ -15,13 +15,9 @@ import android.widget.Toast;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
-import java.util.Locale;
-
 import ru.geekbrains.lessions2345.calculator.R;
-import ru.geekbrains.lessions2345.calculator.core.CalcLogic;
 import ru.geekbrains.lessions2345.calculator.core.Constants;
 import ru.geekbrains.lessions2345.calculator.presenter.main.MainPresenter;
-import ru.geekbrains.lessions2345.calculator.view.ViewContract;
 import ru.geekbrains.lessions2345.calculator.view.ui_menu.MenuActivity;
 
 public class MainActivity extends Activity implements View.OnClickListener,
@@ -57,8 +53,7 @@ public class MainActivity extends Activity implements View.OnClickListener,
 
     private THEMES currentTheme;
 
-    private CalcLogic calcLogic;
-    private MainPresenter mainPresenter = new MainPresenter(this);
+    private MainPresenter mainPresenter;
     private int koeff_DP;
     private int curRadiusButtons;
     private boolean doChangeRadius = false;
@@ -72,17 +67,16 @@ public class MainActivity extends Activity implements View.OnClickListener,
         setCalculatorTheme(currentTheme);
         setContentView(R.layout.calc_keyboard_layout);
 
-        // Восстановление класса сalcLogic после поворота экрана
-        if (calcLogic == null) {
-            calcLogic = new CalcLogic();
+        if (savedInstanceState == null) {
+             mainPresenter = new MainPresenter(this);
             // Умножаем на 2, потому что ширина чисел вдвое меньше величины EMS
-            calcLogic.setMaxNumberSymbolsInOutputTextField(
-                    getResources().getInteger(R.integer.number_output_symbols_forEMS) * 2);
             mainPresenter.setMaxNumberSymbolsInOutputTextField(
                     getResources().getInteger(R.integer.number_output_symbols_forEMS) * 2);
-        }
-        if ((CalcLogic) getLastNonConfigurationInstance() != null) {
-            calcLogic = (CalcLogic) getLastNonConfigurationInstance();
+        } else {
+            // Восстановление класса mainPresenter после поворота экрана
+            if ((MainPresenter) getLastNonConfigurationInstance() != null) {
+                mainPresenter = (MainPresenter) getLastNonConfigurationInstance();
+            }
         }
 
         // Инициализация текстовых полей
@@ -107,7 +101,7 @@ public class MainActivity extends Activity implements View.OnClickListener,
         display.getSize(size);
         int height = size.y;
         int newMaxHeight_dp = Math.round(convertPixelsToDp(getApplicationContext(),
-                Math.round(height / KOEFF_RESIZE_HEIGHT)));
+            Math.round(height / KOEFF_RESIZE_HEIGHT)));
 
         // Смена значения поля в constraintLayout
         ConstraintLayout constraintLayout = findViewById(R.id.run_calculator);
@@ -155,124 +149,99 @@ public class MainActivity extends Activity implements View.OnClickListener,
 
     // Метод для сохранения ссылки на класс calcLogic при повороте экрана
     public Object onRetainNonConfigurationInstance() {
-        return calcLogic;
+        return mainPresenter;
+    }
+
+    @Override
+    public void setInputedHistoryText(String newText) {
+        inputedHistoryText.setText(newText);
+    }
+
+    @Override
+    public void setOutputResultText(String newText) {
+        outputResultText.setText(newText);
+    }
+
+    @Override
+    public void setErrorText(ERRORS error) {
+        // Отобразить информацию о текущих ошибках
+        switch (error) {
+            case BRACKET_DISBALANCE:
+                Toast.makeText(this, getResources().getString(
+                        R.string.error_different_number_brackets), Toast.LENGTH_SHORT).show();
+                break;
+            case SQRT_MINUS:
+                Toast.makeText(this, getResources().getString(
+                        R.string.error_undersquare_low_zero), Toast.LENGTH_SHORT).show();
+                break;
+            case ZERO_DIVIDE:
+                Toast.makeText(this, getResources().getString(
+                        R.string.error_divide_on_zero), Toast.LENGTH_SHORT).show();
+                break;
+            case BRACKETS_EMPTY:
+                Toast.makeText(this, getResources().getString(
+                        R.string.error_inside_brackets_empty), Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == button_0.getId()) {
-            calcLogic.addNumeral(0);
-            inputedHistoryText.setText(String.format(Locale.getDefault(),
-                    "%s", calcLogic.createOutput()));
+            mainPresenter.addNumeral(0);
         } else if (v.getId() == button_1.getId()) {
-            calcLogic.addNumeral(1);
-            inputedHistoryText.setText(String.format(Locale.getDefault(),
-                    "%s", calcLogic.createOutput()));
+            mainPresenter.addNumeral(1);
         } else if (v.getId() == button_2.getId()) {
-            calcLogic.addNumeral(2);
-            inputedHistoryText.setText(String.format(Locale.getDefault(),
-                    "%s", calcLogic.createOutput()));
+            mainPresenter.addNumeral(2);
         } else if (v.getId() == button_3.getId()) {
-            calcLogic.addNumeral(3);
-            inputedHistoryText.setText(String.format(Locale.getDefault(),
-                    "%s", calcLogic.createOutput()));
+            mainPresenter.addNumeral(3);
         } else if (v.getId() == button_4.getId()) {
-            calcLogic.addNumeral(4);
-            inputedHistoryText.setText(String.format(Locale.getDefault(),
-                    "%s", calcLogic.createOutput()));
+            mainPresenter.addNumeral(4);
         } else if (v.getId() == button_5.getId()) {
-            calcLogic.addNumeral(5);
-            inputedHistoryText.setText(String.format(Locale.getDefault(),
-                    "%s", calcLogic.createOutput()));
+            mainPresenter.addNumeral(5);
         } else if (v.getId() == button_6.getId()) {
-            calcLogic.addNumeral(6);
-            inputedHistoryText.setText(String.format(Locale.getDefault(),
-                    "%s", calcLogic.createOutput()));
+            mainPresenter.addNumeral(6);
         } else if (v.getId() == button_7.getId()) {
-            calcLogic.addNumeral(7);
-            inputedHistoryText.setText(String.format(Locale.getDefault(),
-                    "%s", calcLogic.createOutput()));
+            mainPresenter.addNumeral(7);
         } else if (v.getId() == button_8.getId()) {
-            calcLogic.addNumeral(8);
-            inputedHistoryText.setText(String.format(Locale.getDefault(),
-                    "%s", calcLogic.createOutput()));
+            mainPresenter.addNumeral(8);
         } else if (v.getId() == button_9.getId()) {
-            calcLogic.addNumeral(9);
-            inputedHistoryText.setText(String.format(Locale.getDefault(),
-                    "%s", calcLogic.createOutput()));
+            mainPresenter.addNumeral(9);
         } else if (v.getId() == button_equal.getId()) {
-            calcLogic.calculate();
-            errorInfo();
-            outputResultText.setText(calcLogic.getFinalResult(getApplicationContext()));
+            mainPresenter.setEqual();
         } else if (v.getId() == button_zapitay.getId()) {
-            calcLogic.setCurZapitay();
-            inputedHistoryText.setText(String.format(Locale.getDefault(),
-                    "%s", calcLogic.createOutput()));
+            mainPresenter.setCurZapitay();
         } else if (v.getId() == button_bracket_open.getId()) {
-            inputedHistoryText.setText(String.format(Locale.getDefault(),
-                    "%s", calcLogic.setNewFunction(FUNCTIONS.FUNC_NO)));
+            mainPresenter.setBracketOpen();
         } else if (v.getId() == button_bracket_close.getId()) {
-            inputedHistoryText.setText(String.format(Locale.getDefault(),
-                    "%s", calcLogic.closeBracket()));
+            mainPresenter.setBracketClose();
         } else if (v.getId() == button_backspace.getId()) {
-            calcLogic.clearAll();
-            inputedHistoryText.setText(String.format(Locale.getDefault(),
-                    "%s", calcLogic.createOutput()));
-            calcLogic.calculate();
-            errorInfo();
-            outputResultText.setText(calcLogic.getFinalResult(getApplicationContext()));
+            mainPresenter.clearAll();
         } else if (v.getId() == button_backspace_one.getId()) {
-            if (calcLogic.clearOne() == false) {
-                calcLogic.calculate();
-                errorInfo();
-                outputResultText.setText(calcLogic.getFinalResult(getApplicationContext()));
-            }
-            inputedHistoryText.setText(String.format(Locale.getDefault(),
-                    "%s", calcLogic.createOutput()));
+            mainPresenter.clearOne();
         } else if (v.getId() == button_backspace_two.getId()) {
-            if (calcLogic.clearTwo() == false) {
-                calcLogic.calculate();
-                errorInfo();
-                outputResultText.setText(calcLogic.getFinalResult(getApplicationContext()));
-            }
-            inputedHistoryText.setText(String.format(Locale.getDefault(),
-                    "%s", calcLogic.createOutput()));
+            mainPresenter.clearTwo();
         } else if (v.getId() == button_divide.getId()) {
-            calcLogic.setNewAction(ACTIONS.ACT_DIV);
-            inputedHistoryText.setText(String.format(Locale.getDefault(),
-                    "%s", calcLogic.createOutput()));
+            mainPresenter.setNewAction(ACTIONS.ACT_DIV);
         } else if (v.getId() == button_minus.getId()) {
-            calcLogic.setNewAction(ACTIONS.ACT_MINUS);
-            inputedHistoryText.setText(String.format(Locale.getDefault(),
-                    "%s", calcLogic.createOutput()));
+            mainPresenter.setNewAction(ACTIONS.ACT_MINUS);
         } else if (v.getId() == button_multiply.getId()) {
-            calcLogic.setNewAction(ACTIONS.ACT_MULTY);
-            inputedHistoryText.setText(String.format(Locale.getDefault(),
-                    "%s", calcLogic.createOutput()));
+            mainPresenter.setNewAction(ACTIONS.ACT_MULTY);
         } else if (v.getId() == button_plus.getId()) {
-            calcLogic.setNewAction(ACTIONS.ACT_PLUS);
-            inputedHistoryText.setText(String.format(Locale.getDefault(),
-                    "%s", calcLogic.createOutput()));
+            mainPresenter.setNewAction(ACTIONS.ACT_PLUS);
         } else if (v.getId() == button_percent.getId()) {
             // Задаётся универсальное значение ACT_PERS_MULTY и оно уточняется в методе setNewAction
-            calcLogic.setNewAction(ACTIONS.ACT_PERS_MULTY);
-            inputedHistoryText.setText(String.format(Locale.getDefault(),
-                    "%s", calcLogic.createOutput()));
+            mainPresenter.setNewAction(ACTIONS.ACT_PERS_MULTY);
         } else if (v.getId() == button_plus_minus.getId()) {
-            calcLogic.changeSign();
-            inputedHistoryText.setText(String.format(Locale.getDefault(),
-                    "%s", calcLogic.createOutput()));
+            mainPresenter.changeSign();
         } else if (v.getId() == button_stepen.getId()) {
-            calcLogic.setNewAction(ACTIONS.ACT_STEP);
-            inputedHistoryText.setText(String.format(Locale.getDefault(),
-                    "%s", calcLogic.createOutput()));
+            mainPresenter.setNewAction(ACTIONS.ACT_STEP);
         } else if (v.getId() == button_sqrt.getId()) {
-            calcLogic.setNewFunction(FUNCTIONS.FUNC_SQRT);
-            inputedHistoryText.setText(String.format(Locale.getDefault(),
-                    "%s", calcLogic.createOutput()));
+            mainPresenter.setNewFunction(FUNCTIONS.FUNC_SQRT);
         } else if (v.getId() == button_change_theme.getId()) {
-            Intent intent = new Intent(
-                    MainActivity.this, MenuActivity.class);
+            Intent intent = new Intent(MainActivity.this, MenuActivity.class);
             startActivity(intent);
         }
         buttonZapitayChange();
@@ -281,42 +250,33 @@ public class MainActivity extends Activity implements View.OnClickListener,
     // Инициализаци текстовых полей
     private void initTextFields() {
         if (currentTheme == THEMES.NIGHT_THEME) {
+            // Инициализация текстовых полей
             outputResultText = findViewById(R.id._RESULT_night);
-            calcLogic.calculate();
-            errorInfo();
-            outputResultText.setText(calcLogic.getFinalResult(getApplicationContext()));
             inputedHistoryText = findViewById(R.id._inputed_history_text_night);
-            inputedHistoryText.setText(String.format(Locale.getDefault(),
-                    "%s", calcLogic.createOutput()));
-
             // Показать текстовые поля с ночной темой
             outputResultText.setVisibility(View.VISIBLE);
             inputedHistoryText.setVisibility(View.VISIBLE);
             findViewById(R.id._input_history_night).setVisibility(View.VISIBLE);
-
             // Спрятать (убрать с поля) текстовые поля с дневной темой
             findViewById(R.id._RESULT).setVisibility(View.GONE);
             findViewById(R.id._inputed_history_text).setVisibility(View.GONE);
             findViewById(R.id._input_history).setVisibility(View.GONE);
         } else {
+            // Инициализация текстовых полей
             outputResultText = findViewById(R.id._RESULT);
-            calcLogic.calculate();
-            errorInfo();
-            outputResultText.setText(calcLogic.getFinalResult(getApplicationContext()));
             inputedHistoryText = findViewById(R.id._inputed_history_text);
-            inputedHistoryText.setText(String.format(Locale.getDefault(),
-                    "%s", calcLogic.createOutput()));
-
             // Показать текстовые поля с дневной темой
             outputResultText.setVisibility(View.VISIBLE);
             inputedHistoryText.setVisibility(View.VISIBLE);
             findViewById(R.id._input_history).setVisibility(View.VISIBLE);
-
             // Спрятать (убрать с поля) текстовые поля с ночной темой
             findViewById(R.id._RESULT_night).setVisibility(View.GONE);
             findViewById(R.id._inputed_history_text_night).setVisibility(View.GONE);
             findViewById(R.id._input_history_night).setVisibility(View.GONE);
         }
+        mainPresenter.calculate();
+        mainPresenter.getError();
+        mainPresenter.getInit();
     }
 
     // Инициализация кнопок
@@ -551,7 +511,7 @@ public class MainActivity extends Activity implements View.OnClickListener,
 
     // Отобразить индикатор ввода вещественного числа
     private void buttonZapitayChange() {
-        if (!calcLogic.getPressedZapitay()) {
+        if (!mainPresenter.getPressedZapitay()) {
             if (currentTheme == THEMES.NIGHT_THEME) {
                 button_zapitay.setBackgroundResource(R.drawable.buttons_with_actions_mg_night);
             } else {
@@ -563,34 +523,6 @@ public class MainActivity extends Activity implements View.OnClickListener,
             } else {
                 button_zapitay.setBackgroundResource(R.drawable.buttons_with_numbers_mg_day);
             }
-        }
-    }
-
-    // Отобразить информацию о текущих ошибках
-    private void errorInfo() {
-        switch (calcLogic.getErrorCode()) {
-            case BRACKET_DISBALANCE:
-                Toast.makeText(this, getResources().getString(
-                        R.string.error_different_number_brackets), Toast.LENGTH_SHORT).show();
-                calcLogic.clearErrorCode();
-                break;
-            case SQRT_MINUS:
-                Toast.makeText(this, getResources().getString(
-                        R.string.error_undersquare_low_zero), Toast.LENGTH_SHORT).show();
-                calcLogic.clearErrorCode();
-                break;
-            case ZERO_DIVIDE:
-                Toast.makeText(this, getResources().getString(R.string.error_divide_on_zero),
-                        Toast.LENGTH_SHORT).show();
-                calcLogic.clearErrorCode();
-                break;
-            case BRACKETS_EMPTY:
-                Toast.makeText(this, getResources().getString(
-                        R.string.error_inside_brackets_empty), Toast.LENGTH_SHORT).show();
-                calcLogic.clearErrorCode();
-                break;
-            default:
-                break;
         }
     }
 
@@ -626,8 +558,7 @@ public class MainActivity extends Activity implements View.OnClickListener,
         editor.apply();
     }
 
-    private void setNewRadiusButtons(int newRadius)
-    {
+    private void setNewRadiusButtons(int newRadius) {
         // Смена значения поля в constraintLayout
         ConstraintLayout constraintLayout = findViewById(R.id.run_calculator);
         ConstraintSet constraintSet = new ConstraintSet();

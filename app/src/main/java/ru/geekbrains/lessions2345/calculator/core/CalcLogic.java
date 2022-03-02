@@ -1,7 +1,5 @@
 package ru.geekbrains.lessions2345.calculator.core;
 
-import android.content.Context;
-
 import java.text.DecimalFormat;
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -625,7 +623,8 @@ public class CalcLogic implements Constants {
             if (inputNumbers.size() > 1) {
                 if ((inputNumbers.get(curNumber).getIsBracket()) &&
                         (!inputNumbers.get(curNumber).getIsClose())) {
-                    // Вывести сообщение о том, что процент нельзя применять к открытой скобке, а нужно применять только к простым арифметическим операциям *, /, +, -
+                    // Вывести сообщение о том, что процент нельзя применять к открытой скобке,
+                    // а нужно применять только к простым арифметическим операциям *, /, +, -
                 } else {
                     inputNumbers.get(curNumber).setAction(action);
                 }
@@ -699,7 +698,6 @@ public class CalcLogic implements Constants {
 
     // Сменить знак в текущем элементе
     public void changeSign() {
-
         if ((inputNumbers.get(curNumber).getAction() == ACTIONS.ACT_PLUS) && (curNumber > 0) &&
                 (((inputNumbers.get(curNumber - 1).getIsBracket()) &&
                         (inputNumbers.get(curNumber - 1).getIsClose())) ||
@@ -912,7 +910,7 @@ public class CalcLogic implements Constants {
         return pressedZapitay;
     }
 
-    public String getFinalResult(Context context) {
+    public String getFinalResult() {
         String finalResult_String = "";
         if (errorCode == ERRORS.NO) {
             finalResult_String = numberFormatOutput(finalResult, maxNumberSymbolsInOutputTextField);

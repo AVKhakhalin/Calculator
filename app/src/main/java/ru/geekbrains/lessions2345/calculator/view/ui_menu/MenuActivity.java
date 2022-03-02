@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import ru.geekbrains.lessions2345.calculator.R;
 import ru.geekbrains.lessions2345.calculator.core.Constants;
-import ru.geekbrains.lessions2345.calculator.view.ViewContract;
 import ru.geekbrains.lessions2345.calculator.view.ui_main.MainActivity;
 
 public class MenuActivity extends AppCompatActivity implements Constants, View.OnClickListener,
@@ -23,7 +22,7 @@ public class MenuActivity extends AppCompatActivity implements Constants, View.O
 
     private THEMES currentTheme;
 
-    private int curRadiusButtons = 177;
+    private int curRadiusButtons = DEFAULT_BUTTON_RADIUS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,26 +82,30 @@ public class MenuActivity extends AppCompatActivity implements Constants, View.O
         }
         // Сохранение радиуса кнопок
         int newRadius = Integer.parseInt(editTextWithNewRadius.getText().toString());
-        if (newRadius < 70) // Поменять значение на константу
+        if (newRadius < MIN_RADIUS_BUTTONS)
         {
-            newRadius = 70;
-        } else if (newRadius > 300)
+            newRadius = MIN_RADIUS_BUTTONS;
+        } else if (newRadius > MAX_RADIUS_BUTTONS)
         {
-            newRadius = 300;
+            newRadius = MAX_RADIUS_BUTTONS;
         }
         editor.putInt(KEY_CURRENT_RADIUS, newRadius);
-        editor.putBoolean(KEY_DOCHANGE_RADIUS, true);  // Ставим true, что говорит о том, что изменения радиуса ещё не отработали
+        // Ставим true, что говорит о том, что изменения радиуса ещё не отработали
+        editor.putBoolean(KEY_DOCHANGE_RADIUS, true);
         editor.apply();
     }
 
     private THEMES getSettings() {
         SharedPreferences sharedPreferences = getSharedPreferences(KEY_SETTINGS, MODE_PRIVATE);
         int currentTheme = sharedPreferences.getInt(KEY_CURRENT_THEME, 1);
-        curRadiusButtons = sharedPreferences.getInt(KEY_CURRENT_RADIUS, MainActivity.DEFAULT_BUTTON_RADIUS);
+        curRadiusButtons = sharedPreferences.getInt(KEY_CURRENT_RADIUS,
+                MainActivity.DEFAULT_BUTTON_RADIUS);
         if (currentTheme == 0) {
             return THEMES.NIGHT_THEME;
         } else {
-            return THEMES.DAY_THEME; // Установка по умолчанию - дневная тема, если в настройках стоит 1 или ничего не будет стоять
+            // Установка по умолчанию - дневная тема,
+            // если в настройках стоит 1 или ничего не будет стоять
+            return THEMES.DAY_THEME;
         }
     }
 
@@ -113,14 +116,12 @@ public class MenuActivity extends AppCompatActivity implements Constants, View.O
             finish();
         } else if (v.getId() == button_setDayTheme.getId()) {
             currentTheme = THEMES.DAY_THEME;
-//            saveCurrentTheme(THEMES.DAY_THEME);
             button_returnToCalculator = findViewById(R.id._return_day);
             button_returnToCalculator.setOnClickListener(this);
             button_returnToCalculator.setVisibility(View.VISIBLE);
             findViewById(R.id._return_night).setVisibility(View.INVISIBLE);
         } else if (v.getId() == button_setNightTheme.getId()) {
             currentTheme = THEMES.NIGHT_THEME;
-//            saveCurrentTheme(THEMES.NIGHT_THEME);
             button_returnToCalculator = findViewById(R.id._return_night);
             button_returnToCalculator.setOnClickListener(this);
             button_returnToCalculator.setVisibility(View.VISIBLE);

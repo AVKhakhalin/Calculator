@@ -41,4 +41,6 @@ public interface Constants {
     String KEY_DOCHANGE_RADIUS = "DoRedraw";
     int DEFAULT_BUTTON_RADIUS = 177;
     float KOEFF_RESIZE_HEIGHT = 2.2f;
+    int MIN_RADIUS_BUTTONS = 70;
+    int MAX_RADIUS_BUTTONS = 300;
 }

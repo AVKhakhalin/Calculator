@@ -14,7 +14,6 @@ public interface PresenterMainContract extends PresenterContract {
     void setNewAction(Constants.ACTIONS action);
     void changeSign();
     String setNewFunction(Constants.FUNCTIONS typeFuncInBracket);
-    String closeBracket();
     boolean getPressedZapitay();
     String createOutput();
     String getFinalResult();

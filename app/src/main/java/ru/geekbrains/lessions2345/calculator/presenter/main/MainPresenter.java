@@ -51,10 +51,9 @@ public class MainPresenter implements PresenterMainContract {
 
     @Override
     public void clearOne() {
-        if (!calcLogic.clearOne()) {
-            calculate();
-            getError();
-            viewMainContract.setOutputResultText(getFinalResult());
+        if (calcLogic.clearOne()) {
+            // TODO: Обновление поля с результатом, доделать, если нужно
+//            setEqual();
         }
         viewMainContract.setInputedHistoryText(String.format(Locale.getDefault(),
                 "%s", createOutput()));
@@ -62,13 +61,12 @@ public class MainPresenter implements PresenterMainContract {
 
     @Override
     public void clearTwo() {
-        if (!calcLogic.clearTwo()) {
-            calculate();
-            getError();
-            viewMainContract.setOutputResultText(getFinalResult());
+        if (calcLogic.clearTwo()) {
+            // TODO: Обновление поля с результатом, доделать, если нужно
+//            setEqual();
         }
         viewMainContract.setInputedHistoryText(String.format(Locale.getDefault(),
-                "%s", createOutput()));
+            "%s", createOutput()));
     }
 
     @Override
@@ -88,11 +86,6 @@ public class MainPresenter implements PresenterMainContract {
     @Override
     public String setNewFunction(Constants.FUNCTIONS typeFuncInBracket) {
         return calcLogic.setNewFunction(typeFuncInBracket);
-    }
-
-    @Override
-    public String closeBracket() {
-        return calcLogic.closeBracket();
     }
 
     @Override
@@ -132,7 +125,7 @@ public class MainPresenter implements PresenterMainContract {
     @Override
     public void setBracketClose() {
         viewMainContract.setInputedHistoryText(String.format(Locale.getDefault(),
-                "%s", closeBracket()));
+                "%s", calcLogic.closeBracket()));
     }
 
     @Override

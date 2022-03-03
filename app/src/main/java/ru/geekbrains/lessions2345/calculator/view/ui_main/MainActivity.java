@@ -168,19 +168,23 @@ public class MainActivity extends Activity implements View.OnClickListener,
         switch (error) {
             case BRACKET_DISBALANCE:
                 Toast.makeText(this, getResources().getString(
-                        R.string.error_different_number_brackets), Toast.LENGTH_SHORT).show();
+                        R.string.error_different_number_brackets),
+                        Toast.LENGTH_SHORT).show();
                 break;
             case SQRT_MINUS:
                 Toast.makeText(this, getResources().getString(
-                        R.string.error_undersquare_low_zero), Toast.LENGTH_SHORT).show();
+                        R.string.error_undersquare_low_zero),
+                        Toast.LENGTH_SHORT).show();
                 break;
             case ZERO_DIVIDE:
                 Toast.makeText(this, getResources().getString(
-                        R.string.error_divide_on_zero), Toast.LENGTH_SHORT).show();
+                        R.string.error_divide_on_zero),
+                        Toast.LENGTH_SHORT).show();
                 break;
             case BRACKETS_EMPTY:
                 Toast.makeText(this, getResources().getString(
-                        R.string.error_inside_brackets_empty), Toast.LENGTH_SHORT).show();
+                        R.string.error_inside_brackets_empty),
+                        Toast.LENGTH_SHORT).show();
                 break;
             default:
                 break;

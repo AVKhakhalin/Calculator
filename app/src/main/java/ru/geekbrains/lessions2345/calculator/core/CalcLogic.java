@@ -30,7 +30,9 @@ public class CalcLogic implements Constants {
     private double finalResult = 0d;
     // Ошибки вычислений
     private ERRORS errorCode = ERRORS.NO;
-    // Максимальное количество символов, допустимое для вывода в поле с резуьлтатами вычислений
+    // Максимальное количество символов, допустимое для вывода в поле с результатами вычислений
+    // TODO: доделать согласование размера поля на основании размера дисплея
+    //  с количеством выводимых на нём символов
     private int maxNumberSymbolsInOutputTextField = 12;
 
     public CalcLogic() {

@@ -66,14 +66,14 @@ public class MainPresenterTest {
     @Test // Проверка корректности выполнения setBracketOpen()
     public void setBracketOpen_Test() {
         mainPresenter.setBracketOpen();
-        Mockito.verify(viewMainContract, times(1)).
+        Mockito.verify(viewMainContract, times(2)).
                 setInputedHistoryText("(");
     }
 
     @Test // Проверка корректности выполнения setBracketClose()
     public void setBracketClose_Test() {
         mainPresenter.setBracketOpen();
-        Mockito.verify(viewMainContract, times(1)).
+        Mockito.verify(viewMainContract, times(2)).
                 setInputedHistoryText("(");
         mainPresenter.setBracketClose();
         Mockito.verify(viewMainContract, times(1)).
@@ -461,9 +461,6 @@ public class MainPresenterTest {
         mainPresenter.setEqual();
         Mockito.verify(viewMainContract, times(1)).
                 setOutputResultText("2");
-        // TODO: Благодаря тестированию выявлена следующая ошибка:
-        //  при нажатии на кнопку Kx знак корня не отображается, он отображается только тогда,
-        //  когда вводится число, к которому нужно применить функцию извлечения квадратичного корня.
     }
 
     @Test // Проверка корректности выполнения getError() без ошибок
@@ -496,7 +493,7 @@ public class MainPresenterTest {
     @Test // Проверка корректности выполнения getError() для равенства открытых и закрытых скобок
     public void getError_EQUALS_OPEN_CLOSED_BRACKETS_Test() {
         mainPresenter.setBracketOpen();
-        Mockito.verify(viewMainContract, times(1)).
+        Mockito.verify(viewMainContract, times(2)).
                 setInputedHistoryText("(");
         mainPresenter.addNumeral(4);
         Mockito.verify(viewMainContract, times(1)).
@@ -525,7 +522,7 @@ public class MainPresenterTest {
     @Test // Проверка корректности выполнения getError() для пустого выражения в скобках
     public void getError_EMPTY_INSIGHT_BRACKETS_Test() {
         mainPresenter.setBracketOpen();
-        Mockito.verify(viewMainContract, times(1)).
+        Mockito.verify(viewMainContract, times(2)).
                 setInputedHistoryText("(");
         mainPresenter.setBracketClose();
         Mockito.verify(viewMainContract, times(1)).

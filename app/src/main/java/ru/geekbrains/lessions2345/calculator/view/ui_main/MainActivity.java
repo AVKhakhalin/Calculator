@@ -53,7 +53,7 @@ public class MainActivity extends Activity implements View.OnClickListener,
 
     private THEMES currentTheme;
 
-    private MainPresenter mainPresenter;
+    private MainPresenter mainPresenter = new MainPresenter();
     private int koeff_DP;
     private int curRadiusButtons;
     private boolean doChangeRadius = false;
@@ -66,9 +66,8 @@ public class MainActivity extends Activity implements View.OnClickListener,
         currentTheme = getSettings();
         setCalculatorTheme(currentTheme);
         setContentView(R.layout.calc_keyboard_layout);
-
+        // Отслеживание первичного запуска или перезапуска активити
         if (savedInstanceState == null) {
-             mainPresenter = new MainPresenter(this);
             // Умножаем на 2, потому что ширина чисел вдвое меньше величины EMS
             mainPresenter.setMaxNumberSymbolsInOutputTextField(
                     getResources().getInteger(R.integer.number_output_symbols_forEMS) * 2);
@@ -78,7 +77,8 @@ public class MainActivity extends Activity implements View.OnClickListener,
                 mainPresenter = (MainPresenter) getLastNonConfigurationInstance();
             }
         }
-
+        // Передача MainActivity в MainPresenter
+        mainPresenter.onAttach(this);
         // Инициализация текстовых полей
         initTextFields();
         // Инициализация кнопок
@@ -90,6 +90,12 @@ public class MainActivity extends Activity implements View.OnClickListener,
         setNewMaxHeightForInputHistory();
         // Установка обновлённого значения радиуса окружности кнопок
         setNewRadiusButtons(curRadiusButtons * koeff_DP);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mainPresenter.onDetach();
     }
 
     // Установка новых значений высоты для полей _input_history и _input_history_night

@@ -27,8 +27,8 @@ public class MainPresenter implements PresenterMainContract {
     @Override
     public double addNumeral(int newNumeral) {
         double result = calcLogic.addNumeral(newNumeral);
-        viewMain.setInputedHistoryText(String.format(Locale.getDefault(),
-                "%s", createOutput()));
+        if (viewMain != null) viewMain.setInputedHistoryText(String.format(Locale.getDefault(),
+                    "%s", createOutput()));
         return result;
     }
 
@@ -40,18 +40,18 @@ public class MainPresenter implements PresenterMainContract {
     @Override
     public void setCurZapitay() {
         calcLogic.setCurZapitay();
-        viewMain.setInputedHistoryText(String.format(Locale.getDefault(),
+        if (viewMain != null) viewMain.setInputedHistoryText(String.format(Locale.getDefault(),
                 "%s", createOutput()));
     }
 
     @Override
     public void clearAll() {
         calcLogic.clearAll();
-        viewMain.setInputedHistoryText(String.format(Locale.getDefault(),
+        if (viewMain != null) viewMain.setInputedHistoryText(String.format(Locale.getDefault(),
                 "%s", createOutput()));
         calculate();
         getError();
-        viewMain.setOutputResultText(calcLogic.getFinalResult());
+        if (viewMain != null) viewMain.setOutputResultText(calcLogic.getFinalResult());
     }
 
     @Override
@@ -60,7 +60,7 @@ public class MainPresenter implements PresenterMainContract {
             // TODO: Обновление поля с результатом, доделать, если нужно
 //            setEqual();
         }
-        viewMain.setInputedHistoryText(String.format(Locale.getDefault(),
+        if (viewMain != null) viewMain.setInputedHistoryText(String.format(Locale.getDefault(),
                 "%s", createOutput()));
     }
 
@@ -70,28 +70,28 @@ public class MainPresenter implements PresenterMainContract {
             // TODO: Обновление поля с результатом, доделать, если нужно
 //            setEqual();
         }
-        viewMain.setInputedHistoryText(String.format(Locale.getDefault(),
+        if (viewMain != null) viewMain.setInputedHistoryText(String.format(Locale.getDefault(),
             "%s", createOutput()));
     }
 
     @Override
     public void setNewAction(Constants.ACTIONS action) {
         calcLogic.setNewAction(action);
-        viewMain.setInputedHistoryText(String.format(Locale.getDefault(),
+        if (viewMain != null) viewMain.setInputedHistoryText(String.format(Locale.getDefault(),
                 "%s", createOutput()));
     }
 
     @Override
     public void changeSign() {
         calcLogic.changeSign();
-        viewMain.setInputedHistoryText(String.format(Locale.getDefault(),
+        if (viewMain != null) viewMain.setInputedHistoryText(String.format(Locale.getDefault(),
                 "%s", createOutput()));
     }
 
     @Override
     public String setNewFunction(Constants.FUNCTIONS typeFuncInBracket) {
         String result = calcLogic.setNewFunction(typeFuncInBracket);
-        viewMain.setInputedHistoryText(String.format(Locale.getDefault(),
+        if (viewMain != null) viewMain.setInputedHistoryText(String.format(Locale.getDefault(),
                 "%s", createOutput()));
         return result;
     }
@@ -115,41 +115,43 @@ public class MainPresenter implements PresenterMainContract {
     public void setEqual() {
         calcLogic.calculate();
         getError();
-        viewMain.setOutputResultText(calcLogic.getFinalResult());
+        if (viewMain != null) viewMain.setOutputResultText(calcLogic.getFinalResult());
     }
 
     @Override
     public void getError() {
-        viewMain.setErrorText(calcLogic.getErrorCode());
+        if (viewMain != null) viewMain.setErrorText(calcLogic.getErrorCode());
         calcLogic.clearErrorCode();
     }
 
     @Override
     public void setBracketOpen() {
-        viewMain.setInputedHistoryText(String.format(Locale.getDefault(),
+        if (viewMain != null) viewMain.setInputedHistoryText(String.format(Locale.getDefault(),
                 "%s", setNewFunction(Constants.FUNCTIONS.FUNC_NO)));
     }
 
     @Override
     public void setBracketClose() {
-        viewMain.setInputedHistoryText(String.format(Locale.getDefault(),
+        if (viewMain != null) viewMain.setInputedHistoryText(String.format(Locale.getDefault(),
                 "%s", calcLogic.closeBracket()));
     }
 
     @Override
     public void getInit() {
-        viewMain.setOutputResultText(calcLogic.getFinalResult());
-        viewMain.setInputedHistoryText(String.format(Locale.getDefault(),
-                "%s", createOutput()));
+        if (viewMain != null) {
+            viewMain.setOutputResultText(calcLogic.getFinalResult());
+            viewMain.setInputedHistoryText(String.format(Locale.getDefault(),
+                    "%s", createOutput()));
+        }
     }
 
     @Override
     public void onAttach(ViewContract viewContract) {
-        viewMain = (ViewMainContract) viewContract;
+        if (viewContract != null) viewMain = (ViewMainContract) viewContract;
     }
 
     @Override
     public void onDetach() {
-        viewMain = null;
+        if (viewMain != null) viewMain = null;
     }
 }

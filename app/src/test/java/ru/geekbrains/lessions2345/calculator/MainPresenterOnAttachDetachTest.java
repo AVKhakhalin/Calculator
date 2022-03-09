@@ -1,7 +1,5 @@
 package ru.geekbrains.lessions2345.calculator;
 
-import junit.framework.TestCase;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -15,26 +13,29 @@ import static org.mockito.Mockito.times;
 
 /** Покрытие методов onAttach() и onDetach() тестами */
 public class MainPresenterOnAttachDetachTest {
-    public MainPresenter mainPresenter;
 
-    @Mock
+    /** Задание переменных */ //region
+    public MainPresenter mainPresenter;
+    //endregion
+
+    @Mock // Задание переменной для вью
     public ViewMainContract viewMain;
 
-    @Before
+    @Before // Предварительная установка
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         mainPresenter = new MainPresenter();
         mainPresenter.onAttach(viewMain);
     }
 
-    @Test
+    @Test // Провека работоспособности метода onAttach()
     public void onAttach_Test() {
         mainPresenter.getInit();
         // Вызыв метода setInputedHistoryText() говорит о том, что viewMain != null
         Mockito.verify(viewMain, times(1)).
                 setInputedHistoryText("");
     }
-    @Test
+    @Test // Провека работоспособности метода onDetach()
     public void onDetach_Test() {
         mainPresenter.onDetach();
         mainPresenter.addNumeral(1);

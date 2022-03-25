@@ -6,6 +6,7 @@ def kotlinCoroutineandroidVersion = "1.5.0"
 def designMaterialVersion = "1.4.0"
 def designConstrlayoutVersion = "2.1.1"
 def testJunitVersion = "4.12"
+def testExtVersion = "1.1.2"
 def testRunnerVersion = "1.2.0"
 def testEspressocoreVersion = "3.2.0"
 def testMockitoCoreVersion = "3.3.3"
@@ -61,6 +62,7 @@ ext {
     tests = [:]
     libs.tests = tests
     tests.junit = "junit:junit:$testJunitVersion"
+    tests.ext = "androidx.test.ext:junit:$testExtVersion" // Нужно для @RunWith(AndroidJUnit4.class)
     tests.runner = "androidx.test:runner:$testRunnerVersion"
     tests.espressocore = "androidx.test.espresso:espresso-core:$testEspressocoreVersion"
     tests.filetreedir = "'libs'"

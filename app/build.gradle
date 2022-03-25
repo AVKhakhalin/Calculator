@@ -49,6 +49,7 @@ dependencies {
     implementation libs.design.constrlayout
     // Test
     testImplementation libs.tests.junit
+    androidTestImplementation libs.tests.ext // Нужно для @RunWith(AndroidJUnit4.class)
     androidTestImplementation libs.tests.runner
     androidTestImplementation libs.tests.espressocore
     implementation fileTree(dir: libs.tests.filetreedir, include: libs.tests.filetreeinclude)

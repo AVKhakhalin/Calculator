@@ -9,19 +9,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Night">
-        <activity android:name=".ui.StartActivity">
+        <activity android:name=".view.ui_start.StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.MenuActivity">
+        <activity android:name=".view.ui_menu.MenuActivity">
             <intent-filter>
                 <action android:name="ru.geekbrains.lessions2345.calculator.settings" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.CalculatorKeyboardActivity">
+        <activity android:name=".view.ui_main.MainActivity">
             <intent-filter>
                 <action android:name="ru.geekbrains.lessions2345.calculator" />
                 <category android:name="android.intent.category.DEFAULT" />

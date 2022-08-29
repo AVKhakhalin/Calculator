@@ -56,12 +56,12 @@ public class CalcLogic implements Constants {
         if ((inputNumbers.get(curNumber).getIsBracket()) &&
                 (!inputNumbers.get(curNumber).getIsClose())) {
             add(false, false, FUNCTIONS.FUNC_NO, 1, 0d,
-                false, ACTIONS.ACT_PLUS, false);
+                    false, ACTIONS.ACT_PLUS, false);
             curNumber++;
         }
         if ((inputNumbers.get(curNumber).getValue() == 0d) && (inputNumbers.get(curNumber).
                 getIntegerPartValue().length() > 0) && (newNumeral == 0) && (!pressedZapitay)) {
-        // Показать уведомление о том, что для задания целой части числа вполне хватит и одного нуля
+            // Показать уведомление о том, что для задания целой части числа вполне хватит и одного нуля
         } else {
             double intPartValue = 0d;
             double realPartValue = 0d;
@@ -485,7 +485,7 @@ public class CalcLogic implements Constants {
                         } else {
                             prevDates = curDates;
                         }
-                    // Выполнение всех остальных операций (не деления и не умножения)
+                        // Выполнение всех остальных операций (не деления и не умножения)
                     } else if ((curDates.getAction() == action) && (curNumbersForCals.size() > 1))
                     {
                         prevDates.setValue(doBaseActions(prevDates.getValue() *
@@ -710,7 +710,7 @@ public class CalcLogic implements Constants {
                 (curNumber > 0) && (((inputNumbers.get(curNumber - 1).getIsBracket()) &&
                 (inputNumbers.get(curNumber - 1).getIsClose())) ||
                 ((!inputNumbers.get(curNumber - 1).getIsBracket()) &&
-                (!inputNumbers.get(curNumber - 1).getIsClose())))) {
+                        (!inputNumbers.get(curNumber - 1).getIsClose())))) {
             inputNumbers.get(curNumber).setAction(ACTIONS.ACT_PLUS);
         } else {
             inputNumbers.get(curNumber).setSign(inputNumbers.get(curNumber).getSign() * (-1));

@@ -7,527 +7,527 @@
     android:layout_gravity="center_horizontal">
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/_background_theme"
+        android:id="@+id/background_theme"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/back_calc" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_0_night"
+        android:id="@+id/zero_night"
         style="@style/Night.Numbers_style"
         android:text="@string/_0"
         android:visibility="visible"
-        app:layout_constraintCircle="@id/_RESULT_night"
+        app:layout_constraintCircle="@id/_result_night"
         app:layout_constraintCircleAngle="0"
         app:layout_constraintCircleRadius="@dimen/button_circle_radius"
-        app:layout_constraintEnd_toStartOf="@id/_1_night"
+        app:layout_constraintEnd_toStartOf="@id/one_night"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_0"
+        android:id="@+id/zero"
         style="@style/Day.Numbers_style"
         android:text="@string/_0"
         android:visibility="gone"
-        app:layout_constraintCircle="@id/_RESULT"
+        app:layout_constraintCircle="@id/result"
         app:layout_constraintCircleAngle="0"
         app:layout_constraintCircleRadius="@dimen/button_circle_radius"
-        app:layout_constraintEnd_toStartOf="@id/_1"
+        app:layout_constraintEnd_toStartOf="@id/one"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_1_night"
+        android:id="@+id/one_night"
         style="@style/Night.Numbers_style"
         android:text="@string/_1"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@id/_2_night"
-        app:layout_constraintCircle="@id/_RESULT_night"
+        app:layout_constraintBottom_toTopOf="@id/two_night"
+        app:layout_constraintCircle="@id/_result_night"
         app:layout_constraintCircleAngle="30"
         app:layout_constraintCircleRadius="@dimen/button_circle_radius"
-        app:layout_constraintStart_toEndOf="@id/_0_night" />
+        app:layout_constraintStart_toEndOf="@id/zero_night" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_1"
+        android:id="@+id/one"
         style="@style/Day.Numbers_style"
         android:text="@string/_1"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/_2"
-        app:layout_constraintCircle="@id/_RESULT"
+        app:layout_constraintBottom_toTopOf="@id/two"
+        app:layout_constraintCircle="@id/result"
         app:layout_constraintCircleAngle="30"
         app:layout_constraintCircleRadius="@dimen/button_circle_radius"
-        app:layout_constraintStart_toEndOf="@id/_0" />
+        app:layout_constraintStart_toEndOf="@id/zero" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_2_night"
+        android:id="@+id/two_night"
         style="@style/Night.Numbers_style"
         android:text="@string/_2"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@id/_RESULT_night"
-        app:layout_constraintCircle="@id/_RESULT_night"
+        app:layout_constraintBottom_toTopOf="@id/_result_night"
+        app:layout_constraintCircle="@id/_result_night"
         app:layout_constraintCircleAngle="60"
         app:layout_constraintCircleRadius="@dimen/button_circle_radius"
-        app:layout_constraintStart_toEndOf="@id/_RESULT_night" />
+        app:layout_constraintStart_toEndOf="@id/_result_night" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_2"
+        android:id="@+id/two"
         style="@style/Day.Numbers_style"
         android:text="@string/_2"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/_RESULT"
-        app:layout_constraintCircle="@id/_RESULT"
+        app:layout_constraintBottom_toTopOf="@id/result"
+        app:layout_constraintCircle="@id/result"
         app:layout_constraintCircleAngle="60"
         app:layout_constraintCircleRadius="@dimen/button_circle_radius"
-        app:layout_constraintStart_toEndOf="@id/_RESULT" />
+        app:layout_constraintStart_toEndOf="@id/result" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_3_night"
+        android:id="@+id/three_night"
         style="@style/Night.Numbers_style"
         android:text="@string/_3"
         android:visibility="visible"
-        app:layout_constraintCircle="@id/_RESULT_night"
+        app:layout_constraintCircle="@id/_result_night"
         app:layout_constraintCircleAngle="90"
         app:layout_constraintCircleRadius="@dimen/button_circle_radius"
-        app:layout_constraintStart_toEndOf="@id/_RESULT_night"
-        app:layout_constraintTop_toBottomOf="@id/_2_night" />
+        app:layout_constraintStart_toEndOf="@id/_result_night"
+        app:layout_constraintTop_toBottomOf="@id/two_night" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_3"
+        android:id="@+id/three"
         style="@style/Day.Numbers_style"
         android:text="@string/_3"
         android:visibility="gone"
-        app:layout_constraintCircle="@id/_RESULT"
+        app:layout_constraintCircle="@id/result"
         app:layout_constraintCircleAngle="90"
         app:layout_constraintCircleRadius="@dimen/button_circle_radius"
-        app:layout_constraintStart_toEndOf="@id/_RESULT"
-        app:layout_constraintTop_toBottomOf="@id/_2" />
+        app:layout_constraintStart_toEndOf="@id/result"
+        app:layout_constraintTop_toBottomOf="@id/two" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_4_night"
+        android:id="@+id/four_night"
         style="@style/Night.Numbers_style"
         android:text="@string/_4"
         android:visibility="visible"
-        app:layout_constraintCircle="@id/_RESULT_night"
+        app:layout_constraintCircle="@id/_result_night"
         app:layout_constraintCircleAngle="120"
         app:layout_constraintCircleRadius="@dimen/button_circle_radius"
-        app:layout_constraintStart_toEndOf="@id/_RESULT_night"
-        app:layout_constraintTop_toBottomOf="@id/_3_night" />
+        app:layout_constraintStart_toEndOf="@id/_result_night"
+        app:layout_constraintTop_toBottomOf="@id/three_night" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_4"
+        android:id="@+id/four"
         style="@style/Day.Numbers_style"
         android:text="@string/_4"
         android:visibility="gone"
-        app:layout_constraintCircle="@id/_RESULT"
+        app:layout_constraintCircle="@id/result"
         app:layout_constraintCircleAngle="120"
         app:layout_constraintCircleRadius="@dimen/button_circle_radius"
-        app:layout_constraintStart_toEndOf="@id/_RESULT"
-        app:layout_constraintTop_toBottomOf="@id/_3" />
+        app:layout_constraintStart_toEndOf="@id/result"
+        app:layout_constraintTop_toBottomOf="@id/three" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_5_night"
+        android:id="@+id/five_night"
         style="@style/Night.Numbers_style"
         android:text="@string/_5"
         android:visibility="visible"
-        app:layout_constraintCircle="@id/_RESULT_night"
+        app:layout_constraintCircle="@id/_result_night"
         app:layout_constraintCircleAngle="150"
         app:layout_constraintCircleRadius="@dimen/button_circle_radius"
-        app:layout_constraintEnd_toStartOf="@id/_4_night"
-        app:layout_constraintTop_toBottomOf="@id/_4_night" />
+        app:layout_constraintEnd_toStartOf="@id/four_night"
+        app:layout_constraintTop_toBottomOf="@id/four_night" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_5"
+        android:id="@+id/five"
         style="@style/Day.Numbers_style"
         android:text="@string/_5"
         android:visibility="gone"
-        app:layout_constraintCircle="@id/_RESULT"
+        app:layout_constraintCircle="@id/result"
         app:layout_constraintCircleAngle="150"
         app:layout_constraintCircleRadius="@dimen/button_circle_radius"
-        app:layout_constraintEnd_toStartOf="@id/_4"
-        app:layout_constraintTop_toBottomOf="@id/_4" />
+        app:layout_constraintEnd_toStartOf="@id/four"
+        app:layout_constraintTop_toBottomOf="@id/four" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_6_night"
+        android:id="@+id/six_night"
         style="@style/Night.Numbers_style"
         android:text="@string/_6"
         android:visibility="visible"
-        app:layout_constraintCircle="@id/_RESULT_night"
+        app:layout_constraintCircle="@id/_result_night"
         app:layout_constraintCircleAngle="180"
         app:layout_constraintCircleRadius="@dimen/button_circle_radius"
-        app:layout_constraintEnd_toStartOf="@id/_5_night"
-        app:layout_constraintTop_toBottomOf="@id/_equal_night" />
+        app:layout_constraintEnd_toStartOf="@id/five_night"
+        app:layout_constraintTop_toBottomOf="@id/equal_night" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_6"
+        android:id="@+id/six"
         style="@style/Day.Numbers_style"
         android:text="@string/_6"
         android:visibility="gone"
-        app:layout_constraintCircle="@id/_RESULT"
+        app:layout_constraintCircle="@id/result"
         app:layout_constraintCircleAngle="180"
         app:layout_constraintCircleRadius="@dimen/button_circle_radius"
-        app:layout_constraintEnd_toStartOf="@id/_5"
-        app:layout_constraintTop_toBottomOf="@id/_equal" />
+        app:layout_constraintEnd_toStartOf="@id/five"
+        app:layout_constraintTop_toBottomOf="@id/equal" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_7_night"
+        android:id="@+id/seven_night"
         style="@style/Night.Numbers_style"
         android:text="@string/_7"
         android:visibility="visible"
-        app:layout_constraintCircle="@id/_RESULT_night"
+        app:layout_constraintCircle="@id/_result_night"
         app:layout_constraintCircleAngle="210"
         app:layout_constraintCircleRadius="@dimen/button_circle_radius"
-        app:layout_constraintEnd_toStartOf="@id/_6_night"
-        app:layout_constraintTop_toBottomOf="@id/_8_night" />
+        app:layout_constraintEnd_toStartOf="@id/six_night"
+        app:layout_constraintTop_toBottomOf="@id/eight_night" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_7"
+        android:id="@+id/seven"
         style="@style/Day.Numbers_style"
         android:text="@string/_7"
         android:visibility="gone"
-        app:layout_constraintCircle="@id/_RESULT"
+        app:layout_constraintCircle="@id/result"
         app:layout_constraintCircleAngle="210"
         app:layout_constraintCircleRadius="@dimen/button_circle_radius"
-        app:layout_constraintEnd_toStartOf="@id/_6"
-        app:layout_constraintTop_toBottomOf="@id/_8" />
+        app:layout_constraintEnd_toStartOf="@id/six"
+        app:layout_constraintTop_toBottomOf="@id/eight" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_8_night"
+        android:id="@+id/eight_night"
         style="@style/Night.Numbers_style"
         android:text="@string/_8"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@id/_7_night"
-        app:layout_constraintCircle="@id/_RESULT_night"
+        app:layout_constraintBottom_toTopOf="@id/seven_night"
+        app:layout_constraintCircle="@id/_result_night"
         app:layout_constraintCircleAngle="240"
         app:layout_constraintCircleRadius="@dimen/button_circle_radius"
-        app:layout_constraintEnd_toStartOf="@id/_7_night" />
+        app:layout_constraintEnd_toStartOf="@id/seven_night" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_8"
+        android:id="@+id/eight"
         style="@style/Day.Numbers_style"
         android:text="@string/_8"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/_7"
-        app:layout_constraintCircle="@id/_RESULT"
+        app:layout_constraintBottom_toTopOf="@id/seven"
+        app:layout_constraintCircle="@id/result"
         app:layout_constraintCircleAngle="240"
         app:layout_constraintCircleRadius="@dimen/button_circle_radius"
-        app:layout_constraintEnd_toStartOf="@id/_7" />
+        app:layout_constraintEnd_toStartOf="@id/seven" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_9_night"
+        android:id="@+id/nine_night"
         style="@style/Night.Numbers_style"
         android:text="@string/_9"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@id/_8_night"
-        app:layout_constraintCircle="@id/_RESULT_night"
+        app:layout_constraintBottom_toTopOf="@id/eight_night"
+        app:layout_constraintCircle="@id/_result_night"
         app:layout_constraintCircleAngle="270"
         app:layout_constraintCircleRadius="@dimen/button_circle_radius"
-        app:layout_constraintEnd_toStartOf="@id/_RESULT_night" />
+        app:layout_constraintEnd_toStartOf="@id/_result_night" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_9"
+        android:id="@+id/nine"
         style="@style/Day.Numbers_style"
         android:text="@string/_9"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/_8"
-        app:layout_constraintCircle="@id/_RESULT"
+        app:layout_constraintBottom_toTopOf="@id/eight"
+        app:layout_constraintCircle="@id/result"
         app:layout_constraintCircleAngle="270"
         app:layout_constraintCircleRadius="@dimen/button_circle_radius"
-        app:layout_constraintEnd_toStartOf="@id/_RESULT" />
+        app:layout_constraintEnd_toStartOf="@id/result" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_divide_night"
+        android:id="@+id/divide_night"
         style="@style/Night.Actions_style"
         android:text="@string/_divide"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@id/_RESULT_night"
-        app:layout_constraintCircle="@id/_RESULT_night"
+        app:layout_constraintBottom_toTopOf="@id/_result_night"
+        app:layout_constraintCircle="@id/_result_night"
         app:layout_constraintCircleAngle="300"
         app:layout_constraintCircleRadius="@dimen/button_circle_radius"
-        app:layout_constraintEnd_toStartOf="@id/_RESULT_night" />
+        app:layout_constraintEnd_toStartOf="@id/_result_night" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_divide"
+        android:id="@+id/divide"
         style="@style/Day.Actions_style"
         android:text="@string/_divide"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/_RESULT"
-        app:layout_constraintCircle="@id/_RESULT"
+        app:layout_constraintBottom_toTopOf="@id/result"
+        app:layout_constraintCircle="@id/result"
         app:layout_constraintCircleAngle="300"
         app:layout_constraintCircleRadius="@dimen/button_circle_radius"
-        app:layout_constraintEnd_toStartOf="@id/_RESULT" />
+        app:layout_constraintEnd_toStartOf="@id/result" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_minus_night"
+        android:id="@+id/minus_night"
         style="@style/Night.Actions_style"
         android:text="@string/_minus"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@id/_divide_night"
-        app:layout_constraintCircle="@id/_RESULT_night"
+        app:layout_constraintBottom_toTopOf="@id/divide_night"
+        app:layout_constraintCircle="@id/_result_night"
         app:layout_constraintCircleAngle="330"
         app:layout_constraintCircleRadius="@dimen/button_circle_radius"
-        app:layout_constraintEnd_toStartOf="@id/_0_night" />
+        app:layout_constraintEnd_toStartOf="@id/zero_night" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_minus"
+        android:id="@+id/minus"
         style="@style/Day.Actions_style"
         android:text="@string/_minus"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/_divide"
-        app:layout_constraintCircle="@id/_RESULT"
+        app:layout_constraintBottom_toTopOf="@id/divide"
+        app:layout_constraintCircle="@id/result"
         app:layout_constraintCircleAngle="330"
         app:layout_constraintCircleRadius="@dimen/button_circle_radius"
-        app:layout_constraintEnd_toStartOf="@id/_0" />
+        app:layout_constraintEnd_toStartOf="@id/zero" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_zapitay_night"
+        android:id="@+id/zapitay_night"
         style="@style/Night.Actions_style"
         android:text="@string/_zapitay"
         android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="@id/_stepen_night"
-        app:layout_constraintStart_toEndOf="@id/_plus_minus_night"
-        app:layout_constraintTop_toBottomOf="@id/_bracket_open_night" />
+        app:layout_constraintEnd_toEndOf="@id/stepen_night"
+        app:layout_constraintStart_toEndOf="@id/plus_minus_night"
+        app:layout_constraintTop_toBottomOf="@id/bracket_open_night" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_zapitay"
+        android:id="@+id/zapitay"
         style="@style/Day.Actions_style"
         android:text="@string/_zapitay"
         android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@id/_stepen"
-        app:layout_constraintStart_toEndOf="@id/_plus_minus"
-        app:layout_constraintTop_toBottomOf="@id/_bracket_open" />
+        app:layout_constraintEnd_toEndOf="@id/stepen"
+        app:layout_constraintStart_toEndOf="@id/plus_minus"
+        app:layout_constraintTop_toBottomOf="@id/bracket_open" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_multiply_night"
+        android:id="@+id/multiply_night"
         style="@style/Night.Actions_style"
         android:text="@string/_multiply"
         android:visibility="visible"
-        app:layout_constraintEnd_toStartOf="@id/_divide_night"
-        app:layout_constraintTop_toTopOf="@id/_divide_night" />
+        app:layout_constraintEnd_toStartOf="@id/divide_night"
+        app:layout_constraintTop_toTopOf="@id/divide_night" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_multiply"
+        android:id="@+id/multiply"
         style="@style/Day.Actions_style"
         android:text="@string/_multiply"
         android:visibility="gone"
-        app:layout_constraintEnd_toStartOf="@id/_divide"
-        app:layout_constraintTop_toTopOf="@id/_divide" />
+        app:layout_constraintEnd_toStartOf="@id/divide"
+        app:layout_constraintTop_toTopOf="@id/divide" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_plus_night"
+        android:id="@+id/plus_night"
         style="@style/Night.Actions_style"
         android:text="@string/_plus"
         android:visibility="visible"
-        app:layout_constraintEnd_toStartOf="@id/_minus_night"
-        app:layout_constraintTop_toTopOf="@id/_minus_night" />
+        app:layout_constraintEnd_toStartOf="@id/minus_night"
+        app:layout_constraintTop_toTopOf="@id/minus_night" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_plus"
+        android:id="@+id/plus"
         style="@style/Day.Actions_style"
         android:text="@string/_plus"
         android:visibility="gone"
-        app:layout_constraintEnd_toStartOf="@id/_minus"
-        app:layout_constraintTop_toTopOf="@id/_minus" />
+        app:layout_constraintEnd_toStartOf="@id/minus"
+        app:layout_constraintTop_toTopOf="@id/minus" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_bracket_open_night"
+        android:id="@+id/bracket_open_night"
         style="@style/Night.Actions_style"
         android:text="@string/_bracket_open"
         android:visibility="visible"
-        app:layout_constraintStart_toEndOf="@id/_1_night"
-        app:layout_constraintTop_toTopOf="@id/_1_night" />
+        app:layout_constraintStart_toEndOf="@id/one_night"
+        app:layout_constraintTop_toTopOf="@id/one_night" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_bracket_open"
+        android:id="@+id/bracket_open"
         style="@style/Day.Actions_style"
         android:text="@string/_bracket_open"
         android:visibility="gone"
-        app:layout_constraintStart_toEndOf="@id/_1"
-        app:layout_constraintTop_toTopOf="@id/_1" />
+        app:layout_constraintStart_toEndOf="@id/one"
+        app:layout_constraintTop_toTopOf="@id/one" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_bracket_close_night"
+        android:id="@+id/bracket_close_night"
         style="@style/Night.Actions_style"
         android:text="@string/_bracket_close"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/_2_night"
-        app:layout_constraintTop_toTopOf="@id/_2_night" />
+        app:layout_constraintStart_toEndOf="@id/two_night"
+        app:layout_constraintTop_toTopOf="@id/two_night" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_bracket_close"
+        android:id="@+id/bracket_close"
         style="@style/Day.Actions_style"
         android:text="@string/_bracket_close"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/_2"
-        app:layout_constraintTop_toTopOf="@id/_2" />
+        app:layout_constraintStart_toEndOf="@id/two"
+        app:layout_constraintTop_toTopOf="@id/two" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_percent_night"
+        android:id="@+id/percent_night"
         style="@style/Night.Actions_style"
         android:text="@string/_percent"
         android:visibility="visible"
-        app:layout_constraintStart_toEndOf="@id/_5_night"
-        app:layout_constraintTop_toBottomOf="@id/_4_night" />
+        app:layout_constraintStart_toEndOf="@id/five_night"
+        app:layout_constraintTop_toBottomOf="@id/four_night" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_percent"
+        android:id="@+id/percent"
         style="@style/Day.Actions_style"
         android:text="@string/_percent"
         android:visibility="gone"
-        app:layout_constraintStart_toEndOf="@id/_5"
-        app:layout_constraintTop_toBottomOf="@id/_4" />
+        app:layout_constraintStart_toEndOf="@id/five"
+        app:layout_constraintTop_toBottomOf="@id/four" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_plus_minus_night"
+        android:id="@+id/plus_minus_night"
         style="@style/Night.Actions_style"
         android:text="@string/_plus_minus"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/_4_night"
-        app:layout_constraintTop_toTopOf="@id/_4_night" />
+        app:layout_constraintStart_toEndOf="@id/four_night"
+        app:layout_constraintTop_toTopOf="@id/four_night" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_plus_minus"
+        android:id="@+id/plus_minus"
         style="@style/Day.Actions_style"
         android:text="@string/_plus_minus"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/_4"
-        app:layout_constraintTop_toTopOf="@id/_4" />
+        app:layout_constraintStart_toEndOf="@id/four"
+        app:layout_constraintTop_toTopOf="@id/four" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_stepen_night"
+        android:id="@+id/stepen_night"
         style="@style/Night.Actions_style"
         android:text="@string/_stepen"
         android:textStyle="normal"
         android:visibility="visible"
-        app:layout_constraintEnd_toStartOf="@id/_8_night"
-        app:layout_constraintTop_toTopOf="@id/_8_night" />
+        app:layout_constraintEnd_toStartOf="@id/eight_night"
+        app:layout_constraintTop_toTopOf="@id/eight_night" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_stepen"
+        android:id="@+id/stepen"
         style="@style/Day.Actions_style"
         android:text="@string/_stepen"
         android:textStyle="normal"
         android:visibility="gone"
-        app:layout_constraintEnd_toStartOf="@id/_8"
-        app:layout_constraintTop_toTopOf="@id/_8" />
+        app:layout_constraintEnd_toStartOf="@id/eight"
+        app:layout_constraintTop_toTopOf="@id/eight" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_sqrt_night"
+        android:id="@+id/sqrt_night"
         style="@style/Night.Actions_style"
         android:text="@string/_sqrt"
         android:textStyle="normal"
         android:visibility="visible"
-        app:layout_constraintEnd_toStartOf="@id/_7_night"
-        app:layout_constraintTop_toBottomOf="@id/_8_night" />
+        app:layout_constraintEnd_toStartOf="@id/seven_night"
+        app:layout_constraintTop_toBottomOf="@id/eight_night" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_sqrt"
+        android:id="@+id/sqrt"
         style="@style/Day.Actions_style"
         android:text="@string/_sqrt"
         android:textStyle="normal"
         android:visibility="gone"
-        app:layout_constraintEnd_toStartOf="@id/_7"
-        app:layout_constraintTop_toBottomOf="@id/_8" />
+        app:layout_constraintEnd_toStartOf="@id/seven"
+        app:layout_constraintTop_toBottomOf="@id/eight" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_equal_night"
+        android:id="@+id/equal_night"
         style="@style/Night.Actions_style"
         android:text="@string/_equal"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@id/_6_night"
-        app:layout_constraintEnd_toStartOf="@id/_5_night"
-        app:layout_constraintStart_toEndOf="@id/_7_night" />
+        app:layout_constraintBottom_toTopOf="@id/six_night"
+        app:layout_constraintEnd_toStartOf="@id/five_night"
+        app:layout_constraintStart_toEndOf="@id/seven_night" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_equal"
+        android:id="@+id/equal"
         style="@style/Day.Actions_style"
         android:text="@string/_equal"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/_6"
-        app:layout_constraintEnd_toStartOf="@id/_5"
-        app:layout_constraintStart_toEndOf="@id/_7" />
+        app:layout_constraintBottom_toTopOf="@id/six"
+        app:layout_constraintEnd_toStartOf="@id/five"
+        app:layout_constraintStart_toEndOf="@id/seven" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_backspace_one_night"
+        android:id="@+id/backspace_one_night"
         style="@style/Night.Actions_style"
         android:text="@string/_backspaceOne"
         android:textStyle="normal"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@id/_input_history_night"
-        app:layout_constraintEnd_toStartOf="@id/_backspace_two_night"
-        app:layout_constraintTop_toBottomOf="@id/_6_night" />
+        app:layout_constraintBottom_toTopOf="@id/input_history_night"
+        app:layout_constraintEnd_toStartOf="@id/backspace_two_night"
+        app:layout_constraintTop_toBottomOf="@id/six_night" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_backspace_one"
+        android:id="@+id/backspace_one"
         style="@style/Day.Actions_style"
         android:text="@string/_backspaceOne"
         android:textStyle="normal"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/_input_history"
-        app:layout_constraintEnd_toStartOf="@id/_backspace_two"
-        app:layout_constraintTop_toBottomOf="@id/_6" />
+        app:layout_constraintBottom_toTopOf="@id/input_history"
+        app:layout_constraintEnd_toStartOf="@id/backspace_two"
+        app:layout_constraintTop_toBottomOf="@id/six" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_backspace_two_night"
+        android:id="@+id/backspace_two_night"
         style="@style/Night.Actions_style"
         android:text="@string/_backspaceTwo"
         android:textStyle="normal"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@id/_input_history_night"
-        app:layout_constraintEnd_toStartOf="@id/_backspace_night"
-        app:layout_constraintTop_toBottomOf="@id/_6_night" />
+        app:layout_constraintBottom_toTopOf="@id/input_history_night"
+        app:layout_constraintEnd_toStartOf="@id/backspace_night"
+        app:layout_constraintTop_toBottomOf="@id/six_night" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_backspace_two"
+        android:id="@+id/backspace_two"
         style="@style/Day.Actions_style"
         android:text="@string/_backspaceTwo"
         android:textStyle="normal"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/_input_history"
-        app:layout_constraintEnd_toStartOf="@id/_backspace"
-        app:layout_constraintTop_toBottomOf="@id/_6" />
+        app:layout_constraintBottom_toTopOf="@id/input_history"
+        app:layout_constraintEnd_toStartOf="@id/backspace"
+        app:layout_constraintTop_toBottomOf="@id/six" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_backspace_night"
+        android:id="@+id/backspace_night"
         style="@style/Night.Actions_style"
         android:text="@string/_backspace"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@id/_input_history_night"
-        app:layout_constraintEnd_toEndOf="@id/_input_history_night" />
+        app:layout_constraintBottom_toTopOf="@id/input_history_night"
+        app:layout_constraintEnd_toEndOf="@id/input_history_night" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_backspace"
+        android:id="@+id/backspace"
         style="@style/Day.Actions_style"
         android:text="@string/_backspace"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/_input_history"
-        app:layout_constraintEnd_toEndOf="@id/_input_history" />
+        app:layout_constraintBottom_toTopOf="@id/input_history"
+        app:layout_constraintEnd_toEndOf="@id/input_history" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_menu_theme_night"
+        android:id="@+id/menu_theme_night"
         style="@style/Night.Menu_style"
         android:layout_width="@dimen/menu_button_width"
         android:text="@string/_settings"
         android:textAllCaps="false"
         android:textStyle="normal"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@id/_input_history_night"
-        app:layout_constraintStart_toStartOf="@id/_input_history_night" />
+        app:layout_constraintBottom_toTopOf="@id/input_history_night"
+        app:layout_constraintStart_toStartOf="@id/input_history_night" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/_menu_theme"
+        android:id="@+id/menu_theme"
         style="@style/Day.Menu_style"
         android:layout_width="@dimen/menu_button_width"
         android:text="@string/_settings"
         android:textAllCaps="false"
         android:textStyle="normal"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/_input_history"
-        app:layout_constraintStart_toStartOf="@id/_input_history" />
+        app:layout_constraintBottom_toTopOf="@id/input_history"
+        app:layout_constraintStart_toStartOf="@id/input_history" />
 
     <TextView
-        android:id="@+id/_RESULT_night"
+        android:id="@+id/_result_night"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/height_result_text"
         android:background="@drawable/background_result_textview_night"
@@ -539,13 +539,13 @@
         android:textColor="@color/red_erase_night"
         android:textSize="@dimen/result_history_text_size"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@id/_equal_night"
-        app:layout_constraintEnd_toStartOf="@id/_3_night"
-        app:layout_constraintStart_toEndOf="@id/_9_night"
-        app:layout_constraintTop_toTopOf="@id/_zapitay_night" />
+        app:layout_constraintBottom_toTopOf="@id/equal_night"
+        app:layout_constraintEnd_toStartOf="@id/three_night"
+        app:layout_constraintStart_toEndOf="@id/nine_night"
+        app:layout_constraintTop_toTopOf="@id/zapitay_night" />
 
     <TextView
-        android:id="@+id/_RESULT"
+        android:id="@+id/result"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/height_result_text"
         android:background="@drawable/background_result_textview_day"
@@ -557,23 +557,23 @@
         android:textColor="@color/red_erase_day"
         android:textSize="@dimen/result_history_text_size"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/_equal"
-        app:layout_constraintEnd_toStartOf="@id/_3"
-        app:layout_constraintStart_toEndOf="@id/_9"
-        app:layout_constraintTop_toTopOf="@id/_zapitay" />
+        app:layout_constraintBottom_toTopOf="@id/equal"
+        app:layout_constraintEnd_toStartOf="@id/three"
+        app:layout_constraintStart_toEndOf="@id/nine"
+        app:layout_constraintTop_toTopOf="@id/zapitay" />
 
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/_input_history_night"
+        android:id="@+id/input_history_night"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintHeight_max="@dimen/default_input_history_max_height_portrait"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/_backspace_two_night">
+        app:layout_constraintTop_toBottomOf="@id/backspace_two_night">
 
         <TextView
-            android:id="@+id/_inputed_history_text_night"
+            android:id="@+id/inputed_history_text_night"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/input_history_margin_start"
@@ -588,17 +588,17 @@
     </androidx.core.widget.NestedScrollView>
 
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/_input_history"
+        android:id="@+id/input_history"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintHeight_max="@dimen/default_input_history_max_height_portrait"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/_backspace_two">
+        app:layout_constraintTop_toBottomOf="@id/backspace_two">
 
         <TextView
-            android:id="@+id/_inputed_history_text"
+            android:id="@+id/inputed_history_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/input_history_margin_start"

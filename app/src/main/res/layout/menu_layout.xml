@@ -8,7 +8,7 @@
     tools:context=".view.ui_menu.MenuActivity">
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/_background_theme"
+        android:id="@+id/background_theme"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/back_calc_menu" />

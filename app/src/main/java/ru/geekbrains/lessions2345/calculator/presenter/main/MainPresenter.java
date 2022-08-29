@@ -4,15 +4,20 @@ import java.util.Locale;
 
 import ru.geekbrains.lessions2345.calculator.core.CalcLogic;
 import ru.geekbrains.lessions2345.calculator.core.Constants;
+import ru.geekbrains.lessions2345.calculator.view.ViewContract;
 import ru.geekbrains.lessions2345.calculator.view.ui_main.ViewMainContract;
 
 public class MainPresenter implements PresenterMainContract {
     private CalcLogic calcLogic = new CalcLogic();
-    private ViewMainContract viewMainContract;
+    private ViewMainContract viewMain;
 
-    public MainPresenter(ViewMainContract viewMainContract) {
-        this.viewMainContract = viewMainContract;
+    /** Задание различных конструкторов для презентера */ //region
+    public MainPresenter() {
     }
+    public MainPresenter(ViewMainContract viewMain) {
+        this.viewMain = viewMain;
+    }
+    //endregion
 
     @Override
     public void setMaxNumberSymbolsInOutputTextField(int maxNumberSymbolsInOutputTextField) {
@@ -22,7 +27,7 @@ public class MainPresenter implements PresenterMainContract {
     @Override
     public double addNumeral(int newNumeral) {
         double result = calcLogic.addNumeral(newNumeral);
-        viewMainContract.setInputedHistoryText(String.format(Locale.getDefault(),
+        if (viewMain != null) viewMain.setInputedHistoryText(String.format(Locale.getDefault(),
                 "%s", createOutput()));
         return result;
     }
@@ -35,18 +40,18 @@ public class MainPresenter implements PresenterMainContract {
     @Override
     public void setCurZapitay() {
         calcLogic.setCurZapitay();
-        viewMainContract.setInputedHistoryText(String.format(Locale.getDefault(),
+        if (viewMain != null) viewMain.setInputedHistoryText(String.format(Locale.getDefault(),
                 "%s", createOutput()));
     }
 
     @Override
     public void clearAll() {
         calcLogic.clearAll();
-        viewMainContract.setInputedHistoryText(String.format(Locale.getDefault(),
-                "%s", createOutput()));
         calculate();
         getError();
-        viewMainContract.setOutputResultText(calcLogic.getFinalResult());
+        if (viewMain != null) viewMain.setOutputResultText(calcLogic.getFinalResult());
+        if (viewMain != null) viewMain.setInputedHistoryText(String.format(Locale.getDefault(),
+                "%s", createOutput()));
     }
 
     @Override
@@ -55,7 +60,7 @@ public class MainPresenter implements PresenterMainContract {
             // TODO: Обновление поля с результатом, доделать, если нужно
 //            setEqual();
         }
-        viewMainContract.setInputedHistoryText(String.format(Locale.getDefault(),
+        if (viewMain != null) viewMain.setInputedHistoryText(String.format(Locale.getDefault(),
                 "%s", createOutput()));
     }
 
@@ -65,27 +70,30 @@ public class MainPresenter implements PresenterMainContract {
             // TODO: Обновление поля с результатом, доделать, если нужно
 //            setEqual();
         }
-        viewMainContract.setInputedHistoryText(String.format(Locale.getDefault(),
-            "%s", createOutput()));
+        if (viewMain != null) viewMain.setInputedHistoryText(String.format(Locale.getDefault(),
+                "%s", createOutput()));
     }
 
     @Override
     public void setNewAction(Constants.ACTIONS action) {
         calcLogic.setNewAction(action);
-        viewMainContract.setInputedHistoryText(String.format(Locale.getDefault(),
+        if (viewMain != null) viewMain.setInputedHistoryText(String.format(Locale.getDefault(),
                 "%s", createOutput()));
     }
 
     @Override
     public void changeSign() {
         calcLogic.changeSign();
-        viewMainContract.setInputedHistoryText(String.format(Locale.getDefault(),
+        if (viewMain != null) viewMain.setInputedHistoryText(String.format(Locale.getDefault(),
                 "%s", createOutput()));
     }
 
     @Override
     public String setNewFunction(Constants.FUNCTIONS typeFuncInBracket) {
-        return calcLogic.setNewFunction(typeFuncInBracket);
+        String result = calcLogic.setNewFunction(typeFuncInBracket);
+        if (viewMain != null) viewMain.setInputedHistoryText(String.format(Locale.getDefault(),
+                "%s", createOutput()));
+        return result;
     }
 
     @Override
@@ -107,31 +115,43 @@ public class MainPresenter implements PresenterMainContract {
     public void setEqual() {
         calcLogic.calculate();
         getError();
-        viewMainContract.setOutputResultText(calcLogic.getFinalResult());
+        if (viewMain != null) viewMain.setOutputResultText(calcLogic.getFinalResult());
     }
 
     @Override
     public void getError() {
-        viewMainContract.setErrorText(calcLogic.getErrorCode());
+        if (viewMain != null) viewMain.setErrorText(calcLogic.getErrorCode());
         calcLogic.clearErrorCode();
     }
 
     @Override
     public void setBracketOpen() {
-        viewMainContract.setInputedHistoryText(String.format(Locale.getDefault(),
+        if (viewMain != null) viewMain.setInputedHistoryText(String.format(Locale.getDefault(),
                 "%s", setNewFunction(Constants.FUNCTIONS.FUNC_NO)));
     }
 
     @Override
     public void setBracketClose() {
-        viewMainContract.setInputedHistoryText(String.format(Locale.getDefault(),
+        if (viewMain != null) viewMain.setInputedHistoryText(String.format(Locale.getDefault(),
                 "%s", calcLogic.closeBracket()));
     }
 
     @Override
     public void getInit() {
-        viewMainContract.setOutputResultText(calcLogic.getFinalResult());
-        viewMainContract.setInputedHistoryText(String.format(Locale.getDefault(),
-                "%s", createOutput()));
+        if (viewMain != null) {
+            viewMain.setOutputResultText(calcLogic.getFinalResult());
+            viewMain.setInputedHistoryText(String.format(Locale.getDefault(),
+                    "%s", createOutput()));
+        }
+    }
+
+    @Override
+    public void onAttach(ViewContract viewContract) {
+        if (viewContract != null) viewMain = (ViewMainContract) viewContract;
+    }
+
+    @Override
+    public void onDetach() {
+        if (viewMain != null) viewMain = null;
     }
 }

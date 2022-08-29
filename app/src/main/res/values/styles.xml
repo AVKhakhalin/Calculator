@@ -10,7 +10,7 @@
         <item name="android:padding">@dimen/text_in_button_padding</item>
         <item name="android:background">@drawable/buttons_with_numbers_mg_day</item>
         <item name="backgroundTint">@null</item>
-        <item name="layout_constraintCircle">@id/_RESULT</item>
+        <item name="layout_constraintCircle">@id/result</item>
         <item name="layout_constraintCircleRadius">@dimen/button_circle_radius</item>
     </style>
     <style name="Day.Actions_style" parent="Day">
@@ -44,7 +44,7 @@
         <item name="android:padding">@dimen/text_in_button_padding</item>
         <item name="android:background">@drawable/buttons_with_numbers_mg_night</item>
         <item name="backgroundTint">@null</item>
-        <item name="layout_constraintCircle">@id/_RESULT</item>
+        <item name="layout_constraintCircle">@id/result</item>
         <item name="layout_constraintCircleRadius">@dimen/button_circle_radius</item>
     </style>
     <style name="Night.Actions_style" parent="Night">
@@ -66,5 +66,5 @@
         <item name="android:padding">@dimen/text_in_button_padding</item>
         <item name="android:background">@drawable/buttons_with_menu_mg_night</item>
         <item name="backgroundTint">@null</item>
-    </style>    
+    </style>
 </resources>

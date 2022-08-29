@@ -11,6 +11,8 @@ import ru.geekbrains.lessions2345.calculator.presenter.main.MainPresenter;
 import ru.geekbrains.lessions2345.calculator.view.ui_main.ViewMainContract;
 
 import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertFalse;
+import static junit.framework.TestCase.assertTrue;
 import static org.mockito.Mockito.times;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS.BRACKETS_EMPTY;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS.BRACKET_DISBALANCE;
@@ -20,19 +22,20 @@ import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS.ZERO_D
 
 public class MainPresenterTest {
 
+    /** Задание переменных */ //region
     public MainPresenter mainPresenter;
+    //endregion
 
-    @Mock
+    @Mock // Задание переменной для вью
     public ViewMainContract viewMainContract;
 
-
-    @Before
+    @Before // Предварительная установка
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         mainPresenter = new MainPresenter(viewMainContract);
     }
 
-    @Test
+    @Test // Проверка работоспособности метода addNumeral()
     public void addNumeral_Test() {
         assertEquals(mainPresenter.addNumeral(1), 1D);
         assertEquals(mainPresenter.addNumeral(2), 12D);
@@ -66,14 +69,14 @@ public class MainPresenterTest {
     @Test // Проверка корректности выполнения setBracketOpen()
     public void setBracketOpen_Test() {
         mainPresenter.setBracketOpen();
-        Mockito.verify(viewMainContract, times(1)).
+        Mockito.verify(viewMainContract, times(2)).
                 setInputedHistoryText("(");
     }
 
     @Test // Проверка корректности выполнения setBracketClose()
     public void setBracketClose_Test() {
         mainPresenter.setBracketOpen();
-        Mockito.verify(viewMainContract, times(1)).
+        Mockito.verify(viewMainContract, times(2)).
                 setInputedHistoryText("(");
         mainPresenter.setBracketClose();
         Mockito.verify(viewMainContract, times(1)).
@@ -388,9 +391,9 @@ public class MainPresenterTest {
         mainPresenter.addNumeral(2);
         Mockito.verify(viewMainContract, times(1)).
                 setInputedHistoryText("1.2");
-        assertEquals(mainPresenter.getPressedZapitay(), true);
+        assertTrue(mainPresenter.getPressedZapitay());
         mainPresenter.setCurZapitay();
-        assertEquals(mainPresenter.getPressedZapitay(), false);
+        assertFalse(mainPresenter.getPressedZapitay());
     }
 
     @Test // Проверка корректности работы метода clearAll()
@@ -461,9 +464,6 @@ public class MainPresenterTest {
         mainPresenter.setEqual();
         Mockito.verify(viewMainContract, times(1)).
                 setOutputResultText("2");
-        // TODO: Благодаря тестированию выявлена следующая ошибка:
-        //  при нажатии на кнопку Kx знак корня не отображается, он отображается только тогда,
-        //  когда вводится число, к которому нужно применить функцию извлечения квадратичного корня.
     }
 
     @Test // Проверка корректности выполнения getError() без ошибок
@@ -496,7 +496,7 @@ public class MainPresenterTest {
     @Test // Проверка корректности выполнения getError() для равенства открытых и закрытых скобок
     public void getError_EQUALS_OPEN_CLOSED_BRACKETS_Test() {
         mainPresenter.setBracketOpen();
-        Mockito.verify(viewMainContract, times(1)).
+        Mockito.verify(viewMainContract, times(2)).
                 setInputedHistoryText("(");
         mainPresenter.addNumeral(4);
         Mockito.verify(viewMainContract, times(1)).
@@ -525,7 +525,7 @@ public class MainPresenterTest {
     @Test // Проверка корректности выполнения getError() для пустого выражения в скобках
     public void getError_EMPTY_INSIGHT_BRACKETS_Test() {
         mainPresenter.setBracketOpen();
-        Mockito.verify(viewMainContract, times(1)).
+        Mockito.verify(viewMainContract, times(2)).
                 setInputedHistoryText("(");
         mainPresenter.setBracketClose();
         Mockito.verify(viewMainContract, times(1)).

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="ru.geekbrains.lessions2345.calculator">
 
     <application
@@ -8,20 +9,27 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Night">
-        <activity android:name=".view.ui_start.StartActivity">
+        android:theme="@style/Night"
+        tools:targetApi="30">
+        <activity
+            android:name=".view.ui_start.StartActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.ui_menu.MenuActivity">
+        <activity
+            android:name=".view.ui_menu.MenuActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="ru.geekbrains.lessions2345.calculator.settings" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.ui_main.MainActivity">
+        <activity
+            android:name=".view.ui_main.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="ru.geekbrains.lessions2345.calculator" />
                 <category android:name="android.intent.category.DEFAULT" />

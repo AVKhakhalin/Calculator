@@ -36,15 +36,15 @@ public class Dates implements Constants {
     // в число внесли, то isValue = true; по-умолчанию isValue = false
     private boolean isValue;
     // Производимые действия над числом (по-умолчанию стоит сумма ACT_PLUS):
-        // ACT_STEP         - возведение в степень (ACT_STEP);
-        // ACT_PERS_MULTY   - вычисление произведения на процент от числа (ACT_PERS_MULTY);
-        // ACT_PERS_DIV     - вычисление деления на процент от числа (ACT_PERS_DIV);
-        // ACT_PERS_MINUS   - вычисление вычистания процента от числа (ACT_PERS_MINUS);
-        // ACT_PERS_PLUS    - вычисление сложения с процентом от числа (ACT_PERS_PLUS);
-        // ACT_MULTY        - умножение (ACT_MULTY);
-        // ACT_DIV          - деление (ACT_DIV);
-        // ACT_MINUS        - вычитание (ACT_MINUS)
-        // ACT_PLUS         - сложение (ACT_PLUS);
+    // ACT_STEP         - возведение в степень (ACT_STEP);
+    // ACT_PERS_MULTY   - вычисление произведения на процент от числа (ACT_PERS_MULTY);
+    // ACT_PERS_DIV     - вычисление деления на процент от числа (ACT_PERS_DIV);
+    // ACT_PERS_MINUS   - вычисление вычистания процента от числа (ACT_PERS_MINUS);
+    // ACT_PERS_PLUS    - вычисление сложения с процентом от числа (ACT_PERS_PLUS);
+    // ACT_MULTY        - умножение (ACT_MULTY);
+    // ACT_DIV          - деление (ACT_DIV);
+    // ACT_MINUS        - вычитание (ACT_MINUS)
+    // ACT_PLUS         - сложение (ACT_PLUS);
     private ACTIONS action;
     // Является ли данный элемент процентом: true = да; false = нет
     private boolean isPercent;

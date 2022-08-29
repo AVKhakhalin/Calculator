@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/background_input_history_color_day">
+    <item
+        android:state_enabled="true">
+        <ripple
+            android:color="@color/background_input_history_color_day">
+            <item>
+                <shape android:shape="oval">
+                    <stroke
+                        android:width="@dimen/stroke_width"
+                        android:color="@color/red_day" />
+                    <gradient
+                        android:angle="45"
+                        android:endColor="@color/background_input_history_color_day"
+                        android:centerColor="@color/green_day"
+                        android:startColor="@color/green_day"
+                        android:type="linear"/>
+                    <padding
+                        android:left="@dimen/paddings_zero"
+                        android:top="@dimen/paddings_zero"
+                        android:right="@dimen/paddings_zero"
+                        android:bottom="@dimen/paddings_zero" />
+                    <size
+                        android:width="@dimen/circle_width"
+                        android:height="@dimen/circle_height" />
+                </shape>
+            </item>
+        </ripple>
+    </item>
+    <item
+        android:state_enabled="false">
+        <shape
+            android:shape="oval">
+            <corners
+                android:radius="@dimen/coners_radius" />
+            <gradient
+                android:angle="45"
+                android:endColor="@color/background_input_history_color_day"
+                android:centerColor="@color/red_center_day"
+                android:startColor="@color/red_day"
+                android:type="linear"/>
+        </shape>
+    </item>
+</selector>

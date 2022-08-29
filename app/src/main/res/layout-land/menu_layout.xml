@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal"
+    tools:context=".view.ui_menu.MenuActivity">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/background_theme"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/back_calc_menu" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/_menu_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/menu_message_text"
+        android:textSize="@dimen/menu_message_text_size"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textColor="@color/red_erase_night"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/_day_theme"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="visible" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/_day_theme"
+        style="@style/Day.Menu_style"
+        android:layout_width="@dimen/menu_button_width"
+        android:text="@string/turn_on_day_them_button_text"
+        android:textAllCaps="false"
+        android:textStyle="normal"
+        android:visibility="visible"
+        app:layout_constraintTop_toTopOf="@id/_menu_message"
+        app:layout_constraintBottom_toTopOf="@id/_night_theme"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/_night_theme"
+        style="@style/Night.Menu_style"
+        android:layout_width="@dimen/menu_button_width"
+        android:text = "@string/turn_on_night_them_button_text"
+        android:textAllCaps="false"
+        android:textStyle="normal"
+        android:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@id/_day_theme"
+        app:layout_constraintBottom_toTopOf="@id/_return_day"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/_request_radius_buttons_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/set_radius_buttons_text"
+        android:textSize="@dimen/request_radius_buttons_text_size"
+        android:ems="12"
+        android:textColor="@color/background_input_history_color_day"
+        android:gravity="center"
+        app:layout_constraintEnd_toStartOf="@id/_request_radius_buttons_input"
+        app:layout_constraintBottom_toBottomOf="@id/_return_day" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/_request_radius_buttons_input"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/default_radius_text"
+        android:textSize="@dimen/request_radius_buttons_text_size"
+        android:ems="2"
+        android:textColor="@color/background_input_history_color_day"
+        android:inputType="numberDecimal"
+        app:layout_constraintEnd_toStartOf="@id/_return_day"
+        app:layout_constraintBottom_toBottomOf="@id/_return_day" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/_return_day"
+        style="@style/Day.Menu_style"
+        android:layout_width="@dimen/menu_button_width"
+        android:text = "@string/return_button_text"
+        android:textAllCaps="false"
+        android:textStyle="normal"
+        android:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@id/_night_theme"
+        app:layout_constraintBottom_toTopOf="@id/_author_info"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/_return_night"
+        style="@style/Night.Menu_style"
+        android:layout_width="@dimen/menu_button_width"
+        android:text = "@string/return_button_text"
+        android:textAllCaps="false"
+        android:textStyle="normal"
+        android:visibility="invisible"
+        app:layout_constraintTop_toBottomOf="@id/_night_theme"
+        app:layout_constraintBottom_toTopOf="@id/_author_info"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/_author_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/author_info_text"
+        android:textSize="@dimen/author_info_text_size"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textColor="@color/red_erase_night"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="visible" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

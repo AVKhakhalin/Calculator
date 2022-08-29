@@ -21,12 +21,26 @@
     <string name="_percent">%</string>
     <string name="_plus_minus">+/-</string>
     <string name="_stepen">x^n</string>
-    <string name="_sqrt">Кx</string>
+    <string name="_sqrt">Kx</string>
     <string name="_backspaceTwo"><![CDATA[<--]]></string>
     <string name="_backspace">C</string>
     <string name="InputHistory_text"></string>
-    <string name="RESULT_text"></string>
+    <string name="RESULT_text">0</string>
     <string name="_backspaceOne"><![CDATA[<-]]></string>
     <string name="_settings">Настройки</string>
-    <string name="title_menu_themes_text">Выберите тему оформления экрана:</string>
+    <string name="turn_on_day_them_button_text">Дневная тема</string>
+    <string name="turn_on_night_them_button_text">Ночная тема</string>
+    <string name="return_button_text">Установить</string>
+    <string name="menu_message_text">Выберите тему калькулятора</string>
+    <string name="author_info_text">Разработчик научного калькулятора Хахалин Андрей Владимирович, 2021-2022 гг.</string>
+    <string name="set_radius_buttons_text">
+        <br>Можно ещё задать РАДИУС</br>
+        <br>расположения кнопок в dp</br>
+        <br>(по-умолчанию 177 dp):</br>
+    </string>
+    <string name="default_radius_text">177</string>
+    <string name="error_different_number_brackets">Ошибка: различное количество открытых и закрытых скобок.</string>
+    <string name="error_undersquare_low_zero">Ошибка: подкоренное выражение меньше нуля.</string>
+    <string name="error_divide_on_zero">Ошибка: деление на ноль.</string>
+    <string name="error_inside_brackets_empty">Ошибка: внутри скобок ничего нет.</string>
 </resources>

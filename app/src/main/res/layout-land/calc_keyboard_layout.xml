@@ -454,9 +454,8 @@
         android:text="@string/_backspaceOne"
         android:textStyle="normal"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@id/input_history_night"
-        app:layout_constraintEnd_toStartOf="@id/backspace_two_night"
-        app:layout_constraintTop_toBottomOf="@id/six_night" />
+        app:layout_constraintTop_toTopOf="@id/menu_theme_night"
+        app:layout_constraintEnd_toStartOf="@id/backspace_two_night" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/backspace_one"
@@ -464,9 +463,8 @@
         android:text="@string/_backspaceOne"
         android:textStyle="normal"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/input_history"
-        app:layout_constraintEnd_toStartOf="@id/backspace_two"
-        app:layout_constraintTop_toBottomOf="@id/six" />
+        app:layout_constraintTop_toTopOf="@id/menu_theme"
+        app:layout_constraintEnd_toStartOf="@id/backspace_two" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/backspace_two_night"
@@ -474,9 +472,8 @@
         android:text="@string/_backspaceTwo"
         android:textStyle="normal"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@id/input_history_night"
-        app:layout_constraintEnd_toStartOf="@id/backspace_night"
-        app:layout_constraintTop_toBottomOf="@id/six_night" />
+        app:layout_constraintTop_toTopOf="@id/menu_theme_night"
+        app:layout_constraintEnd_toStartOf="@id/backspace_night" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/backspace_two"
@@ -484,16 +481,15 @@
         android:text="@string/_backspaceTwo"
         android:textStyle="normal"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/input_history"
-        app:layout_constraintEnd_toStartOf="@id/backspace"
-        app:layout_constraintTop_toBottomOf="@id/six" />
+        app:layout_constraintTop_toTopOf="@id/menu_theme"
+        app:layout_constraintEnd_toStartOf="@id/backspace" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/backspace_night"
         style="@style/Night.Actions_style"
         android:text="@string/_backspace"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@id/input_history_night"
+        app:layout_constraintTop_toTopOf="@id/menu_theme_night"
         app:layout_constraintEnd_toEndOf="@id/input_history_night" />
 
     <com.google.android.material.button.MaterialButton
@@ -501,7 +497,7 @@
         style="@style/Day.Actions_style"
         android:text="@string/_backspace"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/input_history"
+        app:layout_constraintTop_toTopOf="@id/menu_theme"
         app:layout_constraintEnd_toEndOf="@id/input_history" />
 
     <com.google.android.material.button.MaterialButton
@@ -512,7 +508,8 @@
         android:textAllCaps="false"
         android:textStyle="normal"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@id/input_history_night"
+        app:layout_constraintTop_toTopOf="@id/_result_night"
+        app:layout_constraintBottom_toBottomOf="@id/_result_night"
         app:layout_constraintStart_toStartOf="@id/input_history_night" />
 
     <com.google.android.material.button.MaterialButton
@@ -523,7 +520,8 @@
         android:textAllCaps="false"
         android:textStyle="normal"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/input_history"
+        app:layout_constraintTop_toTopOf="@id/result"
+        app:layout_constraintBottom_toBottomOf="@id/result"
         app:layout_constraintStart_toStartOf="@id/input_history" />
 
     <TextView
@@ -566,11 +564,11 @@
         android:id="@+id/input_history_night"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintHeight_max="@dimen/default_input_history_max_height_portrait"
+        app:layout_constraintHeight_max="@dimen/default_input_history_max_height_landscape"
         android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/backspace_two_night">
+        app:layout_constraintTop_toBottomOf="@id/menu_theme_night"
+        app:layout_constraintEnd_toStartOf="@id/stepen_night"
+        app:layout_constraintStart_toStartOf="parent" >
 
         <TextView
             android:id="@+id/inputed_history_text_night"
@@ -578,7 +576,7 @@
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/input_history_margin_start"
             android:background="@drawable/background_input_history_night"
-            android:ems="@integer/number_inputed_symbols_forEMS_portret"
+            android:ems="@integer/number_inputed_symbols_forEMS_landscape"
             android:paddingStart="@dimen/padding_output_text"
             android:paddingEnd="@dimen/padding_output_text"
             android:text="@string/InputHistory_text"
@@ -591,11 +589,11 @@
         android:id="@+id/input_history"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintHeight_max="@dimen/default_input_history_max_height_portrait"
+        app:layout_constraintHeight_max="@dimen/default_input_history_max_height_landscape"
         android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/backspace_two">
+        app:layout_constraintTop_toBottomOf="@id/menu_theme"
+        app:layout_constraintEnd_toStartOf="@id/stepen"
+        app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:id="@+id/inputed_history_text"
@@ -603,13 +601,12 @@
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/input_history_margin_start"
             android:background="@drawable/background_input_history_day"
-            android:ems="@integer/number_inputed_symbols_forEMS_portret"
+            android:ems="@integer/number_inputed_symbols_forEMS_landscape"
             android:paddingStart="@dimen/padding_output_text"
             android:paddingEnd="@dimen/padding_output_text"
             android:text="@string/InputHistory_text"
             android:textColor="@color/red_erase_day"
             android:textSize="@dimen/result_history_text_size"
-            android:visibility="gone" />
+            android:visibility="gone"/>
     </androidx.core.widget.NestedScrollView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

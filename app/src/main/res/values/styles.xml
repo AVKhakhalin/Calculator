@@ -1,35 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="numbers_style" xmlns:app="http://schemas.android.com/apk/res-auto">
-        <item name="android:layout_width">@dimen/StandartButtonNumber_width</item>
-        <item name="android:layout_height">@dimen/StandartButtonNumber_height</item>
-        <item name="android:textSize">@dimen/textButtonNumbers_size</item>
+    <!-- Day styles -->
+    <style name="Day.Numbers_style" parent="Day">
+        <item name="android:layout_width">@dimen/standart_button_number_width</item>
+        <item name="android:layout_height">@dimen/standart_button_number_height</item>
+        <item name="android:textSize">@dimen/text_button_numbers_size</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/BackgroundInputHistory_color</item>
+        <item name="android:textColor">@color/background_input_history_color_day</item>
         <item name="android:padding">@dimen/text_in_button_padding</item>
-        <item name="android:background">@drawable/buttons_with_numbers_mg</item>
+        <item name="android:background">@drawable/buttons_with_numbers_mg_day</item>
         <item name="backgroundTint">@null</item>
-        <item name="layout_constraintCircle">@id/_RESULT</item>
-        <item name="layout_constraintCircleRadius">@dimen/ButtonCircle_radius</item>
+        <item name="layout_constraintCircle">@id/result</item>
+        <item name="layout_constraintCircleRadius">@dimen/button_circle_radius</item>
     </style>
-    <style name="actions_style">
-        <item name="android:layout_width">@dimen/StandartButtonAction_width</item>
-        <item name="android:layout_height">@dimen/StandartButtonAction_height</item>
-        <item name="android:textSize">@dimen/textButtonActions_size</item>
-        <item name="android:textColor">@color/red_erase</item>
+    <style name="Day.Actions_style" parent="Day">
+        <item name="android:layout_width">@dimen/standart_button_action_width</item>
+        <item name="android:layout_height">@dimen/standart_button_action_height</item>
+        <item name="android:textSize">@dimen/text_button_actions_size</item>
+        <item name="android:textColor">@color/red_erase_day</item>
         <item name="android:textStyle">bold</item>
         <item name="android:padding">@dimen/text_in_button_padding</item>
-        <item name="android:background">@drawable/buttons_with_actions_mg</item>
+        <item name="android:background">@drawable/buttons_with_actions_mg_day</item>
         <item name="backgroundTint">@null</item>
     </style>
-    <style name="menu_style">
-        <item name="android:layout_width">@dimen/StandartButtonAction_width</item>
-        <item name="android:layout_height">@dimen/StandartButtonAction_height</item>
-        <item name="android:textSize">@dimen/textButtonActions_size</item>
-        <item name="android:textColor">@color/red_erase</item>
+    <style name="Day.Menu_style" parent="Day">
+        <item name="android:layout_width">@dimen/standart_button_action_width</item>
+        <item name="android:layout_height">@dimen/standart_button_action_height</item>
+        <item name="android:textSize">@dimen/text_button_actions_size</item>
+        <item name="android:textColor">@color/red_erase_day</item>
         <item name="android:textStyle">bold</item>
         <item name="android:padding">@dimen/text_in_button_padding</item>
-        <item name="android:background">@drawable/buttons_with_menu_mg</item>
+        <item name="android:background">@drawable/buttons_with_menu_mg_day</item>
+        <item name="backgroundTint">@null</item>
+    </style>
+
+    <!-- Night styles -->
+    <style name="Night.Numbers_style" parent="Night">
+        <item name="android:layout_width">@dimen/standart_button_number_width</item>
+        <item name="android:layout_height">@dimen/standart_button_number_height</item>
+        <item name="android:textSize">@dimen/text_button_numbers_size</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/background_input_history_color_night</item>
+        <item name="android:padding">@dimen/text_in_button_padding</item>
+        <item name="android:background">@drawable/buttons_with_numbers_mg_night</item>
+        <item name="backgroundTint">@null</item>
+        <item name="layout_constraintCircle">@id/result</item>
+        <item name="layout_constraintCircleRadius">@dimen/button_circle_radius</item>
+    </style>
+    <style name="Night.Actions_style" parent="Night">
+        <item name="android:layout_width">@dimen/standart_button_action_width</item>
+        <item name="android:layout_height">@dimen/standart_button_action_height</item>
+        <item name="android:textSize">@dimen/text_button_actions_size</item>
+        <item name="android:textColor">@color/red_erase_night</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:padding">@dimen/text_in_button_padding</item>
+        <item name="android:background">@drawable/buttons_with_actions_mg_night</item>
+        <item name="backgroundTint">@null</item>
+    </style>
+    <style name="Night.Menu_style" parent="Night">
+        <item name="android:layout_width">@dimen/standart_button_action_width</item>
+        <item name="android:layout_height">@dimen/standart_button_action_height</item>
+        <item name="android:textSize">@dimen/text_button_actions_size</item>
+        <item name="android:textColor">@color/red_erase_night</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:padding">@dimen/text_in_button_padding</item>
+        <item name="android:background">@drawable/buttons_with_menu_mg_night</item>
         <item name="backgroundTint">@null</item>
     </style>
 </resources>

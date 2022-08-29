@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape
+    xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle" >
+    <corners
+        android:radius="@dimen/corners_radius_very_high" />
+    <gradient
+        android:angle="45"
+        android:centerX="35%"
+        android:centerColor="@color/red_day"
+        android:startColor="@color/red_day"
+        android:endColor="@color/background_input_history_color_day"
+        android:type="linear" />
+    <padding
+        android:left="@dimen/paddings_zero"
+        android:top="@dimen/paddings_zero"
+        android:right="@dimen/paddings_zero"
+        android:bottom="@dimen/paddings_zero" />
+    <size
+        android:width="@dimen/large_circle_width"
+        android:height="@dimen/large_circle_height" />
+    <stroke
+        android:width="@dimen/stroke_width"
+        android:color="@color/green_day" />
+</shape>

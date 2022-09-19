@@ -12,14 +12,6 @@
         android:theme="@style/Night"
         tools:targetApi="30">
         <activity
-            android:name=".view.ui_start.StartActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".view.ui_menu.MenuActivity"
             android:exported="true">
             <intent-filter>
@@ -31,8 +23,8 @@
             android:name=".view.ui_main.MainActivity"
             android:exported="true">
             <intent-filter>
-                <action android:name="ru.geekbrains.lessions2345.calculator" />
-                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>

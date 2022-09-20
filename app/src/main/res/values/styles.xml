@@ -2,8 +2,8 @@
 <resources>
     <!-- Day styles -->
     <style name="Day.Numbers_style" parent="Day">
-        <item name="android:layout_width">@dimen/standart_button_number_width</item>
-        <item name="android:layout_height">@dimen/standart_button_number_height</item>
+        <item name="android:layout_width">@dimen/button_number_width_standard</item>
+        <item name="android:layout_height">@dimen/button_number_height_standard</item>
         <item name="android:textSize">@dimen/text_button_numbers_size</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/background_input_history_color_day</item>
@@ -19,8 +19,8 @@
         <item name="android:insetBottom">0dp</item>
     </style>
     <style name="Day.Actions_style" parent="Day">
-        <item name="android:layout_width">@dimen/standart_button_action_width</item>
-        <item name="android:layout_height">@dimen/standart_button_action_height</item>
+        <item name="android:layout_width">@dimen/button_action_width_standard</item>
+        <item name="android:layout_height">@dimen/button_action_height_standard</item>
         <item name="android:textSize">@dimen/text_button_actions_size</item>
         <item name="android:textColor">@color/red_erase_day</item>
         <item name="android:textStyle">bold</item>
@@ -34,8 +34,8 @@
         <item name="android:insetBottom">0dp</item>
     </style>
     <style name="Day.Menu_style" parent="Day">
-        <item name="android:layout_width">@dimen/standart_button_action_width</item>
-        <item name="android:layout_height">@dimen/standart_button_action_height</item>
+        <item name="android:layout_width">@dimen/button_action_width_standard</item>
+        <item name="android:layout_height">@dimen/button_action_height_standard</item>
         <item name="android:textSize">@dimen/text_button_actions_size</item>
         <item name="android:textColor">@color/red_erase_day</item>
         <item name="android:textStyle">bold</item>
@@ -46,8 +46,8 @@
 
     <!-- Night styles -->
     <style name="Night.Numbers_style" parent="Night">
-        <item name="android:layout_width">@dimen/standart_button_number_width</item>
-        <item name="android:layout_height">@dimen/standart_button_number_height</item>
+        <item name="android:layout_width">@dimen/button_number_width_standard</item>
+        <item name="android:layout_height">@dimen/button_number_height_standard</item>
         <item name="android:textSize">@dimen/text_button_numbers_size</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/background_input_history_color_night</item>
@@ -63,8 +63,8 @@
         <item name="android:insetBottom">0dp</item>
     </style>
     <style name="Night.Actions_style" parent="Night">
-        <item name="android:layout_width">@dimen/standart_button_action_width</item>
-        <item name="android:layout_height">@dimen/standart_button_action_height</item>
+        <item name="android:layout_width">@dimen/button_action_width_standard</item>
+        <item name="android:layout_height">@dimen/button_action_height_standard</item>
         <item name="android:textSize">@dimen/text_button_actions_size</item>
         <item name="android:textColor">@color/red_erase_night</item>
         <item name="android:textStyle">bold</item>
@@ -78,8 +78,8 @@
         <item name="android:insetBottom">0dp</item>
     </style>
     <style name="Night.Menu_style" parent="Night">
-        <item name="android:layout_width">@dimen/standart_button_action_width</item>
-        <item name="android:layout_height">@dimen/standart_button_action_height</item>
+        <item name="android:layout_width">@dimen/button_action_width_standard</item>
+        <item name="android:layout_height">@dimen/button_action_height_standard</item>
         <item name="android:textSize">@dimen/text_button_actions_size</item>
         <item name="android:textColor">@color/red_erase_night</item>
         <item name="android:textStyle">bold</item>

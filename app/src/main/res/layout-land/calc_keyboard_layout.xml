@@ -571,7 +571,7 @@
         app:layout_constraintStart_toStartOf="parent" >
 
         <TextView
-            android:id="@+id/inputed_history_text_night"
+            android:id="@+id/inputted_history_text_night"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/input_history_margin_start"
@@ -596,7 +596,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:id="@+id/inputed_history_text"
+            android:id="@+id/inputted_history_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/input_history_margin_start"

@@ -9,10 +9,10 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 
 import ru.geekbrains.lessions2345.calculator.R;
-import ru.geekbrains.lessions2345.calculator.core.Constants;
+import ru.geekbrains.lessions2345.calculator.view.ViewConstants;
 import ru.geekbrains.lessions2345.calculator.view.ui_main.MainActivity;
 
-public class MenuActivity extends AppCompatActivity implements Constants, View.OnClickListener,
+public class MenuActivity extends AppCompatActivity implements ViewConstants, View.OnClickListener,
         ViewMenuContract {
 
     Button button_setDayTheme;
@@ -100,8 +100,12 @@ public class MenuActivity extends AppCompatActivity implements Constants, View.O
     private THEMES getSettings() {
         SharedPreferences sharedPreferences = getSharedPreferences(KEY_SETTINGS, MODE_PRIVATE);
         int currentTheme = sharedPreferences.getInt(KEY_CURRENT_THEME, 1);
-        curRadiusButtons = sharedPreferences.getInt(KEY_CURRENT_RADIUS,
-                MainActivity.DEFAULT_BUTTON_RADIUS);
+        if (this.getResources().getDisplayMetrics().widthPixels >= BORDER_WIDTH)
+            curRadiusButtons = sharedPreferences.getInt(KEY_CURRENT_RADIUS,
+                    MainActivity.DEFAULT_BUTTON_RADIUS);
+        else
+            curRadiusButtons = sharedPreferences.getInt(KEY_CURRENT_RADIUS,
+                    MainActivity.DEFAULT_BUTTON_RADIUS_SMALL);
         if (currentTheme == 0) {
             return THEMES.NIGHT_THEME;
         } else {

@@ -15,61 +15,73 @@ import android.widget.Toast;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import ru.geekbrains.lessions2345.calculator.R;
 import ru.geekbrains.lessions2345.calculator.core.Constants;
+import ru.geekbrains.lessions2345.calculator.view.ViewConstants;
 import ru.geekbrains.lessions2345.calculator.view.ui_menu.MenuActivity;
 
 public class MainActivity extends Activity implements View.OnClickListener,
-        Constants, ViewMainContract {
+        ViewConstants, Constants, ViewMainContract {
     private TextView outputResultText;
-    private TextView inputedHistoryText;
-    private Button button_0;
-    private Button button_1;
-    private Button button_2;
-    private Button button_3;
-    private Button button_4;
-    private Button button_5;
-    private Button button_6;
-    private Button button_7;
-    private Button button_8;
-    private Button button_9;
-    private Button button_equal;
-    private Button button_zapitay;
-    private Button button_bracket_close;
-    private Button button_backspace;
-    private Button button_backspace_one;
-    private Button button_backspace_two;
-    private Button button_bracket_open;
-    private Button button_divide;
-    private Button button_minus;
-    private Button button_multiply;
-    private Button button_percent;
-    private Button button_plus;
-    private Button button_plus_minus;
-    private Button button_sqrt;
-    private Button button_stepen;
-    private Button button_change_theme;
+    private TextView inputtedHistoryText;
+    private Button buttonZero;
+    private Button buttonOne;
+    private Button buttonTwo;
+    private Button buttonThree;
+    private Button buttonFour;
+    private Button buttonFive;
+    private Button buttonSix;
+    private Button buttonSeven;
+    private Button buttonEight;
+    private Button buttonNine;
+    private Button buttonEqual;
+    private Button buttonZapitay;
+    private Button buttonBracketClose;
+    private Button buttonBackspace;
+    private Button buttonBackspaceOne;
+    private Button buttonBackspaceTwo;
+    private Button buttonBracketOpen;
+    private Button buttonDivide;
+    private Button buttonMinus;
+    private Button buttonMultiply;
+    private Button buttonPercent;
+    private Button buttonPlus;
+    private Button buttonPlusMinus;
+    private Button buttonSqrt;
+    private Button buttonStepen;
+    private Button buttonChangeTheme;
+    private final List<Button> buttonsNumbersGroups = new ArrayList();
+    private final List<Button> buttonsActionsGroups = new ArrayList();
 
     private THEMES currentTheme;
 
     private MainPresenter mainPresenter = new MainPresenter();
-    private int koeff_DP;
+    private float koeff_DP;
     private int curRadiusButtons;
     private boolean doChangeRadius = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         // Установка темы
-        koeff_DP = (int) getApplicationContext().getResources().getDisplayMetrics().density;
+        koeff_DP = this.getResources().getDisplayMetrics().density;
         currentTheme = getSettings();
         setCalculatorTheme(currentTheme);
         setContentView(R.layout.calc_keyboard_layout);
         // Отслеживание первичного запуска или перезапуска активити
         if (savedInstanceState == null) {
             // Умножаем на 2, потому что ширина чисел вдвое меньше величины EMS
-            mainPresenter.setMaxNumberSymbolsInOutputTextField(
-                    getResources().getInteger(R.integer.number_output_symbols_forEMS) * 2);
+            if (this.getResources().getDisplayMetrics().widthPixels >= BORDER_WIDTH)
+                mainPresenter.setMaxNumberSymbolsInOutputTextField(
+                getResources().getInteger(R.integer.number_output_symbols_forEMS) * 2);
+            else
+                mainPresenter.setMaxNumberSymbolsInOutputTextField(
+                        getResources().getInteger(R.integer.number_output_symbols_forEMS_small) * 2);
         } else {
             // Восстановление класса mainPresenter после поворота экрана
             if ((MainPresenter) getLastNonConfigurationInstance() != null) {
@@ -87,8 +99,8 @@ public class MainActivity extends Activity implements View.OnClickListener,
         // Установка обновлённого максимального значения высоты текстового поля с историей ввода
         // (_input_history и _input_history_night)
         setNewMaxHeightForInputHistory();
-        // Установка обновлённого значения радиуса окружности кнопок
-        setNewRadiusButtons(curRadiusButtons * koeff_DP);
+        // Установка обновлённых значений размеров элементов сцены
+        setNewSizesElements(Math.round(curRadiusButtons * koeff_DP));
     }
 
     @Override
@@ -105,15 +117,15 @@ public class MainActivity extends Activity implements View.OnClickListener,
         Point size = new Point();
         display.getSize(size);
         int height = size.y;
-        int newMaxHeight_dp = Math.round(convertPixelsToDp(getApplicationContext(),
-                Math.round(height / KOEFF_RESIZE_HEIGHT)));
+        int newMaxHeightDp = Math.round(convertPixelsToDp(getApplicationContext(),
+            Math.round(height / KOEFF_RESIZE_HEIGHT)));
 
         // Смена значения поля в constraintLayout
         ConstraintLayout constraintLayout = findViewById(R.id.run_calculator);
         ConstraintSet constraintSet = new ConstraintSet();
         constraintSet.clone(constraintLayout);
-        constraintSet.constrainMaxHeight(R.id.input_history, newMaxHeight_dp);
-        constraintSet.constrainMaxHeight(R.id.input_history_night, newMaxHeight_dp);
+        constraintSet.constrainMaxHeight(R.id.input_history, newMaxHeightDp);
+        constraintSet.constrainMaxHeight(R.id.input_history_night, newMaxHeightDp);
         constraintSet.applyTo(constraintLayout);
     }
 
@@ -158,8 +170,8 @@ public class MainActivity extends Activity implements View.OnClickListener,
     }
 
     @Override
-    public void setInputedHistoryText(String newText) {
-        inputedHistoryText.setText(newText);
+    public void setInputtedHistoryText(String newText) {
+        inputtedHistoryText.setText(newText);
     }
 
     @Override
@@ -198,58 +210,58 @@ public class MainActivity extends Activity implements View.OnClickListener,
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == button_0.getId()) {
+        if (v.getId() == buttonZero.getId()) {
             mainPresenter.addNumeral(0);
-        } else if (v.getId() == button_1.getId()) {
+        } else if (v.getId() == buttonOne.getId()) {
             mainPresenter.addNumeral(1);
-        } else if (v.getId() == button_2.getId()) {
+        } else if (v.getId() == buttonTwo.getId()) {
             mainPresenter.addNumeral(2);
-        } else if (v.getId() == button_3.getId()) {
+        } else if (v.getId() == buttonThree.getId()) {
             mainPresenter.addNumeral(3);
-        } else if (v.getId() == button_4.getId()) {
+        } else if (v.getId() == buttonFour.getId()) {
             mainPresenter.addNumeral(4);
-        } else if (v.getId() == button_5.getId()) {
+        } else if (v.getId() == buttonFive.getId()) {
             mainPresenter.addNumeral(5);
-        } else if (v.getId() == button_6.getId()) {
+        } else if (v.getId() == buttonSix.getId()) {
             mainPresenter.addNumeral(6);
-        } else if (v.getId() == button_7.getId()) {
+        } else if (v.getId() == buttonSeven.getId()) {
             mainPresenter.addNumeral(7);
-        } else if (v.getId() == button_8.getId()) {
+        } else if (v.getId() == buttonEight.getId()) {
             mainPresenter.addNumeral(8);
-        } else if (v.getId() == button_9.getId()) {
+        } else if (v.getId() == buttonNine.getId()) {
             mainPresenter.addNumeral(9);
-        } else if (v.getId() == button_equal.getId()) {
+        } else if (v.getId() == buttonEqual.getId()) {
             mainPresenter.setEqual();
-        } else if (v.getId() == button_zapitay.getId()) {
+        } else if (v.getId() == buttonZapitay.getId()) {
             mainPresenter.setCurZapitay();
-        } else if (v.getId() == button_bracket_open.getId()) {
+        } else if (v.getId() == buttonBracketOpen.getId()) {
             mainPresenter.setBracketOpen();
-        } else if (v.getId() == button_bracket_close.getId()) {
+        } else if (v.getId() == buttonBracketClose.getId()) {
             mainPresenter.setBracketClose();
-        } else if (v.getId() == button_backspace.getId()) {
+        } else if (v.getId() == buttonBackspace.getId()) {
             mainPresenter.clearAll();
-        } else if (v.getId() == button_backspace_one.getId()) {
+        } else if (v.getId() == buttonBackspaceOne.getId()) {
             mainPresenter.clearOne();
-        } else if (v.getId() == button_backspace_two.getId()) {
+        } else if (v.getId() == buttonBackspaceTwo.getId()) {
             mainPresenter.clearTwo();
-        } else if (v.getId() == button_divide.getId()) {
+        } else if (v.getId() == buttonDivide.getId()) {
             mainPresenter.setNewAction(ACTIONS.ACT_DIV);
-        } else if (v.getId() == button_minus.getId()) {
+        } else if (v.getId() == buttonMinus.getId()) {
             mainPresenter.setNewAction(ACTIONS.ACT_MINUS);
-        } else if (v.getId() == button_multiply.getId()) {
+        } else if (v.getId() == buttonMultiply.getId()) {
             mainPresenter.setNewAction(ACTIONS.ACT_MULTY);
-        } else if (v.getId() == button_plus.getId()) {
+        } else if (v.getId() == buttonPlus.getId()) {
             mainPresenter.setNewAction(ACTIONS.ACT_PLUS);
-        } else if (v.getId() == button_percent.getId()) {
+        } else if (v.getId() == buttonPercent.getId()) {
             // Задаётся универсальное значение ACT_PERS_MULTY и оно уточняется в методе setNewAction
             mainPresenter.setNewAction(ACTIONS.ACT_PERS_MULTY);
-        } else if (v.getId() == button_plus_minus.getId()) {
+        } else if (v.getId() == buttonPlusMinus.getId()) {
             mainPresenter.changeSign();
-        } else if (v.getId() == button_stepen.getId()) {
+        } else if (v.getId() == buttonStepen.getId()) {
             mainPresenter.setNewAction(ACTIONS.ACT_STEP);
-        } else if (v.getId() == button_sqrt.getId()) {
+        } else if (v.getId() == buttonSqrt.getId()) {
             mainPresenter.setNewFunction(FUNCTIONS.FUNC_SQRT);
-        } else if (v.getId() == button_change_theme.getId()) {
+        } else if (v.getId() == buttonChangeTheme.getId()) {
             Intent intent = new Intent(MainActivity.this, MenuActivity.class);
             startActivity(intent);
         }
@@ -261,26 +273,26 @@ public class MainActivity extends Activity implements View.OnClickListener,
         if (currentTheme == THEMES.NIGHT_THEME) {
             // Инициализация текстовых полей
             outputResultText = findViewById(R.id._result_night);
-            inputedHistoryText = findViewById(R.id.inputed_history_text_night);
+            inputtedHistoryText = findViewById(R.id.inputted_history_text_night);
             // Показать текстовые поля с ночной темой
             outputResultText.setVisibility(View.VISIBLE);
-            inputedHistoryText.setVisibility(View.VISIBLE);
+            inputtedHistoryText.setVisibility(View.VISIBLE);
             findViewById(R.id.input_history_night).setVisibility(View.VISIBLE);
             // Спрятать (убрать с поля) текстовые поля с дневной темой
             findViewById(R.id.result).setVisibility(View.GONE);
-            findViewById(R.id.inputed_history_text).setVisibility(View.GONE);
+            findViewById(R.id.inputted_history_text).setVisibility(View.GONE);
             findViewById(R.id.input_history).setVisibility(View.GONE);
         } else {
             // Инициализация текстовых полей
             outputResultText = findViewById(R.id.result);
-            inputedHistoryText = findViewById(R.id.inputed_history_text);
+            inputtedHistoryText = findViewById(R.id.inputted_history_text);
             // Показать текстовые поля с дневной темой
             outputResultText.setVisibility(View.VISIBLE);
-            inputedHistoryText.setVisibility(View.VISIBLE);
+            inputtedHistoryText.setVisibility(View.VISIBLE);
             findViewById(R.id.input_history).setVisibility(View.VISIBLE);
             // Спрятать (убрать с поля) текстовые поля с ночной темой
             findViewById(R.id._result_night).setVisibility(View.GONE);
-            findViewById(R.id.inputed_history_text_night).setVisibility(View.GONE);
+            findViewById(R.id.inputted_history_text_night).setVisibility(View.GONE);
             findViewById(R.id.input_history_night).setVisibility(View.GONE);
         }
         mainPresenter.calculate();
@@ -291,92 +303,37 @@ public class MainActivity extends Activity implements View.OnClickListener,
     // Инициализация кнопок
     private void initButtons() {
         if (currentTheme == THEMES.NIGHT_THEME) {
-            // Установка кнопок с числами в ночном режиме
-            button_0 = findViewById(R.id.zero_night);
-            button_0.setOnClickListener(this);
-            button_0.setVisibility(View.VISIBLE);
-            button_1 = findViewById(R.id.one_night);
-            button_1.setOnClickListener(this);
-            button_2 = findViewById(R.id.two_night);
-            button_2.setOnClickListener(this);
-            button_3 = findViewById(R.id.three_night);
-            button_3.setOnClickListener(this);
-            button_4 = findViewById(R.id.four_night);
-            button_4.setOnClickListener(this);
-            button_5 = findViewById(R.id.five_night);
-            button_5.setOnClickListener(this);
-            button_6 = findViewById(R.id.six_night);
-            button_6.setOnClickListener(this);
-            button_7 = findViewById(R.id.seven_night);
-            button_7.setOnClickListener(this);
-            button_8 = findViewById(R.id.eight_night);
-            button_8.setOnClickListener(this);
-            button_9 = findViewById(R.id.nine_night);
-            button_9.setOnClickListener(this);
+            // Инициализация кнопок с цифрами в ночном режиме
+            buttonZero = findViewById(R.id.zero_night);
+            buttonOne = findViewById(R.id.one_night);
+            buttonTwo = findViewById(R.id.two_night);
+            buttonThree = findViewById(R.id.three_night);
+            buttonFour = findViewById(R.id.four_night);
+            buttonFive = findViewById(R.id.five_night);
+            buttonSix = findViewById(R.id.six_night);
+            buttonSeven = findViewById(R.id.seven_night);
+            buttonEight = findViewById(R.id.eight_night);
+            buttonNine = findViewById(R.id.nine_night);
 
             // Установка кнопок с действиями в ночном режиме
-            button_equal = findViewById(R.id.equal_night);
-            button_equal.setOnClickListener(this);
-            button_zapitay = findViewById(R.id.zapitay_night);
-            button_zapitay.setOnClickListener(this);
-            button_bracket_close = findViewById(R.id.bracket_close_night);
-            button_bracket_close.setOnClickListener(this);
-            button_backspace = findViewById(R.id.backspace_night);
-            button_backspace.setOnClickListener(this);
-            button_backspace_one = findViewById(R.id.backspace_one_night);
-            button_backspace_one.setOnClickListener(this);
-            button_backspace_two = findViewById(R.id.backspace_two_night);
-            button_backspace_two.setOnClickListener(this);
-            button_bracket_open = findViewById(R.id.bracket_open_night);
-            button_bracket_open.setOnClickListener(this);
-            button_divide = findViewById(R.id.divide_night);
-            button_divide.setOnClickListener(this);
-            button_minus = findViewById(R.id.minus_night);
-            button_minus.setOnClickListener(this);
-            button_multiply = findViewById(R.id.multiply_night);
-            button_multiply.setOnClickListener(this);
-            button_percent = findViewById(R.id.percent_night);
-            button_percent.setOnClickListener(this);
-            button_plus = findViewById(R.id.plus_night);
-            button_plus.setOnClickListener(this);
-            button_plus_minus = findViewById(R.id.plus_minus_night);
-            button_plus_minus.setOnClickListener(this);
-            button_sqrt = findViewById(R.id.sqrt_night);
-            button_sqrt.setOnClickListener(this);
-            button_stepen = findViewById(R.id.stepen_night);
-            button_stepen.setOnClickListener(this);
-            button_change_theme = findViewById(R.id.menu_theme_night);
-            button_change_theme.setOnClickListener(this);
+            buttonEqual = findViewById(R.id.equal_night);
+            buttonZapitay = findViewById(R.id.zapitay_night);
+            buttonBracketClose = findViewById(R.id.bracket_close_night);
+            buttonBackspace = findViewById(R.id.backspace_night);
+            buttonBackspaceOne = findViewById(R.id.backspace_one_night);
+            buttonBackspaceTwo = findViewById(R.id.backspace_two_night);
+            buttonBracketOpen = findViewById(R.id.bracket_open_night);
+            buttonDivide = findViewById(R.id.divide_night);
+            buttonMinus = findViewById(R.id.minus_night);
+            buttonMultiply = findViewById(R.id.multiply_night);
+            buttonPercent = findViewById(R.id.percent_night);
+            buttonPlus = findViewById(R.id.plus_night);
+            buttonPlusMinus = findViewById(R.id.plus_minus_night);
+            buttonSqrt = findViewById(R.id.sqrt_night);
+            buttonStepen = findViewById(R.id.stepen_night);
+            buttonChangeTheme = findViewById(R.id.menu_theme_night);
 
-            // Показать все кнопки в ночном режиме
-            findViewById(R.id.zero_night).setVisibility(View.VISIBLE);
-            findViewById(R.id.one_night).setVisibility(View.VISIBLE);
-            findViewById(R.id.two_night).setVisibility(View.VISIBLE);
-            findViewById(R.id.three_night).setVisibility(View.VISIBLE);
-            findViewById(R.id.four_night).setVisibility(View.VISIBLE);
-            findViewById(R.id.five_night).setVisibility(View.VISIBLE);
-            findViewById(R.id.six_night).setVisibility(View.VISIBLE);
-            findViewById(R.id.seven_night).setVisibility(View.VISIBLE);
-            findViewById(R.id.eight_night).setVisibility(View.VISIBLE);
-            findViewById(R.id.nine_night).setVisibility(View.VISIBLE);
-            findViewById(R.id.equal_night).setVisibility(View.VISIBLE);
-            findViewById(R.id.zapitay_night).setVisibility(View.VISIBLE);
-            findViewById(R.id.bracket_close_night).setVisibility(View.VISIBLE);
-            findViewById(R.id.backspace_night).setVisibility(View.VISIBLE);
-            findViewById(R.id.backspace_one_night).setVisibility(View.VISIBLE);
-            findViewById(R.id.backspace_two_night).setVisibility(View.VISIBLE);
-            findViewById(R.id.bracket_open_night).setVisibility(View.VISIBLE);
-            findViewById(R.id.divide_night).setVisibility(View.VISIBLE);
-            findViewById(R.id.minus_night).setVisibility(View.VISIBLE);
-            findViewById(R.id.multiply_night).setVisibility(View.VISIBLE);
-            findViewById(R.id.percent_night).setVisibility(View.VISIBLE);
-            findViewById(R.id.plus_night).setVisibility(View.VISIBLE);
-            findViewById(R.id.plus_minus_night).setVisibility(View.VISIBLE);
-            findViewById(R.id.sqrt_night).setVisibility(View.VISIBLE);
-            findViewById(R.id.stepen_night).setVisibility(View.VISIBLE);
-            findViewById(R.id.menu_theme_night).setVisibility(View.VISIBLE);
-
-            // Спрятать (урать с поля) кнопки в дневном режиме
+            // Спрятать (убрать с поля) кнопки в дневном режиме
             findViewById(R.id.zero).setVisibility(View.GONE);
             findViewById(R.id.one).setVisibility(View.GONE);
             findViewById(R.id.two).setVisibility(View.GONE);
@@ -405,88 +362,34 @@ public class MainActivity extends Activity implements View.OnClickListener,
             findViewById(R.id.menu_theme).setVisibility(View.GONE);
         } else {
             // Установка кнопок с числами в дневном режиме
-            button_0 = findViewById(R.id.zero);
-            button_0.setOnClickListener(this);
-            button_1 = findViewById(R.id.one);
-            button_1.setOnClickListener(this);
-            button_2 = findViewById(R.id.two);
-            button_2.setOnClickListener(this);
-            button_3 = findViewById(R.id.three);
-            button_3.setOnClickListener(this);
-            button_4 = findViewById(R.id.four);
-            button_4.setOnClickListener(this);
-            button_5 = findViewById(R.id.five);
-            button_5.setOnClickListener(this);
-            button_6 = findViewById(R.id.six);
-            button_6.setOnClickListener(this);
-            button_7 = findViewById(R.id.seven);
-            button_7.setOnClickListener(this);
-            button_8 = findViewById(R.id.eight);
-            button_8.setOnClickListener(this);
-            button_9 = findViewById(R.id.nine);
-            button_9.setOnClickListener(this);
+            buttonZero = findViewById(R.id.zero);
+            buttonOne = findViewById(R.id.one);
+            buttonTwo = findViewById(R.id.two);
+            buttonThree = findViewById(R.id.three);
+            buttonFour = findViewById(R.id.four);
+            buttonFive = findViewById(R.id.five);
+            buttonSix = findViewById(R.id.six);
+            buttonSeven = findViewById(R.id.seven);
+            buttonEight = findViewById(R.id.eight);
+            buttonNine = findViewById(R.id.nine);
 
             // Установка кнопок с действиями в дневном режиме
-            button_equal = findViewById(R.id.equal);
-            button_equal.setOnClickListener(this);
-            button_zapitay = findViewById(R.id.zapitay);
-            button_zapitay.setOnClickListener(this);
-            button_bracket_close = findViewById(R.id.bracket_close);
-            button_bracket_close.setOnClickListener(this);
-            button_backspace = findViewById(R.id.backspace);
-            button_backspace.setOnClickListener(this);
-            button_backspace_one = findViewById(R.id.backspace_one);
-            button_backspace_one.setOnClickListener(this);
-            button_backspace_two = findViewById(R.id.backspace_two);
-            button_backspace_two.setOnClickListener(this);
-            button_bracket_open = findViewById(R.id.bracket_open);
-            button_bracket_open.setOnClickListener(this);
-            button_divide = findViewById(R.id.divide);
-            button_divide.setOnClickListener(this);
-            button_minus = findViewById(R.id.minus);
-            button_minus.setOnClickListener(this);
-            button_multiply = findViewById(R.id.multiply);
-            button_multiply.setOnClickListener(this);
-            button_percent = findViewById(R.id.percent);
-            button_percent.setOnClickListener(this);
-            button_plus = findViewById(R.id.plus);
-            button_plus.setOnClickListener(this);
-            button_plus_minus = findViewById(R.id.plus_minus);
-            button_plus_minus.setOnClickListener(this);
-            button_sqrt = findViewById(R.id.sqrt);
-            button_sqrt.setOnClickListener(this);
-            button_stepen = findViewById(R.id.stepen);
-            button_stepen.setOnClickListener(this);
-            button_change_theme = findViewById(R.id.menu_theme);
-            button_change_theme.setOnClickListener(this);
-
-            // Показать кнопки в дневном режиме
-            findViewById(R.id.zero).setVisibility(View.VISIBLE);
-            findViewById(R.id.one).setVisibility(View.VISIBLE);
-            findViewById(R.id.two).setVisibility(View.VISIBLE);
-            findViewById(R.id.three).setVisibility(View.VISIBLE);
-            findViewById(R.id.four).setVisibility(View.VISIBLE);
-            findViewById(R.id.five).setVisibility(View.VISIBLE);
-            findViewById(R.id.six).setVisibility(View.VISIBLE);
-            findViewById(R.id.seven).setVisibility(View.VISIBLE);
-            findViewById(R.id.eight).setVisibility(View.VISIBLE);
-            findViewById(R.id.nine).setVisibility(View.VISIBLE);
-            findViewById(R.id.equal).setVisibility(View.VISIBLE);
-            findViewById(R.id.zapitay).setVisibility(View.VISIBLE);
-            findViewById(R.id.bracket_close).setVisibility(View.VISIBLE);
-            findViewById(R.id.backspace).setVisibility(View.VISIBLE);
-            findViewById(R.id.backspace_one).setVisibility(View.VISIBLE);
-            findViewById(R.id.backspace_two).setVisibility(View.VISIBLE);
-            findViewById(R.id.bracket_open).setVisibility(View.VISIBLE);
-            findViewById(R.id.divide).setVisibility(View.VISIBLE);
-            findViewById(R.id.minus).setVisibility(View.VISIBLE);
-            findViewById(R.id.multiply).setVisibility(View.VISIBLE);
-            findViewById(R.id.percent).setVisibility(View.VISIBLE);
-            findViewById(R.id.plus).setVisibility(View.VISIBLE);
-            findViewById(R.id.plus_minus).setVisibility(View.VISIBLE);
-            findViewById(R.id.sqrt).setVisibility(View.VISIBLE);
-            findViewById(R.id.stepen).setVisibility(View.VISIBLE);
-            findViewById(R.id.menu_theme).setVisibility(View.VISIBLE);
+            buttonEqual = findViewById(R.id.equal);
+            buttonZapitay = findViewById(R.id.zapitay);
+            buttonBracketClose = findViewById(R.id.bracket_close);
+            buttonBackspace = findViewById(R.id.backspace);
+            buttonBackspaceOne = findViewById(R.id.backspace_one);
+            buttonBackspaceTwo = findViewById(R.id.backspace_two);
+            buttonBracketOpen = findViewById(R.id.bracket_open);
+            buttonDivide = findViewById(R.id.divide);
+            buttonMinus = findViewById(R.id.minus);
+            buttonMultiply = findViewById(R.id.multiply);
+            buttonPercent = findViewById(R.id.percent);
+            buttonPlus = findViewById(R.id.plus);
+            buttonPlusMinus = findViewById(R.id.plus_minus);
+            buttonSqrt = findViewById(R.id.sqrt);
+            buttonStepen = findViewById(R.id.stepen);
+            buttonChangeTheme = findViewById(R.id.menu_theme);
 
             // Спрятать (убрать с поля) кнопки в ночном режиме
             findViewById(R.id.zero_night).setVisibility(View.GONE);
@@ -516,21 +419,39 @@ public class MainActivity extends Activity implements View.OnClickListener,
             findViewById(R.id.stepen_night).setVisibility(View.GONE);
             findViewById(R.id.menu_theme_night).setVisibility(View.GONE);
         }
+
+        // Установка слушателей событий на кнопки
+        buttonsNumbersGroups.addAll(Arrays.asList(buttonZero, buttonOne, buttonTwo, buttonThree,
+                buttonFour, buttonFive, buttonSix, buttonSeven, buttonEight, buttonNine));
+        buttonsNumbersGroups.forEach( button -> {
+            button.setVisibility(View.VISIBLE);
+            button.setOnClickListener(this);
+        });
+        buttonsActionsGroups.addAll(Arrays.asList(buttonEqual, buttonZapitay,
+                buttonBracketClose, buttonBackspace, buttonBackspaceOne, buttonBackspaceTwo,
+                buttonBracketOpen, buttonDivide, buttonMinus, buttonMultiply, buttonPercent,
+                buttonPlus, buttonPlusMinus, buttonSqrt, buttonStepen));
+        buttonsActionsGroups.forEach( button -> {
+            button.setVisibility(View.VISIBLE);
+            button.setOnClickListener(this);
+        });
+        buttonChangeTheme.setOnClickListener(this);
+        buttonChangeTheme.setVisibility(View.VISIBLE);
     }
 
     // Отобразить индикатор ввода вещественного числа
     private void buttonZapitayChange() {
         if (!mainPresenter.getPressedZapitay()) {
             if (currentTheme == THEMES.NIGHT_THEME) {
-                button_zapitay.setBackgroundResource(R.drawable.buttons_with_actions_mg_night);
+                buttonZapitay.setBackgroundResource(R.drawable.buttons_with_actions_mg_night);
             } else {
-                button_zapitay.setBackgroundResource(R.drawable.buttons_with_actions_mg_day);
+                buttonZapitay.setBackgroundResource(R.drawable.buttons_with_actions_mg_day);
             }
         } else {
             if (currentTheme == THEMES.NIGHT_THEME) {
-                button_zapitay.setBackgroundResource(R.drawable.buttons_with_numbers_mg_night);
+                buttonZapitay.setBackgroundResource(R.drawable.buttons_with_numbers_mg_night);
             } else {
-                button_zapitay.setBackgroundResource(R.drawable.buttons_with_numbers_mg_day);
+                buttonZapitay.setBackgroundResource(R.drawable.buttons_with_numbers_mg_day);
             }
         }
     }
@@ -539,7 +460,11 @@ public class MainActivity extends Activity implements View.OnClickListener,
     private THEMES getSettings() {
         SharedPreferences sharedPreferences = getSharedPreferences(KEY_SETTINGS, MODE_PRIVATE);
         int currentTheme = sharedPreferences.getInt(KEY_CURRENT_THEME, 1);
-        curRadiusButtons = sharedPreferences.getInt(KEY_CURRENT_RADIUS, DEFAULT_BUTTON_RADIUS);
+        if (this.getResources().getDisplayMetrics().widthPixels >= BORDER_WIDTH)
+            curRadiusButtons = sharedPreferences.getInt(KEY_CURRENT_RADIUS, DEFAULT_BUTTON_RADIUS);
+        else
+            curRadiusButtons = sharedPreferences.getInt(
+                    KEY_CURRENT_RADIUS, DEFAULT_BUTTON_RADIUS_SMALL);
         doChangeRadius = sharedPreferences.getBoolean(KEY_DOCHANGE_RADIUS, false);
         if (currentTheme == 0) {
             return THEMES.NIGHT_THEME;
@@ -560,44 +485,57 @@ public class MainActivity extends Activity implements View.OnClickListener,
             editor.putInt(KEY_CURRENT_THEME, 0);
         }
         // Сохранение радиуса кнопок
-        int newRadius = curRadiusButtons;
-        editor.putInt(KEY_CURRENT_RADIUS, newRadius);
+        editor.putInt(KEY_CURRENT_RADIUS, curRadiusButtons);
         // Ставим false, что говорит о том, что изменения радиуса отработали
         editor.putBoolean(KEY_DOCHANGE_RADIUS, false);
         editor.apply();
     }
 
-    private void setNewRadiusButtons(int newRadius) {
-        // Смена значения поля в constraintLayout
+    private void setNewSizesElements(int newRadius) {
         ConstraintLayout constraintLayout = findViewById(R.id.run_calculator);
         ConstraintSet constraintSet = new ConstraintSet();
         constraintSet.clone(constraintLayout);
-        constraintSet.constrainCircle(R.id.zero, R.id.result, newRadius, 0);
-        constraintSet.constrainCircle(R.id.zero_night, R.id._result_night, newRadius, 0);
-        constraintSet.constrainCircle(R.id.one, R.id.result, newRadius, 30);
-        constraintSet.constrainCircle(R.id.one_night, R.id._result_night, newRadius, 30);
-        constraintSet.constrainCircle(R.id.two, R.id.result, newRadius, 60);
-        constraintSet.constrainCircle(R.id.two_night, R.id._result_night, newRadius, 60);
-        constraintSet.constrainCircle(R.id.three, R.id.result, newRadius, 90);
-        constraintSet.constrainCircle(R.id.three_night, R.id._result_night, newRadius, 90);
-        constraintSet.constrainCircle(R.id.four, R.id.result, newRadius, 120);
-        constraintSet.constrainCircle(R.id.four_night, R.id._result_night, newRadius, 120);
-        constraintSet.constrainCircle(R.id.five, R.id.result, newRadius, 150);
-        constraintSet.constrainCircle(R.id.five_night, R.id._result_night, newRadius, 150);
-        constraintSet.constrainCircle(R.id.six, R.id.result, newRadius, 180);
-        constraintSet.constrainCircle(R.id.six_night, R.id._result_night, newRadius, 180);
-        constraintSet.constrainCircle(R.id.seven, R.id.result, newRadius, 210);
-        constraintSet.constrainCircle(R.id.seven_night, R.id._result_night, newRadius, 210);
-        constraintSet.constrainCircle(R.id.eight, R.id.result, newRadius, 240);
-        constraintSet.constrainCircle(R.id.eight_night, R.id._result_night, newRadius, 240);
-        constraintSet.constrainCircle(R.id.nine, R.id.result, newRadius, 270);
-        constraintSet.constrainCircle(R.id.nine_night, R.id._result_night, newRadius, 270);
-        constraintSet.constrainCircle(R.id.divide, R.id.result, newRadius, 300);
-        constraintSet.constrainCircle(R.id.divide_night, R.id._result_night, newRadius, 300);
-        constraintSet.constrainCircle(R.id.minus, R.id.result, newRadius, 330);
-        constraintSet.constrainCircle(R.id.minus_night, R.id._result_night, newRadius, 330);
-        constraintSet.constrainCircle(R.id.minus, R.id.result, newRadius, 330);
-        constraintSet.constrainCircle(R.id.minus_night, R.id._result_night, newRadius, 330);
+        int buttonsNumbersWidth = (int) getResources().getDimension(
+                R.dimen.button_number_width_standard);
+        int buttonsNumbersHeight = (int) getResources().getDimension(
+                R.dimen.button_number_height_standard);
+        int buttonsActionsWidth = (int) getResources().getDimension(
+                R.dimen.button_action_width_standard);
+        int buttonsActionsHeight = (int) getResources().getDimension(
+                R.dimen.button_action_height_standard);
+        // Задание новых размеров для кнопок
+        if (this.getResources().getDisplayMetrics().widthPixels < BORDER_WIDTH) {
+            buttonsNumbersWidth = (int) getResources().getDimension(
+                    R.dimen.button_number_width_small);
+            buttonsNumbersHeight = (int) getResources().getDimension(
+                    R.dimen.button_number_height_small);
+            buttonsActionsWidth = (int) getResources().getDimension(
+                    R.dimen.small_button_action_width);
+            buttonsActionsHeight = (int) getResources().getDimension(
+                    R.dimen.small_button_action_height);
+        }
+
+        // Задание нового радиуса кнопок с цифрами и их новых размеров
+        int curAngle = 0;
+        for (Button button: buttonsNumbersGroups) {
+            constraintSet.constrainCircle(button.getId(), currentTheme == THEMES.DAY_THEME ?
+                R.id.result : R.id._result_night, newRadius, curAngle);
+            curAngle += 30;
+            constraintSet.constrainWidth(button.getId(), buttonsNumbersWidth);
+            constraintSet.constrainHeight(button.getId(), buttonsNumbersHeight);
+        }
+        // Задание нового радиуса кнопок с действиями
+        for (Button button: buttonsActionsGroups) {
+            constraintSet.constrainWidth(button.getId(), buttonsActionsWidth);
+            constraintSet.constrainHeight(button.getId(), buttonsActionsHeight);
+        }
+        // Задание размера элементам отображения входящей и результирующей информации
+//        if (this.getResources().getDisplayMetrics().widthPixels >= BORDER_WIDTH) {
+//            constraintSet.constrain(outputResultText, getResources().getInteger(R.integer.number_output_symbols_forEMS));
+//            constraintSet.inputtedHistoryText
+//        } else {
+//
+//        }
         constraintSet.applyTo(constraintLayout);
     }
 }

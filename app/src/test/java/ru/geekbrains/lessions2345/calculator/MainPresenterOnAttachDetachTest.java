@@ -33,7 +33,7 @@ public class MainPresenterOnAttachDetachTest {
         mainPresenter.getInit();
         // Вызыв метода setInputedHistoryText() говорит о том, что viewMain != null
         Mockito.verify(viewMain, times(1)).
-                setInputedHistoryText("");
+                setInputtedHistoryText("");
     }
     @Test // Провека работоспособности метода onDetach()
     public void onDetach_Test() {
@@ -41,6 +41,6 @@ public class MainPresenterOnAttachDetachTest {
         mainPresenter.addNumeral(1);
         // Отсутствие вызыва метод setInputedHistoryText() говорит о том, что viewMain = null
         Mockito.verify(viewMain, times(0)).
-                setInputedHistoryText("1");
+                setInputtedHistoryText("1");
     }
 }

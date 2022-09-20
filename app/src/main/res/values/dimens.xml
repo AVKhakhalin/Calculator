@@ -40,4 +40,6 @@
     <dimen name="default_input_history_max_height_portrait">252dp</dimen>
     <dimen name="default_input_history_max_height_landscape">153dp</dimen>
     <dimen name="request_radius_buttons_text_size">16sp</dimen>
+    <dimen name="multiply_night_inset_top">5dp</dimen>
+    <dimen name="multiply_inset_top">5dp</dimen>
 </resources>

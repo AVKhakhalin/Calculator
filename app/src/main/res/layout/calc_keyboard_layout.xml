@@ -299,6 +299,7 @@
         style="@style/Night.Actions_style"
         android:text="@string/_multiply"
         android:visibility="visible"
+        android:insetTop="@dimen/multiply_night_inset_top"
         app:layout_constraintEnd_toStartOf="@id/divide_night"
         app:layout_constraintTop_toTopOf="@id/divide_night" />
 
@@ -307,6 +308,7 @@
         style="@style/Day.Actions_style"
         android:text="@string/_multiply"
         android:visibility="gone"
+        android:insetTop="@dimen/multiply_inset_top"
         app:layout_constraintEnd_toStartOf="@id/divide"
         app:layout_constraintTop_toTopOf="@id/divide" />
 
@@ -611,5 +613,4 @@
             android:textSize="@dimen/result_history_text_size"
             android:visibility="gone" />
     </androidx.core.widget.NestedScrollView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

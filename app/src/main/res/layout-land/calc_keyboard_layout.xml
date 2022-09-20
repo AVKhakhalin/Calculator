@@ -455,7 +455,7 @@
         android:textStyle="normal"
         android:visibility="visible"
         app:layout_constraintTop_toTopOf="@id/menu_theme_night"
-        app:layout_constraintEnd_toStartOf="@id/backspace_two_night" />
+        app:layout_constraintStart_toEndOf="@id/menu_theme_night" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/backspace_one"
@@ -464,7 +464,7 @@
         android:textStyle="normal"
         android:visibility="gone"
         app:layout_constraintTop_toTopOf="@id/menu_theme"
-        app:layout_constraintEnd_toStartOf="@id/backspace_two" />
+        app:layout_constraintStart_toEndOf="@id/menu_theme" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/backspace_two_night"
@@ -473,7 +473,7 @@
         android:textStyle="normal"
         android:visibility="visible"
         app:layout_constraintTop_toTopOf="@id/menu_theme_night"
-        app:layout_constraintEnd_toStartOf="@id/backspace_night" />
+        app:layout_constraintStart_toEndOf="@id/backspace_one_night" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/backspace_two"
@@ -482,7 +482,7 @@
         android:textStyle="normal"
         android:visibility="gone"
         app:layout_constraintTop_toTopOf="@id/menu_theme"
-        app:layout_constraintEnd_toStartOf="@id/backspace" />
+        app:layout_constraintStart_toEndOf="@id/backspace_one" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/backspace_night"
@@ -490,7 +490,7 @@
         android:text="@string/_backspace"
         android:visibility="visible"
         app:layout_constraintTop_toTopOf="@id/menu_theme_night"
-        app:layout_constraintEnd_toEndOf="@id/input_history_night" />
+        app:layout_constraintStart_toEndOf="@id/backspace_two_night" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/backspace"
@@ -498,7 +498,7 @@
         android:text="@string/_backspace"
         android:visibility="gone"
         app:layout_constraintTop_toTopOf="@id/menu_theme"
-        app:layout_constraintEnd_toEndOf="@id/input_history" />
+        app:layout_constraintStart_toEndOf="@id/backspace_two" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/menu_theme_night"
@@ -607,6 +607,6 @@
             android:text="@string/InputHistory_text"
             android:textColor="@color/red_erase_day"
             android:textSize="@dimen/result_history_text_size"
-            android:visibility="gone"/>
+            android:visibility="gone" />
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -436,6 +436,11 @@ public class CalcLogic implements Constants {
                 errorCode = ERRORS.SQRT_MINUS;
             }
         }
+        // Подключить новую функцию для вычислений здесь
+        // TODO
+//        else if (typeFuncInBracket == FUNCTIONS.) {
+//            result =
+//        }
         return result;
     }
 
@@ -733,13 +738,16 @@ public class CalcLogic implements Constants {
         return outputString.toString();
     }
 
-    // Метод для правильного отображения функции
+    // Метод для отображения функции
     private String outputStringFunctionOpen(Dates curDates) {
         String stringFunction = "";
         if ((curDates.getIsBracket()) && (!curDates.getIsClose())) {
             if (curDates.getTypeFuncInBracket() == FUNCTIONS.FUNC_SQRT) {
                 stringFunction = "SQRT(";
+//          } else if (curDates.getTypeFuncInBracket() == FUNCTIONS.) {
                 // Сюда можно добавить другие функции для их отображения
+                // TODO
+                // stringFunction = "(";
             } else {
                 stringFunction = "(";
             }

@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import ru.geekbrains.lessions2345.calculator.R;
 import ru.geekbrains.lessions2345.calculator.core.Constants;
-import ru.geekbrains.lessions2345.calculator.presenter.menu.MenuPresenter;
 import ru.geekbrains.lessions2345.calculator.view.ui_main.MainActivity;
 
 public class MenuActivity extends AppCompatActivity implements Constants, View.OnClickListener,

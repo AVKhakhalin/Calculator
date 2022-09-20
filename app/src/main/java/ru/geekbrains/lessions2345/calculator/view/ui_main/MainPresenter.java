@@ -1,11 +1,10 @@
-package ru.geekbrains.lessions2345.calculator.presenter.main;
+package ru.geekbrains.lessions2345.calculator.view.ui_main;
 
 import java.util.Locale;
 
 import ru.geekbrains.lessions2345.calculator.core.CalcLogic;
 import ru.geekbrains.lessions2345.calculator.core.Constants;
 import ru.geekbrains.lessions2345.calculator.view.ViewContract;
-import ru.geekbrains.lessions2345.calculator.view.ui_main.ViewMainContract;
 
 public class MainPresenter implements PresenterMainContract {
     private CalcLogic calcLogic = new CalcLogic();

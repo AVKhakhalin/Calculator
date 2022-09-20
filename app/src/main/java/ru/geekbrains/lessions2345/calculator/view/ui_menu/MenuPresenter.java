@@ -1,7 +1,6 @@
-package ru.geekbrains.lessions2345.calculator.presenter.menu;
+package ru.geekbrains.lessions2345.calculator.view.ui_menu;
 
 import ru.geekbrains.lessions2345.calculator.view.ViewContract;
-import ru.geekbrains.lessions2345.calculator.view.ui_menu.ViewMenuContract;
 
 public class MenuPresenter implements PresenterMenuContract {
 

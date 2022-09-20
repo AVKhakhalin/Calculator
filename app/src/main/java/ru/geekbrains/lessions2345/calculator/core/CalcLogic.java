@@ -62,6 +62,7 @@ public class CalcLogic implements Constants {
         if ((inputNumbers.get(curNumber).getValue() == 0d) && (inputNumbers.get(curNumber).
                 getIntegerPartValue().length() > 0) && (newNumeral == 0) && (!pressedZapitay)) {
             // Показать уведомление о том, что для задания целой части числа вполне хватит и одного нуля
+            // TODO
         } else {
             double intPartValue = 0d;
             double realPartValue = 0d;
@@ -320,7 +321,6 @@ public class CalcLogic implements Constants {
         double result = 0d;
         Dates curDates;
         boolean isBracketExist = true;
-        boolean equalOpenToClose = true;
         int bracketBalance = 0;
 
         // Создание дубликата класса с числами для обработки выражения со скобками
@@ -428,17 +428,13 @@ public class CalcLogic implements Constants {
     private double doFunction(double value, FUNCTIONS typeFuncInBracket) {
         double result = value;
 
-        switch (typeFuncInBracket) {
-            case FUNC_SQRT:
-                if (value >= 0) {
-                    result = Math.sqrt(value);
-                } else {
-                    // Добавить сообщение об ошибке: выражение под корнем не может быть меньше нуля!
-                    errorCode = ERRORS.SQRT_MINUS;
-                }
-                break;
-            default:
-                break;
+        if (typeFuncInBracket == FUNCTIONS.FUNC_SQRT) {
+            if (value >= 0) {
+                result = Math.sqrt(value);
+            } else {
+                // Добавить сообщение об ошибке: выражение под корнем не может быть меньше нуля!
+                errorCode = ERRORS.SQRT_MINUS;
+            }
         }
         return result;
     }
@@ -627,6 +623,7 @@ public class CalcLogic implements Constants {
                         (!inputNumbers.get(curNumber).getIsClose())) {
                     // Вывести сообщение о том, что процент нельзя применять к открытой скобке,
                     // а нужно применять только к простым арифметическим операциям *, /, +, -
+                    // TODO
                 } else {
                     inputNumbers.get(curNumber).setAction(action);
                 }
@@ -640,14 +637,17 @@ public class CalcLogic implements Constants {
                         (!inputNumbers.get(curNumber).getIsClose())) {
                     // Вывести сообщение о том, что процент нельзя применять к открытой скобке,
                     // а нужно применять только к простым арифметическим операциям *, /, +, -
+                    // TODO
                 } else if (curNumber == 0) {
                     // Вывести сообщение о том, что для применения процента нужно ввести два числа
                     // и любую следующую арифметическую операцию между ними: *, /, +, -
+                    // TODO
                 } else if (((inputNumbers.get(curNumber - 1).getIsBracket()) &&
                         (!inputNumbers.get(curNumber - 1).getIsClose())) ||
                         !inputNumbers.get(curNumber).getIsValue()) {
                     // Вывести сообщение о том, что для применения процента нужно ввести два числа
                     // и любую следующую арифметическую операцию между ними: *, /, +, -
+                    // TODO
                 } else {
                     if ((inputNumbers.get(curNumber).getIsBracket()) &&
                             (inputNumbers.get(curNumber).getIsClose())) {
@@ -657,7 +657,6 @@ public class CalcLogic implements Constants {
                         iterInputNumbersForCalc = inputNumbers.listIterator(curNumber);
                         while (iterInputNumbersForCalc.hasPrevious()) {
                             prevDates = iterInputNumbersForCalc.previous();
-                            double viewDates = prevDates.getValue();
                             counter++;
                             if ((prevDates.getBracketLevel() == curBracketLevel + 1) &&
                                     (prevDates.getIsBracket()) && (!prevDates.getIsClose())) {
@@ -689,7 +688,7 @@ public class CalcLogic implements Constants {
                     }
                 }
             } else {
-                if ((isPrevDatesComplited == true) && (action != ACTIONS.ACT_PERS_MULTY)) {
+                if ((isPrevDatesComplited) && (action != ACTIONS.ACT_PERS_MULTY)) {
                     add(false, false, FUNCTIONS.FUNC_NO, 1, 0d,
                             false, action, false);
                     curNumber++;
@@ -719,7 +718,7 @@ public class CalcLogic implements Constants {
 
     // Основной метод для вывода информации в историю введённых чисел, действий и функций
     public String createOutput() {
-        String outputString = "";
+        StringBuilder outputString = new StringBuilder();
         Dates curDates;
         Dates prevDates = null;
 
@@ -727,25 +726,22 @@ public class CalcLogic implements Constants {
 
         while (iterInputNumbersForCalc.hasNext()) {
             curDates = iterInputNumbersForCalc.next();
-            outputString += outputStringActionAndFunction(prevDates, curDates);
+            outputString.append(outputStringActionAndFunction(prevDates, curDates));
             prevDates = curDates;
         }
 
-        return outputString;
+        return outputString.toString();
     }
 
     // Метод для правильного отображения функции
     private String outputStringFunctionOpen(Dates curDates) {
         String stringFunction = "";
         if ((curDates.getIsBracket()) && (!curDates.getIsClose())) {
-            switch (curDates.getTypeFuncInBracket()) {
-                case FUNC_SQRT:
-                    stringFunction = "SQRT(";
-                    break;
+            if (curDates.getTypeFuncInBracket() == FUNCTIONS.FUNC_SQRT) {
+                stringFunction = "SQRT(";
                 // Сюда можно добавить другие функции для их отображения
-                default:
-                    stringFunction = "(";
-                    break;
+            } else {
+                stringFunction = "(";
             }
         }
         return stringFunction;
@@ -761,10 +757,8 @@ public class CalcLogic implements Constants {
         ACTIONS action = curDates.getAction();
         boolean turnOffZapitay = curDates.getTurnOffZapitay();
 
-        boolean isPrevBraketOpen = false;
-        if ((prevDates != null) && (prevDates.getIsBracket()) && (!prevDates.getIsClose())) {
-            isPrevBraketOpen = true;
-        }
+        boolean isPrevBraketOpen = (prevDates != null) && (prevDates.getIsBracket())
+                && (!prevDates.getIsClose());
         boolean isFirst = (prevDates == null);
         String stringAction = "";
         String valueString = "";
@@ -792,7 +786,7 @@ public class CalcLogic implements Constants {
                 case ACT_PERS_MULTY:
                     if ((isBracket) && (!isClose)) {
                         stringAction = outputStringFunctionOpen(curDates);
-                    } else if ((isBracket) && (isClose)) {
+                    } else if (isBracket) {
                         stringAction = ")%";
                     } else {
                         stringAction = "*" + outputStringFunctionOpen(curDates) +
@@ -804,7 +798,7 @@ public class CalcLogic implements Constants {
                 case ACT_PERS_DIV:
                     if ((isBracket) && (!isClose)) {
                         stringAction = outputStringFunctionOpen(curDates);
-                    } else if ((isBracket) && (isClose)) {
+                    } else if (isBracket) {
                         stringAction = ")%";
                     } else {
                         stringAction = "/" + outputStringFunctionOpen(curDates) +
@@ -816,7 +810,7 @@ public class CalcLogic implements Constants {
                 case ACT_PERS_PLUS:
                     if ((isBracket) && (!isClose)) {
                         stringAction = outputStringFunctionOpen(curDates);
-                    } else if ((isBracket) && (isClose)) {
+                    } else if (isBracket) {
                         stringAction = ")%";
                     } else {
                         stringAction = (!isPrevBraketOpen ? "+" : "") +
@@ -829,7 +823,7 @@ public class CalcLogic implements Constants {
                 case ACT_PERS_MINUS:
                     if ((isBracket) && (!isClose)) {
                         stringAction = outputStringFunctionOpen(curDates);
-                    } else if ((isBracket) && (isClose)) {
+                    } else if (isBracket) {
                         stringAction = ")%";
                     } else {
                         stringAction = "-" + outputStringFunctionOpen(curDates) +
@@ -894,15 +888,13 @@ public class CalcLogic implements Constants {
                     break;
             }
         } else {
-            switch (action) {
-                case ACT_PLUS:
-                    if (isValue) {
-                        stringAction = outputStringFunctionOpen(curDates) +
-                                String.format("%s", valueString);
-                    } else {
-                        stringAction = outputStringFunctionOpen(curDates);
-                    }
-                    break;
+            if (action == ACTIONS.ACT_PLUS) {
+                if (isValue) {
+                    stringAction = outputStringFunctionOpen(curDates) +
+                            String.format("%s", valueString);
+                } else {
+                    stringAction = outputStringFunctionOpen(curDates);
+                }
             }
         }
         return stringAction;
@@ -955,17 +947,17 @@ public class CalcLogic implements Constants {
     }
 
     private static String createFormat(int numberSymbols, int i) {
-        String format = "";
+        StringBuilder format = new StringBuilder();
         for (int j = 0; j <= i; j++) {
-            format += "#";
+            format.append("#");
         }
         if (i < numberSymbols - 2) {
-            format += ".";
+            format.append(".");
             for (int j = 0; j < numberSymbols - 2 - i; j++) {
-                format += "#";
+                format.append("#");
             }
         }
-        return format;
+        return format.toString();
     }
 
     public ERRORS getErrorCode() {

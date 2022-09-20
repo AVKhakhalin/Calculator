@@ -4,10 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.widget.Button;
@@ -19,7 +17,6 @@ import androidx.constraintlayout.widget.ConstraintSet;
 
 import ru.geekbrains.lessions2345.calculator.R;
 import ru.geekbrains.lessions2345.calculator.core.Constants;
-import ru.geekbrains.lessions2345.calculator.presenter.main.MainPresenter;
 import ru.geekbrains.lessions2345.calculator.view.ui_menu.MenuActivity;
 
 public class MainActivity extends Activity implements View.OnClickListener,

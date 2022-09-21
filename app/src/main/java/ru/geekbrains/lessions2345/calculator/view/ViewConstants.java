@@ -8,13 +8,12 @@ public interface ViewConstants {
     int DEFAULT_BUTTON_RADIUS = 131;
     int DEFAULT_BUTTON_RADIUS_SMALL = 107;
     float KOEFF_RESIZE_HEIGHT = 2.2f;
-    int MIN_RADIUS_BUTTONS = 70;
-    int MAX_RADIUS_BUTTONS = 300;
+    int MAX_RADIUS_BUTTONS = 200;
     int BORDER_WIDTH = 1080;
 
     // Названия тем
     enum THEMES {
         DAY_THEME,         // Дневная тема
         NIGHT_THEME        // Ночная тема
-    };
+    }
 }

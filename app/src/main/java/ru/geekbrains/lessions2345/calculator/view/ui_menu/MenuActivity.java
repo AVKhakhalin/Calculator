@@ -9,10 +9,10 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 
 import ru.geekbrains.lessions2345.calculator.R;
-import ru.geekbrains.lessions2345.calculator.core.Constants;
+import ru.geekbrains.lessions2345.calculator.view.ViewConstants;
 import ru.geekbrains.lessions2345.calculator.view.ui_main.MainActivity;
 
-public class MenuActivity extends AppCompatActivity implements Constants, View.OnClickListener,
+public class MenuActivity extends AppCompatActivity implements ViewConstants, View.OnClickListener,
         ViewMenuContract {
 
     Button button_setDayTheme;
@@ -24,6 +24,8 @@ public class MenuActivity extends AppCompatActivity implements Constants, View.O
 
     private int curRadiusButtons = DEFAULT_BUTTON_RADIUS;
 
+    private final MenuPresenter menuPresenter = new MenuPresenter();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +34,8 @@ public class MenuActivity extends AppCompatActivity implements Constants, View.O
         setCalculatorTheme(currentTheme);
         setContentView(R.layout.menu_layout);
 
+        // Передача MainActivity в MainPresenter
+        menuPresenter.onAttach(this);
         // Инициализация кнопок и текстового поля
         initButtons();
     }
@@ -58,15 +62,13 @@ public class MenuActivity extends AppCompatActivity implements Constants, View.O
         button_setNightTheme.setOnClickListener(this);
         if (currentTheme == THEMES.NIGHT_THEME) {
             button_returnToCalculator = findViewById(R.id._return_night);
-            button_returnToCalculator.setOnClickListener(this);
-            button_returnToCalculator.setVisibility(View.VISIBLE);
             findViewById(R.id._return_day).setVisibility(View.INVISIBLE);
         } else {
             button_returnToCalculator = findViewById(R.id._return_day);
-            button_returnToCalculator.setOnClickListener(this);
-            button_returnToCalculator.setVisibility(View.VISIBLE);
             findViewById(R.id._return_night).setVisibility(View.INVISIBLE);
         }
+        button_returnToCalculator.setVisibility(View.VISIBLE);
+        button_returnToCalculator.setOnClickListener(this);
         editTextWithNewRadius = findViewById(R.id._request_radius_buttons_input);
         editTextWithNewRadius.setText(String.valueOf(curRadiusButtons));
     }
@@ -98,8 +100,12 @@ public class MenuActivity extends AppCompatActivity implements Constants, View.O
     private THEMES getSettings() {
         SharedPreferences sharedPreferences = getSharedPreferences(KEY_SETTINGS, MODE_PRIVATE);
         int currentTheme = sharedPreferences.getInt(KEY_CURRENT_THEME, 1);
-        curRadiusButtons = sharedPreferences.getInt(KEY_CURRENT_RADIUS,
-                MainActivity.DEFAULT_BUTTON_RADIUS);
+        if (this.getResources().getDisplayMetrics().widthPixels >= BORDER_WIDTH)
+            curRadiusButtons = sharedPreferences.getInt(KEY_CURRENT_RADIUS,
+                    MainActivity.DEFAULT_BUTTON_RADIUS);
+        else
+            curRadiusButtons = sharedPreferences.getInt(KEY_CURRENT_RADIUS,
+                    MainActivity.DEFAULT_BUTTON_RADIUS_SMALL);
         if (currentTheme == 0) {
             return THEMES.NIGHT_THEME;
         } else {
@@ -127,5 +133,11 @@ public class MenuActivity extends AppCompatActivity implements Constants, View.O
             button_returnToCalculator.setVisibility(View.VISIBLE);
             findViewById(R.id._return_day).setVisibility(View.INVISIBLE);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        menuPresenter.onDetach();
     }
 }

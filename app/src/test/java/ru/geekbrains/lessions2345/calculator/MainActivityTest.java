@@ -662,7 +662,7 @@ public class MainActivityTest {
         scenario.onActivity(new ActivityScenario.ActivityAction<MainActivity>() {
             @Override
             public void perform(MainActivity activity) {
-                activity.setInputedHistoryText("1000.00");
+                activity.setInputtedHistoryText("1000.00");
                 TextView inputedHistoryText =
                         (TextView) activity.findViewById(R.id.inputed_history_text);
                 assertEquals("1000.00", inputedHistoryText.getText());

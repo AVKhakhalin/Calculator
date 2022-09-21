@@ -1,7 +1,8 @@
 package ru.geekbrains.lessions2345.calculator.model;
 
+import android.annotation.SuppressLint;
+
 import java.util.LinkedList;
-import java.util.ListIterator;
 
 import ru.geekbrains.lessions2345.calculator.core.Constants;
 
@@ -29,9 +30,9 @@ public class Dates implements Constants {
     // Числовое значение
     private double value;
     // Список цифр целой части вводимого числа
-    private LinkedList<Integer> integerPartValue;
+    private final LinkedList<Integer> integerPartValue;
     // Список цифр вещественной части вводимого числа
-    private LinkedList<Integer> realPartValue;
+    private final LinkedList<Integer> realPartValue;
     // Признак задания числа; по-умолчанию, все числа задаются 0d; если хотя бы одну цифру
     // в число внесли, то isValue = true; по-умолчанию isValue = false
     private boolean isValue;
@@ -123,22 +124,20 @@ public class Dates implements Constants {
         return value;
     }
 
+    @SuppressLint("DefaultLocale")
     public String getIntegerPartValue() {
         String resultString = "";
-        ListIterator<Integer> iterOutputValue = integerPartValue.listIterator();
-        while (iterOutputValue.hasNext())
-        {
-            resultString = String.format("%s%d", resultString, iterOutputValue.next());
+        for (Integer integer: integerPartValue) {
+            resultString = String.format("%s%d", resultString, integer);
         }
         return resultString;
     }
 
+    @SuppressLint("DefaultLocale")
     public String getRealPartValue() {
         String resultString = "";
-        ListIterator<Integer> iterOutputValue = realPartValue.listIterator();
-        while (iterOutputValue.hasNext())
-        {
-            resultString = String.format("%s%d", resultString, iterOutputValue.next());
+        for (Integer integer: realPartValue) {
+            resultString = String.format("%s%d", resultString, integer);
         }
         return resultString;
     }

@@ -31,18 +31,4 @@
             </item>
         </ripple>
     </item>
-    <item
-        android:state_enabled="false">
-        <shape
-            android:shape="oval">
-            <corners
-                android:radius="@dimen/coners_radius" />
-            <gradient
-                android:angle="45"
-                android:endColor="@color/background_input_history_color_night"
-                android:centerColor="@color/red_center_night"
-                android:startColor="@color/red_night"
-                android:type="linear"/>
-        </shape>
-    </item>
 </selector>

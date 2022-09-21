@@ -1,7 +1,7 @@
-package ru.geekbrains.lessions2345.calculator.presenter.main;
+package ru.geekbrains.lessions2345.calculator.view.ui_main;
 
 import ru.geekbrains.lessions2345.calculator.core.Constants;
-import ru.geekbrains.lessions2345.calculator.presenter.PresenterContract;
+import ru.geekbrains.lessions2345.calculator.view.PresenterContract;
 
 public interface PresenterMainContract extends PresenterContract {
     void setMaxNumberSymbolsInOutputTextField(int maxNumberSymbolsInOutputTextField);

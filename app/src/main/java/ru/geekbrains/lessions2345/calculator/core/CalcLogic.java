@@ -1,5 +1,7 @@
 package ru.geekbrains.lessions2345.calculator.core;
 
+import android.util.Log;
+
 import java.text.DecimalFormat;
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -31,9 +33,7 @@ public class CalcLogic implements Constants {
     // Ошибки вычислений
     private ERRORS errorCode = ERRORS.NO;
     // Максимальное количество символов, допустимое для вывода в поле с результатами вычислений
-    // TODO: доделать согласование размера поля на основании размера дисплея
-    //  с количеством выводимых на нём символов
-    private int maxNumberSymbolsInOutputTextField = 12;
+    private int maxNumberSymbolsInOutputTextField = MAX_NUMBER_SYMBOLS_IN_OUTPUT_TEXT_FIELD;
 
     public CalcLogic() {
         inputNumbers = new LinkedList<>();
@@ -558,7 +558,6 @@ public class CalcLogic implements Constants {
     // (переключение между режимами работы с вещественными и целыми числами)
     public void setCurZapitay() {
         pressedZapitay = !pressedZapitay; // Отслеживание нажатия на кнопку "Zapitay"
-
         if (inputNumbers.get(curNumber).getTurnOffZapitay()) {
             inputNumbers.get(curNumber).setTurnOffZapitay(false);
             if (inputNumbers.get(curNumber).getNumberZapitay() < 0) {
@@ -782,6 +781,8 @@ public class CalcLogic implements Constants {
         }
 
         if (!isFirst) {
+            String notZeroOrZero = value >= 0 ? String.format("%s", valueString) :
+                    ("(" + String.format("%s", valueString) + ")");
             switch (action) {
                 case ACT_STEP:
                     if (isValue) {
@@ -798,9 +799,7 @@ public class CalcLogic implements Constants {
                         stringAction = ")%";
                     } else {
                         stringAction = "*" + outputStringFunctionOpen(curDates) +
-                                (value >= 0 ? String.format("%s", valueString) :
-                                        ("(" + String.format("%s", valueString) + ")")) + "%" +
-                                (isClose ? ")" : "");
+                            notZeroOrZero + "%" + (isClose ? ")" : "");
                     }
                     break;
                 case ACT_PERS_DIV:
@@ -810,9 +809,7 @@ public class CalcLogic implements Constants {
                         stringAction = ")%";
                     } else {
                         stringAction = "/" + outputStringFunctionOpen(curDates) +
-                                (value >= 0 ? String.format("%s", valueString) :
-                                        ("(" + String.format("%s", valueString) + ")")) + "%" +
-                                (isClose ? ")" : "");
+                            notZeroOrZero + "%" + (isClose ? ")" : "");
                     }
                     break;
                 case ACT_PERS_PLUS:
@@ -822,9 +819,7 @@ public class CalcLogic implements Constants {
                         stringAction = ")%";
                     } else {
                         stringAction = (!isPrevBraketOpen ? "+" : "") +
-                                outputStringFunctionOpen(curDates) + (value >= 0 ?
-                                String.format("%s", valueString) :
-                                ("(" + String.format("%s", valueString) + ")")) + "%" +
+                            outputStringFunctionOpen(curDates) + notZeroOrZero + "%" +
                                 (isClose ? ")" : "");
                     }
                     break;
@@ -835,39 +830,31 @@ public class CalcLogic implements Constants {
                         stringAction = ")%";
                     } else {
                         stringAction = "-" + outputStringFunctionOpen(curDates) +
-                                (value >= 0 ? String.format("%s", valueString) :
-                                        ("(" + String.format("%s", valueString) + ")")) + "%" +
-                                (isClose ? ")" : "");
+                            notZeroOrZero + "%" + (isClose ? ")" : "");
                     }
                     break;
                 case ACT_MULTY:
                     if (isValue) {
                         stringAction = "*" + outputStringFunctionOpen(curDates) +
-                                (value >= 0 ? String.format("%s", valueString) :
-                                        ("(" + String.format("%s", valueString) + ")")) +
-                                (isClose ? ")" : "");
+                            notZeroOrZero + (isClose ? ")" : "");
                     } else {
                         stringAction = "*" + outputStringFunctionOpen(curDates) +
-                                (isClose ? ")" : "");
+                            (isClose ? ")" : "");
                     }
                     break;
                 case ACT_DIV:
                     if (isValue) {
                         stringAction = "/" + outputStringFunctionOpen(curDates) +
-                                (value >= 0 ? String.format("%s", valueString) :
-                                        ("(" + String.format("%s", valueString) + ")")) +
-                                (isClose ? ")" : "");
+                            notZeroOrZero + (isClose ? ")" : "");
                     } else {
                         stringAction = "/" + outputStringFunctionOpen(curDates) +
-                                (isClose ? ")" : "");
+                            (isClose ? ")" : "");
                     }
                     break;
                 case ACT_PLUS:
                     if (isValue) {
                         stringAction = (!isPrevBraketOpen ? "+" : "") +
-                                outputStringFunctionOpen(curDates) +
-                                (value >= 0 ? String.format("%s", valueString) :
-                                        ("(" + String.format("%s", valueString) + ")")) +
+                            outputStringFunctionOpen(curDates) + notZeroOrZero +
                                 (isClose ? ")" : "");
                     } else {
                         if (!curDates.getIsClose()) {
@@ -881,9 +868,7 @@ public class CalcLogic implements Constants {
                 case ACT_MINUS:
                     if (isValue) {
                         stringAction = (!isPrevBraketOpen ? "-" : "") +
-                                outputStringFunctionOpen(curDates) +
-                                (value >= 0 ? String.format("%s", valueString) :
-                                        ("(" + String.format("%s", valueString) + ")")) +
+                            outputStringFunctionOpen(curDates) + notZeroOrZero +
                                 (isClose ? ")" : "");
                     } else {
                         if (!curDates.getIsClose()) {
@@ -899,7 +884,7 @@ public class CalcLogic implements Constants {
             if (action == ACTIONS.ACT_PLUS) {
                 if (isValue) {
                     stringAction = outputStringFunctionOpen(curDates) +
-                            String.format("%s", valueString);
+                        String.format("%s", valueString);
                 } else {
                     stringAction = outputStringFunctionOpen(curDates);
                 }
@@ -913,16 +898,17 @@ public class CalcLogic implements Constants {
     }
 
     public String getFinalResult() {
-        String finalResult_String = "";
+        String finalResultString = "";
         if (errorCode == ERRORS.NO) {
-            finalResult_String = numberFormatOutput(finalResult, maxNumberSymbolsInOutputTextField);
+            finalResultString = numberFormatOutput(finalResult, maxNumberSymbolsInOutputTextField);
         }
-        return finalResult_String;
+        return finalResultString;
     }
 
     public static String numberFormatOutput(double number, int numberSymbols) {
         DecimalFormat df;
-        double comparedNumber = 1d;
+        double comparedNumber =
+            (numberSymbols >= MAX_NUMBER_SYMBOLS_IN_OUTPUT_TEXT_FIELD ? 1d : 0.1d);
         if (number > 0) {
             for (int i = 0; i < numberSymbols; i++) {
                 comparedNumber *= 10d;
@@ -945,12 +931,20 @@ public class CalcLogic implements Constants {
             }
         }
         if (number > 0) {
-            return String.format(Locale.getDefault(),
+            if (numberSymbols == MAX_NUMBER_SYMBOLS_IN_OUTPUT_TEXT_FIELD)
+                return String.format(Locale.getDefault(),
                     (number < 10E99d ? "%.6e" : "%.5e"), number);
+            else
+                return String.format(Locale.getDefault(),
+                        (number < 10E99d ? "%.3e" : "%.2e"), number);
         }
         else {
-            return String.format(Locale.getDefault(),
+            if (numberSymbols == MAX_NUMBER_SYMBOLS_IN_OUTPUT_TEXT_FIELD)
+                return String.format(Locale.getDefault(),
                     (Math.abs(number) < 10E99d ? "%.6e" : "%.5e"), number);
+            else
+                return String.format(Locale.getDefault(),
+                        (Math.abs(number) < 10E99d ? "%.3e" : "%.2e"), number);
         }
     }
 

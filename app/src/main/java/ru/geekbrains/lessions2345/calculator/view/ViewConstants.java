@@ -6,6 +6,7 @@ public interface ViewConstants {
     String KEY_CURRENT_RADIUS = "Radius";
     String KEY_DOCHANGE_RADIUS = "DoRedraw";
     int DEFAULT_BUTTON_RADIUS = 131;
+    int DEFAULT_BUTTON_BORDER_RADIUS = 120;
     int DEFAULT_BUTTON_RADIUS_SMALL = 107;
     float KOEFF_RESIZE_HEIGHT = 2.2f;
     int MAX_RADIUS_BUTTONS = 200;

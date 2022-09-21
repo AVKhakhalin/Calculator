@@ -36,9 +36,9 @@
     <string name="set_radius_buttons_text">
         <br>Можно ещё задать РАДИУС</br>
         <br>расположения кнопок в dp</br>
-        <br>(по-умолчанию 177 dp):</br>
+        <br>(по-умолчанию 131 dp):</br>
     </string>
-    <string name="default_radius_text">177</string>
+    <string name="default_radius_text">131</string>
     <string name="error_different_number_brackets">Ошибка: различное количество открытых и закрытых скобок.</string>
     <string name="error_undersquare_low_zero">Ошибка: подкоренное выражение меньше нуля.</string>
     <string name="error_divide_on_zero">Ошибка: деление на ноль.</string>

@@ -628,8 +628,7 @@
         app:layout_constraintHeight_max="@dimen/default_input_history_max_height_landscape"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/menu_theme_night"
-        app:layout_constraintEnd_toStartOf="@id/stepen_night"
-        app:layout_constraintStart_toStartOf="parent" >
+        app:layout_constraintStart_toStartOf="@id/input_history_night" >
 
         <TextView
             android:id="@+id/inputted_history_text_night_small"

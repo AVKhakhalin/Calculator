@@ -1,7 +1,5 @@
 package ru.geekbrains.lessions2345.calculator.core;
 
-import android.util.Log;
-
 import java.text.DecimalFormat;
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -53,6 +51,14 @@ public class CalcLogic implements Constants {
     }
 
     public double addNumeral(int newNumeral) {
+        // Проверка на добавление нового числа сразу после закрытой скобки без задания действия
+        if (inputNumbers.get(curNumber).getIsClose()) {
+            // Вывести сообщение о том, что нельзя сразу же после закрытой скобки вводить число,
+            // предварительно не указав действия с ним
+            // TODO
+            return -1.0;
+        }
+        // Добавление нового элемента
         if ((inputNumbers.get(curNumber).getIsBracket()) &&
                 (!inputNumbers.get(curNumber).getIsClose())) {
             add(false, false, FUNCTIONS.FUNC_NO, 1, 0d,

@@ -544,7 +544,25 @@
         app:layout_constraintBottom_toTopOf="@id/equal_night"
         app:layout_constraintEnd_toStartOf="@id/three_night"
         app:layout_constraintStart_toEndOf="@id/nine_night"
-        app:layout_constraintTop_toTopOf="@id/zapitay_night" />
+        app:layout_constraintTop_toBottomOf="@id/zapitay_night" />
+
+    <TextView
+        android:id="@+id/_result_night_small"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/height_result_text"
+        android:background="@drawable/background_result_textview_night"
+        android:ems="@integer/number_output_symbols_forEMS_small"
+        android:gravity="end|center"
+        android:paddingStart="@dimen/padding_output_text"
+        android:paddingEnd="@dimen/padding_output_text"
+        android:text="@string/RESULT_text"
+        android:textColor="@color/red_erase_night"
+        android:textSize="@dimen/result_history_text_size"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/equal_night"
+        app:layout_constraintEnd_toStartOf="@id/three_night"
+        app:layout_constraintStart_toEndOf="@id/nine_night"
+        app:layout_constraintTop_toBottomOf="@id/zapitay_night" />
 
     <TextView
         android:id="@+id/result"
@@ -562,7 +580,25 @@
         app:layout_constraintBottom_toTopOf="@id/equal"
         app:layout_constraintEnd_toStartOf="@id/three"
         app:layout_constraintStart_toEndOf="@id/nine"
-        app:layout_constraintTop_toTopOf="@id/zapitay" />
+        app:layout_constraintTop_toBottomOf="@id/zapitay" />
+
+    <TextView
+        android:id="@+id/result_small"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/height_result_text"
+        android:background="@drawable/background_result_textview_day"
+        android:ems="@integer/number_output_symbols_forEMS_small"
+        android:gravity="end|center"
+        android:paddingStart="@dimen/padding_output_text"
+        android:paddingEnd="@dimen/padding_output_text"
+        android:text="@string/RESULT_text"
+        android:textColor="@color/red_erase_day"
+        android:textSize="@dimen/result_history_text_size"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/equal"
+        app:layout_constraintEnd_toStartOf="@id/three"
+        app:layout_constraintStart_toEndOf="@id/nine"
+        app:layout_constraintTop_toBottomOf="@id/zapitay" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/input_history_night"
@@ -590,6 +626,31 @@
     </androidx.core.widget.NestedScrollView>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/input_history_night_small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintHeight_max="@dimen/default_input_history_max_height_portrait"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/backspace_two_night">
+
+        <TextView
+            android:id="@+id/inputted_history_text_night_small"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/input_history_margin_start"
+            android:background="@drawable/background_input_history_night"
+            android:ems="@integer/number_inputed_symbols_forEMS_portret"
+            android:paddingStart="@dimen/padding_output_text"
+            android:paddingEnd="@dimen/padding_output_text"
+            android:text="@string/InputHistory_text"
+            android:textColor="@color/red_erase_night"
+            android:textSize="@dimen/result_history_text_size"
+            android:visibility="gone" />
+    </androidx.core.widget.NestedScrollView>
+
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/input_history"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -601,6 +662,31 @@
 
         <TextView
             android:id="@+id/inputted_history_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/input_history_margin_start"
+            android:background="@drawable/background_input_history_day"
+            android:ems="@integer/number_inputed_symbols_forEMS_portret"
+            android:paddingStart="@dimen/padding_output_text"
+            android:paddingEnd="@dimen/padding_output_text"
+            android:text="@string/InputHistory_text"
+            android:textColor="@color/red_erase_day"
+            android:textSize="@dimen/result_history_text_size"
+            android:visibility="gone" />
+    </androidx.core.widget.NestedScrollView>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/input_history_small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintHeight_max="@dimen/default_input_history_max_height_portrait"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/backspace_two">
+
+        <TextView
+            android:id="@+id/inputted_history_text_small"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/input_history_margin_start"

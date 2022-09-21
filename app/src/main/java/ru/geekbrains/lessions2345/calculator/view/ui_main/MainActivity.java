@@ -270,31 +270,53 @@ public class MainActivity extends Activity implements View.OnClickListener,
 
     // Инициализаци текстовых полей
     private void initTextFields() {
+        // Спрятать (убрать с поля) все текстовые поля
+        findViewById(R.id.result).setVisibility(View.INVISIBLE);
+        findViewById(R.id.result_small).setVisibility(View.GONE);
+        findViewById(R.id.inputted_history_text).setVisibility(View.INVISIBLE);
+        findViewById(R.id.input_history).setVisibility(View.INVISIBLE);
+        findViewById(R.id.inputted_history_text_small).setVisibility(View.GONE);
+        findViewById(R.id.input_history_small).setVisibility(View.GONE);
+        findViewById(R.id._result_night).setVisibility(View.INVISIBLE);
+        findViewById(R.id._result_night_small).setVisibility(View.GONE);
+        findViewById(R.id.inputted_history_text_night).setVisibility(View.INVISIBLE);
+        findViewById(R.id.input_history_night).setVisibility(View.INVISIBLE);
+        findViewById(R.id.inputted_history_text_night_small).setVisibility(View.GONE);
+        findViewById(R.id.input_history_night_small).setVisibility(View.GONE);
+
         if (currentTheme == THEMES.NIGHT_THEME) {
-            // Инициализация текстовых полей
-            outputResultText = findViewById(R.id._result_night);
-            inputtedHistoryText = findViewById(R.id.inputted_history_text_night);
-            // Показать текстовые поля с ночной темой
-            outputResultText.setVisibility(View.VISIBLE);
-            inputtedHistoryText.setVisibility(View.VISIBLE);
-            findViewById(R.id.input_history_night).setVisibility(View.VISIBLE);
-            // Спрятать (убрать с поля) текстовые поля с дневной темой
-            findViewById(R.id.result).setVisibility(View.GONE);
-            findViewById(R.id.inputted_history_text).setVisibility(View.GONE);
-            findViewById(R.id.input_history).setVisibility(View.GONE);
+            if (this.getResources().getDisplayMetrics().widthPixels >= BORDER_WIDTH) {
+                // Инициализация текстовых полей
+                outputResultText = findViewById(R.id._result_night);
+                inputtedHistoryText = findViewById(R.id.inputted_history_text_night);
+                // Отображение контейнера с вводимым текстом
+                findViewById(R.id.input_history_night).setVisibility(View.VISIBLE);
+            } else {
+                // Инициализация текстовых полей
+                outputResultText = findViewById(R.id._result_night_small);
+                inputtedHistoryText = findViewById(R.id.inputted_history_text_night_small);
+                // Отображение контейнера с вводимым текстом
+                findViewById(R.id.input_history_night_small).setVisibility(View.VISIBLE);
+            }
         } else {
-            // Инициализация текстовых полей
-            outputResultText = findViewById(R.id.result);
-            inputtedHistoryText = findViewById(R.id.inputted_history_text);
-            // Показать текстовые поля с дневной темой
-            outputResultText.setVisibility(View.VISIBLE);
-            inputtedHistoryText.setVisibility(View.VISIBLE);
-            findViewById(R.id.input_history).setVisibility(View.VISIBLE);
-            // Спрятать (убрать с поля) текстовые поля с ночной темой
-            findViewById(R.id._result_night).setVisibility(View.GONE);
-            findViewById(R.id.inputted_history_text_night).setVisibility(View.GONE);
-            findViewById(R.id.input_history_night).setVisibility(View.GONE);
+            if (this.getResources().getDisplayMetrics().widthPixels >= BORDER_WIDTH) {
+                // Инициализация текстовых полей
+                outputResultText = findViewById(R.id.result);
+                inputtedHistoryText = findViewById(R.id.inputted_history_text);
+                // Отображение контейнера с вводимым текстом
+                findViewById(R.id.input_history).setVisibility(View.VISIBLE);
+            } else {
+                // Инициализация текстовых полей
+                outputResultText = findViewById(R.id.result_small);
+                inputtedHistoryText = findViewById(R.id.inputted_history_text_small);
+                // Отображение контейнера с вводимым текстом
+                findViewById(R.id.input_history_small).setVisibility(View.VISIBLE);
+            }
         }
+        // Показать текущие текстовые поля
+        outputResultText.setVisibility(View.VISIBLE);
+        inputtedHistoryText.setVisibility(View.VISIBLE);
+        // Проведение пробных вычислений
         mainPresenter.calculate();
         mainPresenter.getError();
         mainPresenter.getInit();
@@ -529,13 +551,6 @@ public class MainActivity extends Activity implements View.OnClickListener,
             constraintSet.constrainWidth(button.getId(), buttonsActionsWidth);
             constraintSet.constrainHeight(button.getId(), buttonsActionsHeight);
         }
-        // Задание размера элементам отображения входящей и результирующей информации
-//        if (this.getResources().getDisplayMetrics().widthPixels >= BORDER_WIDTH) {
-//            constraintSet.constrain(outputResultText, getResources().getInteger(R.integer.number_output_symbols_forEMS));
-//            constraintSet.inputtedHistoryText
-//        } else {
-//
-//        }
         constraintSet.applyTo(constraintLayout);
     }
 }

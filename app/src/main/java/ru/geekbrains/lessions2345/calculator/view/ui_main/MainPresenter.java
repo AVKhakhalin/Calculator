@@ -1,18 +1,36 @@
 package ru.geekbrains.lessions2345.calculator.view.ui_main;
 
+import static android.content.Context.MODE_PRIVATE;
+import static ru.geekbrains.lessions2345.calculator.view.ViewConstants.BORDER_WIDTH;
+import static ru.geekbrains.lessions2345.calculator.view.ViewConstants.DEFAULT_BUTTON_RADIUS;
+import static ru.geekbrains.lessions2345.calculator.view.ViewConstants.DEFAULT_BUTTON_RADIUS_SMALL;
+import static ru.geekbrains.lessions2345.calculator.view.ViewConstants.KEY_CURRENT_RADIUS;
+import static ru.geekbrains.lessions2345.calculator.view.ViewConstants.KEY_CURRENT_THEME;
+import static ru.geekbrains.lessions2345.calculator.view.ViewConstants.KEY_DOCHANGE_RADIUS;
+import static ru.geekbrains.lessions2345.calculator.view.ViewConstants.KEY_SETTINGS;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import java.util.Locale;
 
 import ru.geekbrains.lessions2345.calculator.core.CalcLogic;
 import ru.geekbrains.lessions2345.calculator.core.Constants;
+import ru.geekbrains.lessions2345.calculator.view.ViewConstants;
 import ru.geekbrains.lessions2345.calculator.view.ViewContract;
 
 public class MainPresenter implements PresenterMainContract {
+    /** Исходные данные */ //region
     private final CalcLogic calcLogic = new CalcLogic();
     private ViewMainContract viewMain;
+    public int curRadiusButtons;
+    public boolean doChangeRadius = false;
+    //endregion
 
     /** Задание различных конструкторов для презентера */ //region
     public MainPresenter() {
     }
+    // Нужно для тестирования
     public MainPresenter(ViewMainContract viewMain) {
         this.viewMain = viewMain;
     }
@@ -150,5 +168,42 @@ public class MainPresenter implements PresenterMainContract {
     @Override
     public void onDetach() {
         if (viewMain != null) viewMain = null;
+    }
+
+    // Считать информацию о текущих настройках программы (теме и радиусе кнопок)
+    ViewConstants.THEMES getSettings(Context context) {
+        SharedPreferences sharedPreferences =
+            context.getSharedPreferences(KEY_SETTINGS, MODE_PRIVATE);
+        int currentTheme = sharedPreferences.getInt(KEY_CURRENT_THEME, 1);
+        if (context.getResources().getDisplayMetrics().widthPixels >= BORDER_WIDTH)
+            curRadiusButtons = sharedPreferences.getInt(KEY_CURRENT_RADIUS, DEFAULT_BUTTON_RADIUS);
+        else
+            curRadiusButtons = sharedPreferences.getInt(
+                    KEY_CURRENT_RADIUS, DEFAULT_BUTTON_RADIUS_SMALL);
+        doChangeRadius = sharedPreferences.getBoolean(KEY_DOCHANGE_RADIUS, false);
+        if (currentTheme == 0) {
+            return ViewConstants.THEMES.NIGHT_THEME;
+        } else {
+            // Установка по умолчанию - дневная тема,
+            // если в настройках стоит 1 или ничего не будет стоять
+            return ViewConstants.THEMES.DAY_THEME;
+        }
+    }
+
+    void saveSettings(ViewConstants.THEMES currentTheme, Context context) {
+        SharedPreferences sharedPreferences =
+            context.getSharedPreferences(KEY_SETTINGS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        // Сохранение темы
+        if (currentTheme == ViewConstants.THEMES.DAY_THEME) {
+            editor.putInt(KEY_CURRENT_THEME, 1);
+        } else if (currentTheme == ViewConstants.THEMES.NIGHT_THEME) {
+            editor.putInt(KEY_CURRENT_THEME, 0);
+        }
+        // Сохранение радиуса кнопок
+        editor.putInt(KEY_CURRENT_RADIUS, curRadiusButtons);
+        // Ставим false, что говорит о том, что изменения радиуса отработали
+        editor.putBoolean(KEY_DOCHANGE_RADIUS, false);
+        editor.apply();
     }
 }

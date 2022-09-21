@@ -3,7 +3,6 @@ package ru.geekbrains.lessions2345.calculator.view.ui_main;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
@@ -11,14 +10,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import ru.geekbrains.lessions2345.calculator.R;
 import ru.geekbrains.lessions2345.calculator.core.Constants;
 import ru.geekbrains.lessions2345.calculator.view.ViewConstants;
@@ -26,6 +22,7 @@ import ru.geekbrains.lessions2345.calculator.view.ui_menu.MenuActivity;
 
 public class MainActivity extends Activity implements View.OnClickListener,
         ViewConstants, Constants, ViewMainContract {
+    /** Исходные данные */ //region
     private TextView outputResultText;
     private TextView inputtedHistoryText;
     private Button buttonZero;
@@ -60,36 +57,20 @@ public class MainActivity extends Activity implements View.OnClickListener,
     private THEMES currentTheme;
 
     private MainPresenter mainPresenter = new MainPresenter();
-    private float koeff_DP;
-    private int curRadiusButtons;
-    private boolean doChangeRadius = false;
+    //endregion
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Установка темы
-        koeff_DP = this.getResources().getDisplayMetrics().density;
-        currentTheme = getSettings();
-        setCalculatorTheme(currentTheme);
-        setContentView(R.layout.calc_keyboard_layout);
         // Отслеживание первичного запуска или перезапуска активити
-        if (savedInstanceState == null) {
-            // Умножаем на 2, потому что ширина чисел вдвое меньше величины EMS
-            if (this.getResources().getDisplayMetrics().widthPixels >= BORDER_WIDTH)
-                mainPresenter.setMaxNumberSymbolsInOutputTextField(
-                getResources().getInteger(R.integer.number_output_symbols_forEMS) * 2);
-            else
-                mainPresenter.setMaxNumberSymbolsInOutputTextField(
-                        getResources().getInteger(R.integer.number_output_symbols_forEMS_small) * 2);
-        } else {
-            // Восстановление класса mainPresenter после поворота экрана
-            if ((MainPresenter) getLastNonConfigurationInstance() != null) {
-                mainPresenter = (MainPresenter) getLastNonConfigurationInstance();
-            }
-        }
+        firstRunDetection(savedInstanceState);
         // Передача MainActivity в MainPresenter
         mainPresenter.onAttach(this);
+        // Установка темы
+        float koeffDP = this.getResources().getDisplayMetrics().density;
+        currentTheme = mainPresenter.getSettings(this);
+        setCalculatorTheme(currentTheme);
+        setContentView(R.layout.calc_keyboard_layout);
         // Инициализация текстовых полей
         initTextFields();
         // Инициализация кнопок
@@ -100,7 +81,7 @@ public class MainActivity extends Activity implements View.OnClickListener,
         // (_input_history и _input_history_night)
         setNewMaxHeightForInputHistory();
         // Установка обновлённых значений размеров элементов сцены
-        setNewSizesElements(Math.round(curRadiusButtons * koeff_DP));
+        setNewSizesElements(Math.round(mainPresenter.curRadiusButtons * koeffDP));
     }
 
     @Override
@@ -148,11 +129,11 @@ public class MainActivity extends Activity implements View.OnClickListener,
         super.onResume();
 
         // Установка темы
-        THEMES savedTheme = getSettings();
-        if ((currentTheme != savedTheme) || (doChangeRadius)) {
+        THEMES savedTheme = mainPresenter.getSettings(this);
+        if ((currentTheme != savedTheme) || (mainPresenter.doChangeRadius)) {
             currentTheme = savedTheme;
-            doChangeRadius = false;
-            saveSettings(currentTheme);
+            mainPresenter.doChangeRadius = false;
+            mainPresenter.saveSettings(currentTheme, this);
             recreate();
         }
     }
@@ -185,23 +166,19 @@ public class MainActivity extends Activity implements View.OnClickListener,
         switch (error) {
             case BRACKET_DISBALANCE:
                 Toast.makeText(this, getResources().getString(
-                                R.string.error_different_number_brackets),
-                        Toast.LENGTH_SHORT).show();
+                    R.string.error_different_number_brackets), Toast.LENGTH_SHORT).show();
                 break;
             case SQRT_MINUS:
                 Toast.makeText(this, getResources().getString(
-                                R.string.error_undersquare_low_zero),
-                        Toast.LENGTH_SHORT).show();
+                    R.string.error_undersquare_low_zero), Toast.LENGTH_SHORT).show();
                 break;
             case ZERO_DIVIDE:
                 Toast.makeText(this, getResources().getString(
-                                R.string.error_divide_on_zero),
-                        Toast.LENGTH_SHORT).show();
+                    R.string.error_divide_on_zero), Toast.LENGTH_SHORT).show();
                 break;
             case BRACKETS_EMPTY:
                 Toast.makeText(this, getResources().getString(
-                                R.string.error_inside_brackets_empty),
-                        Toast.LENGTH_SHORT).show();
+                    R.string.error_inside_brackets_empty), Toast.LENGTH_SHORT).show();
                 break;
             default:
                 break;
@@ -285,7 +262,8 @@ public class MainActivity extends Activity implements View.OnClickListener,
         findViewById(R.id.input_history_night_small).setVisibility(View.GONE);
 
         if (currentTheme == THEMES.NIGHT_THEME) {
-            if (this.getResources().getDisplayMetrics().widthPixels >= BORDER_WIDTH) {
+            if ((this.getResources().getDisplayMetrics().widthPixels >= BORDER_WIDTH) &&
+                (mainPresenter.curRadiusButtons >= DEFAULT_BUTTON_BORDER_RADIUS)) {
                 // Инициализация текстовых полей
                 outputResultText = findViewById(R.id._result_night);
                 inputtedHistoryText = findViewById(R.id.inputted_history_text_night);
@@ -299,7 +277,8 @@ public class MainActivity extends Activity implements View.OnClickListener,
                 findViewById(R.id.input_history_night_small).setVisibility(View.VISIBLE);
             }
         } else {
-            if (this.getResources().getDisplayMetrics().widthPixels >= BORDER_WIDTH) {
+            if ((this.getResources().getDisplayMetrics().widthPixels >= BORDER_WIDTH) &&
+                (mainPresenter.curRadiusButtons >= DEFAULT_BUTTON_BORDER_RADIUS)) {
                 // Инициализация текстовых полей
                 outputResultText = findViewById(R.id.result);
                 inputtedHistoryText = findViewById(R.id.inputted_history_text);
@@ -444,15 +423,15 @@ public class MainActivity extends Activity implements View.OnClickListener,
 
         // Установка слушателей событий на кнопки
         buttonsNumbersGroups.addAll(Arrays.asList(buttonZero, buttonOne, buttonTwo, buttonThree,
-                buttonFour, buttonFive, buttonSix, buttonSeven, buttonEight, buttonNine));
+            buttonFour, buttonFive, buttonSix, buttonSeven, buttonEight, buttonNine));
         buttonsNumbersGroups.forEach( button -> {
             button.setVisibility(View.VISIBLE);
             button.setOnClickListener(this);
         });
         buttonsActionsGroups.addAll(Arrays.asList(buttonEqual, buttonZapitay,
-                buttonBracketClose, buttonBackspace, buttonBackspaceOne, buttonBackspaceTwo,
-                buttonBracketOpen, buttonDivide, buttonMinus, buttonMultiply, buttonPercent,
-                buttonPlus, buttonPlusMinus, buttonSqrt, buttonStepen));
+            buttonBracketClose, buttonBackspace, buttonBackspaceOne, buttonBackspaceTwo,
+            buttonBracketOpen, buttonDivide, buttonMinus, buttonMultiply, buttonPercent,
+            buttonPlus, buttonPlusMinus, buttonSqrt, buttonStepen));
         buttonsActionsGroups.forEach( button -> {
             button.setVisibility(View.VISIBLE);
             button.setOnClickListener(this);
@@ -478,41 +457,6 @@ public class MainActivity extends Activity implements View.OnClickListener,
         }
     }
 
-    // Считать информацию о текущих настройках программы (теме и радиусе кнопок)
-    private THEMES getSettings() {
-        SharedPreferences sharedPreferences = getSharedPreferences(KEY_SETTINGS, MODE_PRIVATE);
-        int currentTheme = sharedPreferences.getInt(KEY_CURRENT_THEME, 1);
-        if (this.getResources().getDisplayMetrics().widthPixels >= BORDER_WIDTH)
-            curRadiusButtons = sharedPreferences.getInt(KEY_CURRENT_RADIUS, DEFAULT_BUTTON_RADIUS);
-        else
-            curRadiusButtons = sharedPreferences.getInt(
-                    KEY_CURRENT_RADIUS, DEFAULT_BUTTON_RADIUS_SMALL);
-        doChangeRadius = sharedPreferences.getBoolean(KEY_DOCHANGE_RADIUS, false);
-        if (currentTheme == 0) {
-            return THEMES.NIGHT_THEME;
-        } else {
-            // Установка по умолчанию - дневная тема,
-            // если в настройках стоит 1 или ничего не будет стоять
-            return THEMES.DAY_THEME;
-        }
-    }
-
-    private void saveSettings(THEMES currentTheme) {
-        SharedPreferences sharedPreferences = getSharedPreferences(KEY_SETTINGS, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        // Сохранение темы
-        if (currentTheme == THEMES.DAY_THEME) {
-            editor.putInt(KEY_CURRENT_THEME, 1);
-        } else if (currentTheme == THEMES.NIGHT_THEME) {
-            editor.putInt(KEY_CURRENT_THEME, 0);
-        }
-        // Сохранение радиуса кнопок
-        editor.putInt(KEY_CURRENT_RADIUS, curRadiusButtons);
-        // Ставим false, что говорит о том, что изменения радиуса отработали
-        editor.putBoolean(KEY_DOCHANGE_RADIUS, false);
-        editor.apply();
-    }
-
     private void setNewSizesElements(int newRadius) {
         ConstraintLayout constraintLayout = findViewById(R.id.run_calculator);
         ConstraintSet constraintSet = new ConstraintSet();
@@ -526,15 +470,16 @@ public class MainActivity extends Activity implements View.OnClickListener,
         int buttonsActionsHeight = (int) getResources().getDimension(
                 R.dimen.button_action_height_standard);
         // Задание новых размеров для кнопок
-        if (this.getResources().getDisplayMetrics().widthPixels < BORDER_WIDTH) {
+        if ((this.getResources().getDisplayMetrics().widthPixels < BORDER_WIDTH) ||
+            (mainPresenter.curRadiusButtons < DEFAULT_BUTTON_BORDER_RADIUS)) {
             buttonsNumbersWidth = (int) getResources().getDimension(
-                    R.dimen.button_number_width_small);
+                R.dimen.button_number_width_small);
             buttonsNumbersHeight = (int) getResources().getDimension(
-                    R.dimen.button_number_height_small);
+                R.dimen.button_number_height_small);
             buttonsActionsWidth = (int) getResources().getDimension(
-                    R.dimen.small_button_action_width);
+                R.dimen.small_button_action_width);
             buttonsActionsHeight = (int) getResources().getDimension(
-                    R.dimen.small_button_action_height);
+                R.dimen.small_button_action_height);
         }
 
         // Задание нового радиуса кнопок с цифрами и их новых размеров
@@ -552,5 +497,24 @@ public class MainActivity extends Activity implements View.OnClickListener,
             constraintSet.constrainHeight(button.getId(), buttonsActionsHeight);
         }
         constraintSet.applyTo(constraintLayout);
+    }
+
+    // Отслеживание первичного запуска или перезапуска активити
+    private void firstRunDetection(Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
+            // Умножаем на 2, потому что ширина чисел вдвое меньше величины EMS
+            if ((this.getResources().getDisplayMetrics().widthPixels >= BORDER_WIDTH) &&
+                (mainPresenter.curRadiusButtons >= DEFAULT_BUTTON_BORDER_RADIUS))
+                mainPresenter.setMaxNumberSymbolsInOutputTextField(
+                    getResources().getInteger(R.integer.number_output_symbols_forEMS) * 2);
+            else
+                mainPresenter.setMaxNumberSymbolsInOutputTextField(
+                    getResources().getInteger(R.integer.number_output_symbols_forEMS_small) * 2);
+        } else {
+            // Восстановление класса mainPresenter после поворота экрана
+            if ((MainPresenter) getLastNonConfigurationInstance() != null) {
+                mainPresenter = (MainPresenter) getLastNonConfigurationInstance();
+            }
+        }
     }
 }

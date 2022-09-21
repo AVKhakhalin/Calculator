@@ -1,6 +1,8 @@
 package ru.geekbrains.lessions2345.calculator.core;
 
 public interface Constants {
+    int MAX_NUMBER_SYMBOLS_IN_OUTPUT_TEXT_FIELD = 12;
+
     // Действия
     enum ACTIONS {
         ACT_STEP,         // возведение в степень (ACT_STEP)

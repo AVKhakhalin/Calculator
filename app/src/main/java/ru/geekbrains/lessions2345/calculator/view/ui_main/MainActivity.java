@@ -3,7 +3,9 @@ package ru.geekbrains.lessions2345.calculator.view.ui_main;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.View;
@@ -12,6 +14,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
+
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -161,28 +166,70 @@ public class MainActivity extends Activity implements View.OnClickListener,
     }
 
     @Override
-    public void setErrorText(ERRORS error) {
+    public void showErrorInString(ERRORS_IN_STRING error) {
         // Отобразить информацию о текущих ошибках
         switch (error) {
             case BRACKET_DISBALANCE:
-                Toast.makeText(this, getResources().getString(
-                    R.string.error_different_number_brackets), Toast.LENGTH_SHORT).show();
+                snackBarShowInfo(getResources().
+                    getString(R.string.error_different_number_brackets));
                 break;
             case SQRT_MINUS:
-                Toast.makeText(this, getResources().getString(
-                    R.string.error_undersquare_low_zero), Toast.LENGTH_SHORT).show();
+                snackBarShowInfo(getResources().
+                    getString(R.string.error_undersquare_low_zero));
                 break;
             case ZERO_DIVIDE:
-                Toast.makeText(this, getResources().getString(
-                    R.string.error_divide_on_zero), Toast.LENGTH_SHORT).show();
+                snackBarShowInfo(getResources().
+                    getString(R.string.error_divide_on_zero));
                 break;
             case BRACKETS_EMPTY:
-                Toast.makeText(this, getResources().getString(
-                    R.string.error_inside_brackets_empty), Toast.LENGTH_SHORT).show();
+                snackBarShowInfo(getResources().
+                    getString(R.string.error_inside_brackets_empty));
                 break;
             default:
                 break;
         }
+    }
+
+    @Override
+    public void showErrorInputting(ERRORS_INPUTTING error) {
+        // Отобразить информацию о текущих ошибках
+        switch (error) {
+            case NUMBER_AFTER_BRACKET:
+                snackBarShowInfo(getResources().
+                        getString(R.string.error_number_after_bracket));
+                break;
+            case MANY_ZERO_IN_INTEGER_PART:
+                snackBarShowInfo(getResources().
+                        getString(R.string.error_many_zero_in_integer_part));
+                break;
+            case PERCENT_ON_OPEN_BRACKET:
+                snackBarShowInfo(getResources().
+                        getString(R.string.error_percent_on_open_bracket));
+                break;
+            case INPUT_NUMBER_FIRST:
+                snackBarShowInfo(getResources().
+                        getString(R.string.error_input_number_first));
+                break;
+            case PERCENT_NEEDS_TWO_NUMBERS:
+                snackBarShowInfo(getResources().
+                        getString(R.string.error_needs_two_numbers));
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void snackBarShowInfo(String message) {
+        Snackbar.make(findViewById(R.id.run_calculator), message, Snackbar.LENGTH_INDEFINITE)
+                .setAction(HIDE_NAME, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                    }
+                })
+                .setBackgroundTintMode(PorterDuff.Mode.ADD)
+                .setBackgroundTint(Color.BLUE)
+                .setActionTextColor(Color.RED)
+                .show();
     }
 
     @Override

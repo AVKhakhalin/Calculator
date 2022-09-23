@@ -1,5 +1,19 @@
 <resources>
     <string name="app_name">Scientific calculator</string>
+
+    <!-- Сообщения об ошибках-->
+        <!-- Ошибки в введенной строке-->
+    <string name="error_different_number_brackets">Ошибка: различное количество открытых и закрытых скобок.</string>
+    <string name="error_undersquare_low_zero">Ошибка: подкоренное выражение меньше нуля.</string>
+    <string name="error_divide_on_zero">Ошибка: деление на ноль.</string>
+    <string name="error_inside_brackets_empty">Ошибка: внутри скобок ничего нет.</string>
+        <!-- Ошибки в процессе введения данных-->
+    <string name="error_number_after_bracket">Ошибка: после скобки нельзя ставить сразу число без предварительного указания действия с ним.</string>
+    <string name="error_many_zero_in_integer_part">Ошибка: для задания целой части числа хватит и одного нуля.</string>
+    <string name="error_percent_on_open_bracket">Ошибка: процент нельзя применять к открытой скобке, а нужно применять только к арифметическим операциям (*, /, +, -).</string>
+    <string name="error_input_number_first">Ошибка: нужно сначала ввести число.</string>
+    <string name="error_needs_two_numbers">Ошибка: для применения процента нужно ввести два числа и любую следующу арифметическую операцию между ними (*, /, +, -).</string>
+
     <string name="_0">0</string>
     <string name="_1">1</string>
     <string name="_2">2</string>
@@ -22,9 +36,9 @@
     <string name="_plus_minus">+/-</string>
     <string name="_stepen">x^n</string>
     <string name="_sqrt">Kx</string>
-    <string name="_backspaceTwo"><![CDATA[<--]]></string>
+    <string name="_backspaceTwo"><![CDATA[<—]]></string>
     <string name="_backspace">C</string>
-    <string name="InputHistory_text"></string>
+    <string name="InputHistory_text" />
     <string name="RESULT_text">0</string>
     <string name="_backspaceOne"><![CDATA[<-]]></string>
     <string name="_settings">Настройки</string>
@@ -32,15 +46,11 @@
     <string name="turn_on_night_them_button_text">Ночная тема</string>
     <string name="return_button_text">Установить</string>
     <string name="menu_message_text">Выберите тему калькулятора</string>
-    <string name="author_info_text">Разработчик научного калькулятора Хахалин Андрей Владимирович, 2021-2022 гг.</string>
+    <string name="author_info_text">Разработчик научного калькулятора Хахалин Андрей Владимирович, 2021–2022 гг.</string>
     <string name="set_radius_buttons_text">
         <br>Можно ещё задать РАДИУС</br>
         <br>расположения кнопок в dp</br>
         <br>(по-умолчанию 131 dp):</br>
     </string>
     <string name="default_radius_text">131</string>
-    <string name="error_different_number_brackets">Ошибка: различное количество открытых и закрытых скобок.</string>
-    <string name="error_undersquare_low_zero">Ошибка: подкоренное выражение меньше нуля.</string>
-    <string name="error_divide_on_zero">Ошибка: деление на ноль.</string>
-    <string name="error_inside_brackets_empty">Ошибка: внутри скобок ничего нет.</string>
 </resources>

@@ -1,5 +1,11 @@
 package ru.geekbrains.lessions2345.calculator.core;
 
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.INPUT_NUMBER_FIRST;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.MANY_ZERO_IN_INTEGER_PART;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.NUMBER_AFTER_BRACKET;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.PERCENT_NEEDS_TWO_NUMBERS;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.PERCENT_ON_OPEN_BRACKET;
+
 import java.text.DecimalFormat;
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -29,11 +35,14 @@ public class CalcLogic implements Constants {
     // Переменная, хранящая окончательный результат вычислений
     private double finalResult = 0d;
     // Ошибки вычислений
-    private ERRORS errorCode = ERRORS.NO;
+    private ERRORS_IN_STRING errorCode = ERRORS_IN_STRING.NO;
     // Максимальное количество символов, допустимое для вывода в поле с результатами вычислений
     private int maxNumberSymbolsInOutputTextField = MAX_NUMBER_SYMBOLS_IN_OUTPUT_TEXT_FIELD;
+    // Действия при ошибках ввода чисел в калькуляторе
+    private final ErrorMessages errorMessages;
 
-    public CalcLogic() {
+    public CalcLogic(ErrorMessages errorMessages) {
+        this.errorMessages = errorMessages;
         inputNumbers = new LinkedList<>();
         maxBracketLevel = 0;
         curBracketLevel = 0;
@@ -55,8 +64,8 @@ public class CalcLogic implements Constants {
         if (inputNumbers.get(curNumber).getIsClose()) {
             // Вывести сообщение о том, что нельзя сразу же после закрытой скобки вводить число,
             // предварительно не указав действия с ним
-            // TODO
-            return -1.0;
+            errorMessages.getErrorInputting(NUMBER_AFTER_BRACKET);
+            return -1.0; // Здесь можно вернуть любое число
         }
         // Добавление нового элемента
         if ((inputNumbers.get(curNumber).getIsBracket()) &&
@@ -67,8 +76,9 @@ public class CalcLogic implements Constants {
         }
         if ((inputNumbers.get(curNumber).getValue() == 0d) && (inputNumbers.get(curNumber).
                 getIntegerPartValue().length() > 0) && (newNumeral == 0) && (!pressedZapitay)) {
-            // Показать уведомление о том, что для задания целой части числа вполне хватит и одного нуля
-            // TODO
+            // Показать уведомление о том,
+            // что для задания целой части числа вполне хватит и одного нуля
+            errorMessages.getErrorInputting(MANY_ZERO_IN_INTEGER_PART);
         } else {
             double intPartValue = 0d;
             double realPartValue = 0d;
@@ -384,13 +394,13 @@ public class CalcLogic implements Constants {
                                 }
                             }
                             result = moveOnWithoutBracket(inputNumbersForBaseCalc);
-                            if (errorCode != ERRORS.NO) {
+                            if (errorCode != ERRORS_IN_STRING.NO) {
                                 return;
                             }
                             inputNumbersForBracketCalc.get(startBracketIndex).
                                     setValue(doFunction(result, inputNumbersForBracketCalc.
                                             get(startBracketIndex).getTypeFuncInBracket()));
-                            if (errorCode != ERRORS.NO) {
+                            if (errorCode != ERRORS_IN_STRING.NO) {
                                 return;
                             }
                             inputNumbersForBracketCalc.get(startBracketIndex).
@@ -423,7 +433,7 @@ public class CalcLogic implements Constants {
             result = moveOnWithoutBracket(inputNumbersForBaseCalc);
         } else {
             // Сообщить об ошибке: в анализируемом выражении есть незакрытые скобки
-            errorCode = ERRORS.BRACKET_DISBALANCE;
+            errorCode = ERRORS_IN_STRING.BRACKET_DISBALANCE;
         }
 
         // Сохранение результирующего значения
@@ -439,7 +449,7 @@ public class CalcLogic implements Constants {
                 result = Math.sqrt(value);
             } else {
                 // Добавить сообщение об ошибке: выражение под корнем не может быть меньше нуля!
-                errorCode = ERRORS.SQRT_MINUS;
+                errorCode = ERRORS_IN_STRING.SQRT_MINUS;
             }
         }
         // Подключить новую функцию для вычислений здесь
@@ -461,7 +471,7 @@ public class CalcLogic implements Constants {
             prevDates = curNumbersForCals.get(0);
         } else {
             // Ошибка: внутри скобки нет никакого числа
-            errorCode = ERRORS.BRACKETS_EMPTY;
+            errorCode = ERRORS_IN_STRING.BRACKETS_EMPTY;
             return result;
         }
         for (ACTIONS action : ACTIONS.values()) {
@@ -526,7 +536,7 @@ public class CalcLogic implements Constants {
                 result = (number1 * number2 != 0 ? (number1 / (number1 * number2 / 100)) : (0));
                 // Ошибка: деление на ноль
                 if (number1 * number2 == 0) {
-                    errorCode = ERRORS.ZERO_DIVIDE;
+                    errorCode = ERRORS_IN_STRING.ZERO_DIVIDE;
                 }
                 break;
             case ACT_PERS_MULTY:
@@ -542,7 +552,7 @@ public class CalcLogic implements Constants {
                 result = (number2 != 0 ? (number1 / number2) : (0));
                 // Ошибка: деление на ноль
                 if (number2 == 0) {
-                    errorCode = ERRORS.ZERO_DIVIDE;
+                    errorCode = ERRORS_IN_STRING.ZERO_DIVIDE;
                 }
                 break;
             case ACT_MULTY:
@@ -633,13 +643,13 @@ public class CalcLogic implements Constants {
                         (!inputNumbers.get(curNumber).getIsClose())) {
                     // Вывести сообщение о том, что процент нельзя применять к открытой скобке,
                     // а нужно применять только к простым арифметическим операциям *, /, +, -
-                    // TODO
+                    errorMessages.getErrorInputting(PERCENT_ON_OPEN_BRACKET);
                 } else {
                     inputNumbers.get(curNumber).setAction(action);
                 }
             } else {
                 // Вывести сообщение о том, что нужно сначала ввести число
-                // TODO
+                errorMessages.getErrorInputting(INPUT_NUMBER_FIRST);
             }
         } else {
             if ((action == ACTIONS.ACT_PERS_MULTY) && (inputNumbers.get(curNumber).getIsValue())) {
@@ -647,17 +657,17 @@ public class CalcLogic implements Constants {
                         (!inputNumbers.get(curNumber).getIsClose())) {
                     // Вывести сообщение о том, что процент нельзя применять к открытой скобке,
                     // а нужно применять только к простым арифметическим операциям *, /, +, -
-                    // TODO
+                    errorMessages.getErrorInputting(PERCENT_ON_OPEN_BRACKET);
                 } else if (curNumber == 0) {
                     // Вывести сообщение о том, что для применения процента нужно ввести два числа
                     // и любую следующую арифметическую операцию между ними: *, /, +, -
-                    // TODO
+                    errorMessages.getErrorInputting(PERCENT_NEEDS_TWO_NUMBERS);
                 } else if (((inputNumbers.get(curNumber - 1).getIsBracket()) &&
                         (!inputNumbers.get(curNumber - 1).getIsClose())) ||
                         !inputNumbers.get(curNumber).getIsValue()) {
                     // Вывести сообщение о том, что для применения процента нужно ввести два числа
                     // и любую следующую арифметическую операцию между ними: *, /, +, -
-                    // TODO
+                    errorMessages.getErrorInputting(PERCENT_NEEDS_TWO_NUMBERS);
                 } else {
                     if ((inputNumbers.get(curNumber).getIsBracket()) &&
                             (inputNumbers.get(curNumber).getIsClose())) {
@@ -905,7 +915,7 @@ public class CalcLogic implements Constants {
 
     public String getFinalResult() {
         String finalResultString = "";
-        if (errorCode == ERRORS.NO) {
+        if (errorCode == ERRORS_IN_STRING.NO) {
             finalResultString = numberFormatOutput(finalResult, maxNumberSymbolsInOutputTextField);
         }
         return finalResultString;
@@ -968,11 +978,11 @@ public class CalcLogic implements Constants {
         return format.toString();
     }
 
-    public ERRORS getErrorCode() {
+    public ERRORS_IN_STRING getErrorCode() {
         return errorCode;
     }
 
     public void clearErrorCode() {
-        errorCode = ERRORS.NO;
+        errorCode = ERRORS_IN_STRING.NO;
     }
 }

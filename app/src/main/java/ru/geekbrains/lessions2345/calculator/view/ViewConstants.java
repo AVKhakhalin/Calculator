@@ -11,6 +11,7 @@ public interface ViewConstants {
     float KOEFF_RESIZE_HEIGHT = 2.2f;
     int MAX_RADIUS_BUTTONS = 200;
     int BORDER_WIDTH = 1080;
+    String HIDE_NAME = "Скрыть";
 
     // Названия тем
     enum THEMES {

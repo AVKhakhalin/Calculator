@@ -8,24 +8,28 @@ import static ru.geekbrains.lessions2345.calculator.view.ViewConstants.KEY_CURRE
 import static ru.geekbrains.lessions2345.calculator.view.ViewConstants.KEY_CURRENT_THEME;
 import static ru.geekbrains.lessions2345.calculator.view.ViewConstants.KEY_DOCHANGE_RADIUS;
 import static ru.geekbrains.lessions2345.calculator.view.ViewConstants.KEY_SETTINGS;
-
 import android.content.Context;
 import android.content.SharedPreferences;
-
+import android.util.Log;
 import java.util.Locale;
-
 import ru.geekbrains.lessions2345.calculator.core.CalcLogic;
 import ru.geekbrains.lessions2345.calculator.core.Constants;
+import ru.geekbrains.lessions2345.calculator.core.ErrorMessages;
 import ru.geekbrains.lessions2345.calculator.view.ViewConstants;
 import ru.geekbrains.lessions2345.calculator.view.ViewContract;
 
-public class MainPresenter implements PresenterMainContract {
+public class MainPresenter implements PresenterMainContract, ErrorMessages {
     /** Исходные данные */ //region
-    private final CalcLogic calcLogic = new CalcLogic();
+    private final CalcLogic calcLogic = new CalcLogic((ErrorMessages) this);
     private ViewMainContract viewMain;
     public int curRadiusButtons;
     public boolean doChangeRadius = false;
     //endregion
+
+    @Override
+    public void getErrorInputting(Constants.ERRORS_INPUTTING errorInputting) {
+        if (viewMain != null) viewMain.showErrorInputting(errorInputting);
+    }
 
     /** Задание различных конструкторов для презентера */ //region
     public MainPresenter() {
@@ -135,7 +139,7 @@ public class MainPresenter implements PresenterMainContract {
 
     @Override
     public void getError() {
-        if (viewMain != null) viewMain.setErrorText(calcLogic.getErrorCode());
+        if (viewMain != null) viewMain.showErrorInString(calcLogic.getErrorCode());
         calcLogic.clearErrorCode();
     }
 

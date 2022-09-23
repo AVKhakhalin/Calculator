@@ -14,11 +14,11 @@ import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 import static org.mockito.Mockito.times;
-import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS.BRACKETS_EMPTY;
-import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS.BRACKET_DISBALANCE;
-import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS.NO;
-import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS.SQRT_MINUS;
-import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS.ZERO_DIVIDE;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_IN_STRING.BRACKETS_EMPTY;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_IN_STRING.BRACKET_DISBALANCE;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_IN_STRING.NO;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_IN_STRING.SQRT_MINUS;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_IN_STRING.ZERO_DIVIDE;
 
 public class MainPresenterTest {
 
@@ -473,7 +473,7 @@ public class MainPresenterTest {
                 setInputtedHistoryText("4");
         mainPresenter.setEqual();
         Mockito.verify(viewMainContract, times(1)).
-                setErrorText(NO);
+                showErrorInString(NO);
     }
 
     @Test // Проверка корректности выполнения getError() для подкоренного значения
@@ -490,7 +490,7 @@ public class MainPresenterTest {
                 setInputtedHistoryText("SQRT((-4))");
         mainPresenter.setEqual();
         Mockito.verify(viewMainContract, times(1)).
-                setErrorText(SQRT_MINUS);
+                showErrorInString(SQRT_MINUS);
     }
 
     @Test // Проверка корректности выполнения getError() для равенства открытых и закрытых скобок
@@ -503,7 +503,7 @@ public class MainPresenterTest {
                 setInputtedHistoryText("(4");
         mainPresenter.setEqual();
         Mockito.verify(viewMainContract, times(1)).
-                setErrorText(BRACKET_DISBALANCE);
+                showErrorInString(BRACKET_DISBALANCE);
     }
 
     @Test // Проверка корректности выполнения getError() для деления на ноль
@@ -519,7 +519,7 @@ public class MainPresenterTest {
                 setInputtedHistoryText("4/0");
         mainPresenter.setEqual();
         Mockito.verify(viewMainContract, times(1)).
-                setErrorText(ZERO_DIVIDE);
+                showErrorInString(ZERO_DIVIDE);
     }
 
     @Test // Проверка корректности выполнения getError() для пустого выражения в скобках
@@ -532,7 +532,7 @@ public class MainPresenterTest {
                 setInputtedHistoryText("()");
         mainPresenter.setEqual();
         Mockito.verify(viewMainContract, times(1)).
-                setErrorText(BRACKETS_EMPTY);
+                showErrorInString(BRACKETS_EMPTY);
     }
 
     @Test // Проверка корректности выполнения getInit()

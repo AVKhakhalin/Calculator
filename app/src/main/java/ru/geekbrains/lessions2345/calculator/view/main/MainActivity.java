@@ -1,6 +1,5 @@
-package ru.geekbrains.lessions2345.calculator.view.ui_main;
+package ru.geekbrains.lessions2345.calculator.view.main;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -11,7 +10,8 @@ import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
@@ -20,12 +20,14 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import ru.geekbrains.lessions2345.calculator.R;
 import ru.geekbrains.lessions2345.calculator.core.Constants;
 import ru.geekbrains.lessions2345.calculator.view.ViewConstants;
-import ru.geekbrains.lessions2345.calculator.view.ui_menu.MenuActivity;
+import ru.geekbrains.lessions2345.calculator.view.errormessages.ErrorMessagesFragment;
+import ru.geekbrains.lessions2345.calculator.view.menu.MenuActivity;
 
-public class MainActivity extends Activity implements View.OnClickListener,
+public class MainActivity extends AppCompatActivity implements View.OnClickListener,
         ViewConstants, Constants, ViewMainContract {
     /** Исходные данные */ //region
     private TextView outputResultText;
@@ -63,6 +65,18 @@ public class MainActivity extends Activity implements View.OnClickListener,
 
     private MainPresenter mainPresenter = new MainPresenter();
     //endregion
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(MAIN_PRESENTER_KEY, mainPresenter);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mainPresenter = (MainPresenter) savedInstanceState.getSerializable(MAIN_PRESENTER_KEY);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,18 +158,6 @@ public class MainActivity extends Activity implements View.OnClickListener,
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        // Сохранение класса calcLogic перед поворотом экрана
-        onRetainNonConfigurationInstance();
-    }
-
-    // Метод для сохранения ссылки на класс calcLogic при повороте экрана
-    public Object onRetainNonConfigurationInstance() {
-        return mainPresenter;
-    }
-
-    @Override
     public void setInputtedHistoryText(String newText) {
         inputtedHistoryText.setText(newText);
     }
@@ -170,19 +172,19 @@ public class MainActivity extends Activity implements View.OnClickListener,
         // Отобразить информацию о текущих ошибках
         switch (error) {
             case BRACKET_DISBALANCE:
-                snackBarShowInfo(getResources().
+                showErrorMessage(getResources().
                     getString(R.string.error_different_number_brackets));
                 break;
             case SQRT_MINUS:
-                snackBarShowInfo(getResources().
+                showErrorMessage(getResources().
                     getString(R.string.error_undersquare_low_zero));
                 break;
             case ZERO_DIVIDE:
-                snackBarShowInfo(getResources().
+                showErrorMessage(getResources().
                     getString(R.string.error_divide_on_zero));
                 break;
             case BRACKETS_EMPTY:
-                snackBarShowInfo(getResources().
+                showErrorMessage(getResources().
                     getString(R.string.error_inside_brackets_empty));
                 break;
             default:
@@ -195,23 +197,23 @@ public class MainActivity extends Activity implements View.OnClickListener,
         // Отобразить информацию о текущих ошибках
         switch (error) {
             case NUMBER_AFTER_BRACKET:
-                snackBarShowInfo(getResources().
+                showErrorMessage(getResources().
                         getString(R.string.error_number_after_bracket));
                 break;
             case MANY_ZERO_IN_INTEGER_PART:
-                snackBarShowInfo(getResources().
+                showErrorMessage(getResources().
                         getString(R.string.error_many_zero_in_integer_part));
                 break;
             case PERCENT_ON_OPEN_BRACKET:
-                snackBarShowInfo(getResources().
+                showErrorMessage(getResources().
                         getString(R.string.error_percent_on_open_bracket));
                 break;
             case INPUT_NUMBER_FIRST:
-                snackBarShowInfo(getResources().
+                showErrorMessage(getResources().
                         getString(R.string.error_input_number_first));
                 break;
             case PERCENT_NEEDS_TWO_NUMBERS:
-                snackBarShowInfo(getResources().
+                showErrorMessage(getResources().
                         getString(R.string.error_needs_two_numbers));
                 break;
             default:
@@ -219,17 +221,9 @@ public class MainActivity extends Activity implements View.OnClickListener,
         }
     }
 
-    private void snackBarShowInfo(String message) {
-        Snackbar.make(findViewById(R.id.run_calculator), message, Snackbar.LENGTH_INDEFINITE)
-                .setAction(HIDE_NAME, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                    }
-                })
-                .setBackgroundTintMode(PorterDuff.Mode.ADD)
-                .setBackgroundTint(Color.BLUE)
-                .setActionTextColor(Color.RED)
-                .show();
+    private void showErrorMessage(String message) {
+        new ErrorMessagesFragment().newInstance(message).
+                show(getSupportFragmentManager(), ERROR_MESSAGE_FRAGMENT_KEY);
     }
 
     @Override
@@ -559,9 +553,7 @@ public class MainActivity extends Activity implements View.OnClickListener,
                     getResources().getInteger(R.integer.number_output_symbols_forEMS_small) * 2);
         } else {
             // Восстановление класса mainPresenter после поворота экрана
-            if ((MainPresenter) getLastNonConfigurationInstance() != null) {
-                mainPresenter = (MainPresenter) getLastNonConfigurationInstance();
-            }
+            mainPresenter = (MainPresenter) savedInstanceState.getSerializable(MAIN_PRESENTER_KEY);
         }
     }
 }

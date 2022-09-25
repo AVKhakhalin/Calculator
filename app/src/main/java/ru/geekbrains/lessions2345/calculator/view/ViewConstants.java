@@ -12,6 +12,9 @@ public interface ViewConstants {
     int MAX_RADIUS_BUTTONS = 200;
     int BORDER_WIDTH = 1080;
     String HIDE_NAME = "Скрыть";
+    String ERROR_MESSAGE_KEY = "Error Message";
+    String ERROR_MESSAGE_FRAGMENT_KEY = "Error Message Fragment";
+    String MAIN_PRESENTER_KEY = "Main Presenter";
 
     // Названия тем
     enum THEMES {

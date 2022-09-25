@@ -20,7 +20,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.annotation.Config;
 
-import ru.geekbrains.lessions2345.calculator.view.ui_main.MainActivity;
+import ru.geekbrains.lessions2345.calculator.view.main.MainActivity;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

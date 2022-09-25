@@ -1,4 +1,4 @@
-package ru.geekbrains.lessions2345.calculator.view.ui_menu;
+package ru.geekbrains.lessions2345.calculator.view.menu;
 
 import ru.geekbrains.lessions2345.calculator.view.PresenterContract;
 

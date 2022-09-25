@@ -1,4 +1,4 @@
-package ru.geekbrains.lessions2345.calculator.view.ui_main;
+package ru.geekbrains.lessions2345.calculator.view.main;
 
 import static android.content.Context.MODE_PRIVATE;
 import static ru.geekbrains.lessions2345.calculator.view.ViewConstants.BORDER_WIDTH;
@@ -10,24 +10,42 @@ import static ru.geekbrains.lessions2345.calculator.view.ViewConstants.KEY_DOCHA
 import static ru.geekbrains.lessions2345.calculator.view.ViewConstants.KEY_SETTINGS;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
 import java.util.Locale;
 import ru.geekbrains.lessions2345.calculator.core.CalcLogic;
 import ru.geekbrains.lessions2345.calculator.core.Constants;
-import ru.geekbrains.lessions2345.calculator.core.ErrorMessages;
 import ru.geekbrains.lessions2345.calculator.view.ViewConstants;
 import ru.geekbrains.lessions2345.calculator.view.ViewContract;
 
-public class MainPresenter implements PresenterMainContract, ErrorMessages {
+public class MainPresenter implements PresenterMainContract, Serializable, Parcelable {
     /** Исходные данные */ //region
-    private final CalcLogic calcLogic = new CalcLogic((ErrorMessages) this);
     private ViewMainContract viewMain;
+    private final CalcLogic calcLogic = new CalcLogic(this::showErrorInputting);
     public int curRadiusButtons;
     public boolean doChangeRadius = false;
     //endregion
 
-    @Override
-    public void getErrorInputting(Constants.ERRORS_INPUTTING errorInputting) {
+    protected MainPresenter(Parcel in) {
+        curRadiusButtons = in.readInt();
+        doChangeRadius = in.readByte() != 0;
+    }
+
+    public static final Creator<MainPresenter> CREATOR = new Creator<MainPresenter>() {
+        @Override
+        public MainPresenter createFromParcel(Parcel in) {
+            return new MainPresenter(in);
+        }
+
+        @Override
+        public MainPresenter[] newArray(int size) {
+            return new MainPresenter[size];
+        }
+    };
+
+    public void showErrorInputting(Constants.ERRORS_INPUTTING errorInputting) {
         if (viewMain != null) viewMain.showErrorInputting(errorInputting);
     }
 
@@ -210,4 +228,14 @@ public class MainPresenter implements PresenterMainContract, ErrorMessages {
         editor.putBoolean(KEY_DOCHANGE_RADIUS, false);
         editor.apply();
     }
+
+    //region Методы для парселизации
+    @Override
+    public int describeContents() { return 0; }
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(curRadiusButtons);
+        parcel.writeByte((byte) (doChangeRadius ? 1 : 0));
+    }
+    //endregion
 }

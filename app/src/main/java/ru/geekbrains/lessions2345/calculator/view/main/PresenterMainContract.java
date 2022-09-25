@@ -1,4 +1,4 @@
-package ru.geekbrains.lessions2345.calculator.view.ui_main;
+package ru.geekbrains.lessions2345.calculator.view.main;
 
 import ru.geekbrains.lessions2345.calculator.core.Constants;
 import ru.geekbrains.lessions2345.calculator.view.PresenterContract;

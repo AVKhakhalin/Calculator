@@ -12,7 +12,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import ru.geekbrains.lessions2345.calculator.view.ui_main.MainActivity;
+import ru.geekbrains.lessions2345.calculator.view.main.MainActivity;
 
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.assertion.ViewAssertions;

@@ -6,6 +6,7 @@ import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTT
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.PERCENT_NEEDS_TWO_NUMBERS;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.PERCENT_ON_OPEN_BRACKET;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -13,7 +14,7 @@ import java.util.Locale;
 
 import ru.geekbrains.lessions2345.calculator.model.Dates;
 
-public class CalcLogic implements Constants {
+public class CalcLogic implements Constants, Serializable {
     // Создание класса со значениями
     private LinkedList<Dates> inputNumbers;
     // Максимальный уровень вложенности во всех скобках
@@ -64,7 +65,7 @@ public class CalcLogic implements Constants {
         if (inputNumbers.get(curNumber).getIsClose()) {
             // Вывести сообщение о том, что нельзя сразу же после закрытой скобки вводить число,
             // предварительно не указав действия с ним
-            errorMessages.getErrorInputting(NUMBER_AFTER_BRACKET);
+            errorMessages.sendErrorInputting(NUMBER_AFTER_BRACKET);
             return -1.0; // Здесь можно вернуть любое число
         }
         // Добавление нового элемента
@@ -78,7 +79,7 @@ public class CalcLogic implements Constants {
                 getIntegerPartValue().length() > 0) && (newNumeral == 0) && (!pressedZapitay)) {
             // Показать уведомление о том,
             // что для задания целой части числа вполне хватит и одного нуля
-            errorMessages.getErrorInputting(MANY_ZERO_IN_INTEGER_PART);
+            errorMessages.sendErrorInputting(MANY_ZERO_IN_INTEGER_PART);
         } else {
             double intPartValue = 0d;
             double realPartValue = 0d;
@@ -643,13 +644,13 @@ public class CalcLogic implements Constants {
                         (!inputNumbers.get(curNumber).getIsClose())) {
                     // Вывести сообщение о том, что процент нельзя применять к открытой скобке,
                     // а нужно применять только к простым арифметическим операциям *, /, +, -
-                    errorMessages.getErrorInputting(PERCENT_ON_OPEN_BRACKET);
+                    errorMessages.sendErrorInputting(PERCENT_ON_OPEN_BRACKET);
                 } else {
                     inputNumbers.get(curNumber).setAction(action);
                 }
             } else {
                 // Вывести сообщение о том, что нужно сначала ввести число
-                errorMessages.getErrorInputting(INPUT_NUMBER_FIRST);
+                errorMessages.sendErrorInputting(INPUT_NUMBER_FIRST);
             }
         } else {
             if ((action == ACTIONS.ACT_PERS_MULTY) && (inputNumbers.get(curNumber).getIsValue())) {
@@ -657,17 +658,17 @@ public class CalcLogic implements Constants {
                         (!inputNumbers.get(curNumber).getIsClose())) {
                     // Вывести сообщение о том, что процент нельзя применять к открытой скобке,
                     // а нужно применять только к простым арифметическим операциям *, /, +, -
-                    errorMessages.getErrorInputting(PERCENT_ON_OPEN_BRACKET);
+                    errorMessages.sendErrorInputting(PERCENT_ON_OPEN_BRACKET);
                 } else if (curNumber == 0) {
                     // Вывести сообщение о том, что для применения процента нужно ввести два числа
                     // и любую следующую арифметическую операцию между ними: *, /, +, -
-                    errorMessages.getErrorInputting(PERCENT_NEEDS_TWO_NUMBERS);
+                    errorMessages.sendErrorInputting(PERCENT_NEEDS_TWO_NUMBERS);
                 } else if (((inputNumbers.get(curNumber - 1).getIsBracket()) &&
                         (!inputNumbers.get(curNumber - 1).getIsClose())) ||
                         !inputNumbers.get(curNumber).getIsValue()) {
                     // Вывести сообщение о том, что для применения процента нужно ввести два числа
                     // и любую следующую арифметическую операцию между ними: *, /, +, -
-                    errorMessages.getErrorInputting(PERCENT_NEEDS_TWO_NUMBERS);
+                    errorMessages.sendErrorInputting(PERCENT_NEEDS_TWO_NUMBERS);
                 } else {
                     if ((inputNumbers.get(curNumber).getIsBracket()) &&
                             (inputNumbers.get(curNumber).getIsClose())) {

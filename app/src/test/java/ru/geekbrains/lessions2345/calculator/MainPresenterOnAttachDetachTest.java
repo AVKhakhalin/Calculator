@@ -6,8 +6,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import ru.geekbrains.lessions2345.calculator.view.ui_main.MainPresenter;
-import ru.geekbrains.lessions2345.calculator.view.ui_main.ViewMainContract;
+import ru.geekbrains.lessions2345.calculator.view.main.MainPresenter;
+import ru.geekbrains.lessions2345.calculator.view.main.ViewMainContract;
 
 import static org.mockito.Mockito.times;
 

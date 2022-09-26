@@ -2,25 +2,18 @@ package ru.geekbrains.lessions2345.calculator.view.main;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Point;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
-
-import com.google.android.material.snackbar.Snackbar;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import ru.geekbrains.lessions2345.calculator.R;
 import ru.geekbrains.lessions2345.calculator.core.Constants;
 import ru.geekbrains.lessions2345.calculator.view.ViewConstants;
@@ -125,7 +118,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ConstraintSet constraintSet = new ConstraintSet();
         constraintSet.clone(constraintLayout);
         constraintSet.constrainMaxHeight(R.id.input_history, newMaxHeightDp);
-        constraintSet.constrainMaxHeight(R.id.input_history_night, newMaxHeightDp);
         constraintSet.applyTo(constraintLayout);
     }
 
@@ -288,50 +280,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     // Инициализаци текстовых полей
     private void initTextFields() {
-        // Спрятать (убрать с поля) все текстовые поля
-        findViewById(R.id.result).setVisibility(View.INVISIBLE);
-        findViewById(R.id.result_small).setVisibility(View.GONE);
-        findViewById(R.id.inputted_history_text).setVisibility(View.INVISIBLE);
-        findViewById(R.id.input_history).setVisibility(View.INVISIBLE);
-        findViewById(R.id.inputted_history_text_small).setVisibility(View.GONE);
-        findViewById(R.id.input_history_small).setVisibility(View.GONE);
-        findViewById(R.id._result_night).setVisibility(View.INVISIBLE);
-        findViewById(R.id._result_night_small).setVisibility(View.GONE);
-        findViewById(R.id.inputted_history_text_night).setVisibility(View.INVISIBLE);
-        findViewById(R.id.input_history_night).setVisibility(View.INVISIBLE);
-        findViewById(R.id.inputted_history_text_night_small).setVisibility(View.GONE);
-        findViewById(R.id.input_history_night_small).setVisibility(View.GONE);
-
-        if (currentTheme == THEMES.NIGHT_THEME) {
-            if ((this.getResources().getDisplayMetrics().widthPixels >= BORDER_WIDTH) &&
-                (mainPresenter.curRadiusButtons >= DEFAULT_BUTTON_BORDER_RADIUS)) {
-                // Инициализация текстовых полей
-                outputResultText = findViewById(R.id._result_night);
-                inputtedHistoryText = findViewById(R.id.inputted_history_text_night);
-                // Отображение контейнера с вводимым текстом
-                findViewById(R.id.input_history_night).setVisibility(View.VISIBLE);
-            } else {
-                // Инициализация текстовых полей
-                outputResultText = findViewById(R.id._result_night_small);
-                inputtedHistoryText = findViewById(R.id.inputted_history_text_night_small);
-                // Отображение контейнера с вводимым текстом
-                findViewById(R.id.input_history_night_small).setVisibility(View.VISIBLE);
-            }
+        if ((this.getResources().getDisplayMetrics().widthPixels >= BORDER_WIDTH) &&
+            (mainPresenter.curRadiusButtons >= DEFAULT_BUTTON_BORDER_RADIUS)) {
+            // Инициализация текстовых полей
+            outputResultText = findViewById(R.id.result);
+            inputtedHistoryText = findViewById(R.id.inputted_history_text);
+            // Отображение и скрытие контейнеров
+            findViewById(R.id.input_history).setVisibility(View.VISIBLE);
+            findViewById(R.id.input_history_small).setVisibility(View.GONE);
+            findViewById(R.id.result_small).setVisibility(View.GONE);
         } else {
-            if ((this.getResources().getDisplayMetrics().widthPixels >= BORDER_WIDTH) &&
-                (mainPresenter.curRadiusButtons >= DEFAULT_BUTTON_BORDER_RADIUS)) {
-                // Инициализация текстовых полей
-                outputResultText = findViewById(R.id.result);
-                inputtedHistoryText = findViewById(R.id.inputted_history_text);
-                // Отображение контейнера с вводимым текстом
-                findViewById(R.id.input_history).setVisibility(View.VISIBLE);
-            } else {
-                // Инициализация текстовых полей
-                outputResultText = findViewById(R.id.result_small);
-                inputtedHistoryText = findViewById(R.id.inputted_history_text_small);
-                // Отображение контейнера с вводимым текстом
-                findViewById(R.id.input_history_small).setVisibility(View.VISIBLE);
-            }
+            // Инициализация текстовых полей
+            outputResultText = findViewById(R.id.result_small);
+            inputtedHistoryText = findViewById(R.id.inputted_history_text_small);
+            // Отображение и скрытие контейнеров
+            findViewById(R.id.input_history_small).setVisibility(View.VISIBLE);
+            findViewById(R.id.input_history).setVisibility(View.INVISIBLE);
+            findViewById(R.id.result).setVisibility(View.INVISIBLE);
         }
         // Показать текущие текстовые поля
         outputResultText.setVisibility(View.VISIBLE);
@@ -344,129 +309,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     // Инициализация кнопок
     private void initButtons() {
-        if (currentTheme == THEMES.NIGHT_THEME) {
-            // Инициализация кнопок с цифрами в ночном режиме
-            buttonZero = findViewById(R.id.zero_night);
-            buttonOne = findViewById(R.id.one_night);
-            buttonTwo = findViewById(R.id.two_night);
-            buttonThree = findViewById(R.id.three_night);
-            buttonFour = findViewById(R.id.four_night);
-            buttonFive = findViewById(R.id.five_night);
-            buttonSix = findViewById(R.id.six_night);
-            buttonSeven = findViewById(R.id.seven_night);
-            buttonEight = findViewById(R.id.eight_night);
-            buttonNine = findViewById(R.id.nine_night);
+        // Установка кнопок с числами в дневном режиме
+        buttonZero = findViewById(R.id.zero);
+        buttonOne = findViewById(R.id.one);
+        buttonTwo = findViewById(R.id.two);
+        buttonThree = findViewById(R.id.three);
+        buttonFour = findViewById(R.id.four);
+        buttonFive = findViewById(R.id.five);
+        buttonSix = findViewById(R.id.six);
+        buttonSeven = findViewById(R.id.seven);
+        buttonEight = findViewById(R.id.eight);
+        buttonNine = findViewById(R.id.nine);
 
-            // Установка кнопок с действиями в ночном режиме
-            buttonEqual = findViewById(R.id.equal_night);
-            buttonZapitay = findViewById(R.id.zapitay_night);
-            buttonBracketClose = findViewById(R.id.bracket_close_night);
-            buttonBackspace = findViewById(R.id.backspace_night);
-            buttonBackspaceOne = findViewById(R.id.backspace_one_night);
-            buttonBackspaceTwo = findViewById(R.id.backspace_two_night);
-            buttonBracketOpen = findViewById(R.id.bracket_open_night);
-            buttonDivide = findViewById(R.id.divide_night);
-            buttonMinus = findViewById(R.id.minus_night);
-            buttonMultiply = findViewById(R.id.multiply_night);
-            buttonPercent = findViewById(R.id.percent_night);
-            buttonPlus = findViewById(R.id.plus_night);
-            buttonPlusMinus = findViewById(R.id.plus_minus_night);
-            buttonSqrt = findViewById(R.id.sqrt_night);
-            buttonStepen = findViewById(R.id.stepen_night);
-            buttonChangeTheme = findViewById(R.id.menu_theme_night);
-
-            // Спрятать (убрать с поля) кнопки в дневном режиме
-            findViewById(R.id.zero).setVisibility(View.GONE);
-            findViewById(R.id.one).setVisibility(View.GONE);
-            findViewById(R.id.two).setVisibility(View.GONE);
-            findViewById(R.id.three).setVisibility(View.GONE);
-            findViewById(R.id.four).setVisibility(View.GONE);
-            findViewById(R.id.five).setVisibility(View.GONE);
-            findViewById(R.id.six).setVisibility(View.GONE);
-            findViewById(R.id.seven).setVisibility(View.GONE);
-            findViewById(R.id.eight).setVisibility(View.GONE);
-            findViewById(R.id.nine).setVisibility(View.GONE);
-            findViewById(R.id.equal).setVisibility(View.GONE);
-            findViewById(R.id.zapitay).setVisibility(View.GONE);
-            findViewById(R.id.bracket_close).setVisibility(View.GONE);
-            findViewById(R.id.backspace).setVisibility(View.GONE);
-            findViewById(R.id.backspace_one).setVisibility(View.GONE);
-            findViewById(R.id.backspace_two).setVisibility(View.GONE);
-            findViewById(R.id.bracket_open).setVisibility(View.GONE);
-            findViewById(R.id.divide).setVisibility(View.GONE);
-            findViewById(R.id.minus).setVisibility(View.GONE);
-            findViewById(R.id.multiply).setVisibility(View.GONE);
-            findViewById(R.id.percent).setVisibility(View.GONE);
-            findViewById(R.id.plus).setVisibility(View.GONE);
-            findViewById(R.id.plus_minus).setVisibility(View.GONE);
-            findViewById(R.id.sqrt).setVisibility(View.GONE);
-            findViewById(R.id.stepen).setVisibility(View.GONE);
-            findViewById(R.id.menu_theme).setVisibility(View.GONE);
-        } else {
-            // Установка кнопок с числами в дневном режиме
-            buttonZero = findViewById(R.id.zero);
-            buttonOne = findViewById(R.id.one);
-            buttonTwo = findViewById(R.id.two);
-            buttonThree = findViewById(R.id.three);
-            buttonFour = findViewById(R.id.four);
-            buttonFive = findViewById(R.id.five);
-            buttonSix = findViewById(R.id.six);
-            buttonSeven = findViewById(R.id.seven);
-            buttonEight = findViewById(R.id.eight);
-            buttonNine = findViewById(R.id.nine);
-
-            // Установка кнопок с действиями в дневном режиме
-            buttonEqual = findViewById(R.id.equal);
-            buttonZapitay = findViewById(R.id.zapitay);
-            buttonBracketClose = findViewById(R.id.bracket_close);
-            buttonBackspace = findViewById(R.id.backspace);
-            buttonBackspaceOne = findViewById(R.id.backspace_one);
-            buttonBackspaceTwo = findViewById(R.id.backspace_two);
-            buttonBracketOpen = findViewById(R.id.bracket_open);
-            buttonDivide = findViewById(R.id.divide);
-            buttonMinus = findViewById(R.id.minus);
-            buttonMultiply = findViewById(R.id.multiply);
-            buttonPercent = findViewById(R.id.percent);
-            buttonPlus = findViewById(R.id.plus);
-            buttonPlusMinus = findViewById(R.id.plus_minus);
-            buttonSqrt = findViewById(R.id.sqrt);
-            buttonStepen = findViewById(R.id.stepen);
-            buttonChangeTheme = findViewById(R.id.menu_theme);
-
-            // Спрятать (убрать с поля) кнопки в ночном режиме
-            findViewById(R.id.zero_night).setVisibility(View.GONE);
-            findViewById(R.id.one_night).setVisibility(View.GONE);
-            findViewById(R.id.two_night).setVisibility(View.GONE);
-            findViewById(R.id.three_night).setVisibility(View.GONE);
-            findViewById(R.id.four_night).setVisibility(View.GONE);
-            findViewById(R.id.five_night).setVisibility(View.GONE);
-            findViewById(R.id.six_night).setVisibility(View.GONE);
-            findViewById(R.id.seven_night).setVisibility(View.GONE);
-            findViewById(R.id.eight_night).setVisibility(View.GONE);
-            findViewById(R.id.nine_night).setVisibility(View.GONE);
-            findViewById(R.id.equal_night).setVisibility(View.GONE);
-            findViewById(R.id.zapitay_night).setVisibility(View.GONE);
-            findViewById(R.id.bracket_close_night).setVisibility(View.GONE);
-            findViewById(R.id.backspace_night).setVisibility(View.GONE);
-            findViewById(R.id.backspace_one_night).setVisibility(View.GONE);
-            findViewById(R.id.backspace_two_night).setVisibility(View.GONE);
-            findViewById(R.id.bracket_open_night).setVisibility(View.GONE);
-            findViewById(R.id.divide_night).setVisibility(View.GONE);
-            findViewById(R.id.minus_night).setVisibility(View.GONE);
-            findViewById(R.id.multiply_night).setVisibility(View.GONE);
-            findViewById(R.id.percent_night).setVisibility(View.GONE);
-            findViewById(R.id.plus_night).setVisibility(View.GONE);
-            findViewById(R.id.plus_minus_night).setVisibility(View.GONE);
-            findViewById(R.id.sqrt_night).setVisibility(View.GONE);
-            findViewById(R.id.stepen_night).setVisibility(View.GONE);
-            findViewById(R.id.menu_theme_night).setVisibility(View.GONE);
-        }
+        // Установка кнопок с действиями в дневном режиме
+        buttonEqual = findViewById(R.id.equal);
+        buttonZapitay = findViewById(R.id.zapitay);
+        buttonBracketClose = findViewById(R.id.bracket_close);
+        buttonBackspace = findViewById(R.id.backspace);
+        buttonBackspaceOne = findViewById(R.id.backspace_one);
+        buttonBackspaceTwo = findViewById(R.id.backspace_two);
+        buttonBracketOpen = findViewById(R.id.bracket_open);
+        buttonDivide = findViewById(R.id.divide);
+        buttonMinus = findViewById(R.id.minus);
+        buttonMultiply = findViewById(R.id.multiply);
+        buttonPercent = findViewById(R.id.percent);
+        buttonPlus = findViewById(R.id.plus);
+        buttonPlusMinus = findViewById(R.id.plus_minus);
+        buttonSqrt = findViewById(R.id.sqrt);
+        buttonStepen = findViewById(R.id.stepen);
+        buttonChangeTheme = findViewById(R.id.menu_theme);
 
         // Установка слушателей событий на кнопки
         buttonsNumbersGroups.addAll(Arrays.asList(buttonZero, buttonOne, buttonTwo, buttonThree,
             buttonFour, buttonFive, buttonSix, buttonSeven, buttonEight, buttonNine));
         buttonsNumbersGroups.forEach( button -> {
-            button.setVisibility(View.VISIBLE);
             button.setOnClickListener(this);
         });
         buttonsActionsGroups.addAll(Arrays.asList(buttonEqual, buttonZapitay,
@@ -474,11 +350,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             buttonBracketOpen, buttonDivide, buttonMinus, buttonMultiply, buttonPercent,
             buttonPlus, buttonPlusMinus, buttonSqrt, buttonStepen));
         buttonsActionsGroups.forEach( button -> {
-            button.setVisibility(View.VISIBLE);
             button.setOnClickListener(this);
         });
         buttonChangeTheme.setOnClickListener(this);
-        buttonChangeTheme.setVisibility(View.VISIBLE);
     }
 
     // Отобразить индикатор ввода вещественного числа
@@ -526,9 +400,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Задание нового радиуса кнопок с цифрами и их новых размеров
         int curAngle = 0;
         for (Button button: buttonsNumbersGroups) {
-            constraintSet.constrainCircle(button.getId(), currentTheme == THEMES.DAY_THEME ?
-                R.id.result : R.id._result_night, newRadius, curAngle);
-            curAngle += 30;
+            constraintSet.constrainCircle(button.getId(), R.id.result, newRadius, curAngle);
+            curAngle += DEFAULT_BUTTONS_DELTA_ANGLE;
             constraintSet.constrainWidth(button.getId(), buttonsNumbersWidth);
             constraintSet.constrainHeight(button.getId(), buttonsNumbersHeight);
         }

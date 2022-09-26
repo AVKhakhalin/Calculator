@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="@color/background_input_history_color_day">
+    android:color="?colorOnPrimary">
     <item
         android:state_enabled="true">
         <ripple
-            android:color="@color/background_input_history_color_day">
+            android:color="?colorOnPrimary">
             <item>
                 <shape android:shape="oval">
                     <stroke
                         android:width="@dimen/stroke_width"
-                        android:color="@color/green_day" />
+                        android:color="?colorSecondary" />
                     <gradient
                         android:angle="45"
-                        android:endColor="@color/background_input_history_color_day"
-                        android:centerColor="@color/red_center_day"
-                        android:startColor="@color/red_day"
+                        android:endColor="?colorOnPrimary"
+                        android:centerColor="?colorSecondaryVariant"
+                        android:startColor="?colorPrimary"
                         android:type="linear"/>
                     <padding
                         android:left="@dimen/paddings_zero"

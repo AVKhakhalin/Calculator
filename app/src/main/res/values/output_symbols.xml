@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- В логике калькулятора задано, что количество выводимых символов будет ранов:
+    number_output_symbols_forEMS * 2 -->
     <integer name="number_output_symbols_forEMS">6</integer>
+    <!-- В логике калькулятора задано, что количество выводимых символов будет равно:
+    number_output_symbols_forEMS_small * 2 - 1 -->
     <integer name="number_output_symbols_forEMS_small">5</integer>
-    <integer name="number_inputed_symbols_forEMS_portret">13</integer>
-    <integer name="number_inputed_symbols_forEMS_landscape">10</integer>
-    <integer name="number_inputed_symbols_forEMS_landscape_small">8</integer>
+    <integer name="number_inputted_symbols_forEMS_portrait">13</integer>
+    <integer name="number_inputted_symbols_forEMS_landscape">10</integer>
+    <integer name="number_inputted_symbols_forEMS_landscape_small">8</integer>
 </resources>

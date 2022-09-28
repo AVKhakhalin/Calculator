@@ -7,6 +7,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import ru.geekbrains.lessions2345.calculator.core.Constants;
+import ru.geekbrains.lessions2345.calculator.view.main.MainActivity;
 import ru.geekbrains.lessions2345.calculator.view.main.MainPresenter;
 import ru.geekbrains.lessions2345.calculator.view.main.ViewMainContract;
 
@@ -19,9 +20,14 @@ import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_IN_STR
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_IN_STRING.NO;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_IN_STRING.SQRT_MINUS;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_IN_STRING.ZERO_DIVIDE;
+import static ru.geekbrains.lessions2345.calculator.view.ViewConstants.BORDER_WIDTH;
+
+import android.content.Context;
+
+import androidx.test.core.app.ActivityScenario;
+import androidx.test.core.app.ApplicationProvider;
 
 public class MainPresenterTest {
-
     /** Задание переменных */ //region
     public MainPresenter mainPresenter;
     //endregion
@@ -251,49 +257,53 @@ public class MainPresenterTest {
     // Проверка установки максимального количества символов для отображения в результирующем поле
     @Test
     public void setMaxNumberSymbolsInOutputTextField_Test() {
-        mainPresenter.setMaxNumberSymbolsInOutputTextField(6);
         mainPresenter.addNumeral(1);
         Mockito.verify(viewMainContract, times(1)).
-                setInputtedHistoryText("1");
+            setInputtedHistoryText("1");
         mainPresenter.addNumeral(2);
         Mockito.verify(viewMainContract, times(1)).
-                setInputtedHistoryText("12");
+            setInputtedHistoryText("12");
         mainPresenter.addNumeral(3);
         Mockito.verify(viewMainContract, times(1)).
-                setInputtedHistoryText("123");
+            setInputtedHistoryText("123");
         mainPresenter.addNumeral(4);
         Mockito.verify(viewMainContract, times(1)).
-                setInputtedHistoryText("1234");
+            setInputtedHistoryText("1234");
         mainPresenter.addNumeral(5);
         Mockito.verify(viewMainContract, times(1)).
-                setInputtedHistoryText("12345");
+            setInputtedHistoryText("12345");
         mainPresenter.addNumeral(6);
         Mockito.verify(viewMainContract, times(1)).
-                setInputtedHistoryText("123456");
+            setInputtedHistoryText("123456");
         mainPresenter.addNumeral(7);
         Mockito.verify(viewMainContract, times(1)).
-                setInputtedHistoryText("1234567");
+            setInputtedHistoryText("1234567");
         mainPresenter.addNumeral(8);
         Mockito.verify(viewMainContract, times(1)).
-                setInputtedHistoryText("12345678");
+            setInputtedHistoryText("12345678");
         mainPresenter.addNumeral(9);
         Mockito.verify(viewMainContract, times(1)).
-                setInputtedHistoryText("123456789");
+            setInputtedHistoryText("123456789");
         mainPresenter.addNumeral(0);
         Mockito.verify(viewMainContract, times(1)).
-                setInputtedHistoryText("1234567890");
+            setInputtedHistoryText("1234567890");
         mainPresenter.addNumeral(1);
         Mockito.verify(viewMainContract, times(1)).
-                setInputtedHistoryText("12345678901");
+            setInputtedHistoryText("12345678901");
         mainPresenter.addNumeral(2);
         Mockito.verify(viewMainContract, times(1)).
-                setInputtedHistoryText("123456789012");
+            setInputtedHistoryText("123456789012");
         mainPresenter.addNumeral(3);
         Mockito.verify(viewMainContract, times(1)).
-                setInputtedHistoryText("1234567890123");
+            setInputtedHistoryText("1234567890123");
+        mainPresenter.setMaxNumberSymbolsInOutputTextField( 6 * 2);
         mainPresenter.setEqual();
         Mockito.verify(viewMainContract, times(1)).
-                setOutputResultText("1,234568e+12");
+            setOutputResultText("1,234568e+12");
+        mainPresenter.setMaxNumberSymbolsInOutputTextField( 5 * 2);
+        mainPresenter.setEqual();
+        Mockito.verify(viewMainContract, times(1)).
+            setOutputResultText("1,235e+12");
     }
 
     @Test // Проверка корректности работы метод calculate()

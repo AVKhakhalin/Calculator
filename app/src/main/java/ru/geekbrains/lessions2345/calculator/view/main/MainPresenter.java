@@ -28,11 +28,6 @@ public class MainPresenter implements PresenterMainContract, Serializable, Parce
     public boolean doChangeRadius = false;
     //endregion
 
-    protected MainPresenter(Parcel in) {
-        curRadiusButtons = in.readInt();
-        doChangeRadius = in.readByte() != 0;
-    }
-
     public static final Creator<MainPresenter> CREATOR = new Creator<MainPresenter>() {
         @Override
         public MainPresenter createFromParcel(Parcel in) {
@@ -193,15 +188,16 @@ public class MainPresenter implements PresenterMainContract, Serializable, Parce
     }
 
     // Считать информацию о текущих настройках программы (теме и радиусе кнопок)
-    ViewConstants.THEMES getSettings(Context context) {
+    ViewConstants.THEMES getSettings(Context context, int displayWidth) {
         SharedPreferences sharedPreferences =
             context.getSharedPreferences(KEY_SETTINGS, MODE_PRIVATE);
         int currentTheme = sharedPreferences.getInt(KEY_CURRENT_THEME, 1);
-        if (context.getResources().getDisplayMetrics().widthPixels >= BORDER_WIDTH)
-            curRadiusButtons = sharedPreferences.getInt(KEY_CURRENT_RADIUS, DEFAULT_BUTTON_RADIUS);
+        if (displayWidth >= BORDER_WIDTH)
+            viewMain.setDisplayWidthAndCurRadiusButtons(displayWidth,
+                sharedPreferences.getInt(KEY_CURRENT_RADIUS, DEFAULT_BUTTON_RADIUS));
         else
-            curRadiusButtons = sharedPreferences.getInt(
-                    KEY_CURRENT_RADIUS, DEFAULT_BUTTON_RADIUS_SMALL);
+            viewMain.setDisplayWidthAndCurRadiusButtons(displayWidth,
+                sharedPreferences.getInt(KEY_CURRENT_RADIUS, DEFAULT_BUTTON_RADIUS_SMALL));
         doChangeRadius = sharedPreferences.getBoolean(KEY_DOCHANGE_RADIUS, false);
         if (currentTheme == 0) {
             return ViewConstants.THEMES.NIGHT_THEME;
@@ -210,6 +206,10 @@ public class MainPresenter implements PresenterMainContract, Serializable, Parce
             // если в настройках стоит 1 или ничего не будет стоять
             return ViewConstants.THEMES.DAY_THEME;
         }
+    }
+
+    void setCurRadiusButtons(int curRadiusButtons) {
+        this.curRadiusButtons = curRadiusButtons;
     }
 
     void saveSettings(ViewConstants.THEMES currentTheme, Context context) {
@@ -229,7 +229,11 @@ public class MainPresenter implements PresenterMainContract, Serializable, Parce
         editor.apply();
     }
 
-    //region Методы для парселизации
+    //region Конструктор и методы для парселизации
+    protected MainPresenter(Parcel in) {
+        curRadiusButtons = in.readInt();
+        doChangeRadius = in.readByte() != 0;
+    }
     @Override
     public int describeContents() { return 0; }
     @Override

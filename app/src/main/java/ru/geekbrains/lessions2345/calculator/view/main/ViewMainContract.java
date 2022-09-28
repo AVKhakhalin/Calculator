@@ -10,4 +10,7 @@ public interface ViewMainContract extends ViewContract, Serializable {
     void setOutputResultText(String newText);
     void showErrorInString(Constants.ERRORS_IN_STRING error);
     void showErrorInputting(Constants.ERRORS_INPUTTING error);
+    void setDisplayWidthAndCurRadiusButtons(int displayWidth, int curRadiusButtons);
+    int getDisplayWidth();
+    int getCurRadiusButtons();
 }

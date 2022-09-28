@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private THEMES currentTheme;
 
     private MainPresenter mainPresenter = new MainPresenter();
+    private int displayWidth = 0;
     //endregion
 
     @Override
@@ -72,19 +73,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    public void setDisplayWidthAndCurRadiusButtons(int displayWidth, int curRadiusButtons) {
+        mainPresenter.setCurRadiusButtons(curRadiusButtons);
+        this.displayWidth = displayWidth;
+        // Инициализация или перестройка текстовых полей
+        initTextFields();
+    }
+    @Override
+    public int getCurRadiusButtons() {
+        return mainPresenter.curRadiusButtons;
+    }
+    @Override
+    public int getDisplayWidth() {
+        return displayWidth;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Отслеживание первичного запуска или перезапуска активити
         firstRunDetection(savedInstanceState);
-        // Передача MainActivity в MainPresenter
+        // Передача вью MainActivity в MainPresenter в рамках шаблона MVP
         mainPresenter.onAttach(this);
+        // Установка параметра дисплея текущего устройства
+        displayWidth = getResources().getDisplayMetrics().widthPixels;
+        currentTheme = mainPresenter.getSettings(this, displayWidth);
         // Установка темы
-        float koeffDP = this.getResources().getDisplayMetrics().density;
-        currentTheme = mainPresenter.getSettings(this);
         setCalculatorTheme(currentTheme);
         setContentView(R.layout.calc_keyboard_layout);
-        // Инициализация текстовых полей
-        initTextFields();
         // Инициализация кнопок
         initButtons();
         // Проверка режима ввода вещественных чисел
@@ -93,7 +109,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // (_input_history и _input_history_night)
         setNewMaxHeightForInputHistory();
         // Установка обновлённых значений размеров элементов сцены
-        setNewSizesElements(Math.round(mainPresenter.curRadiusButtons * koeffDP));
+        setNewSizesElements(Math.round(
+            mainPresenter.curRadiusButtons * this.getResources().getDisplayMetrics().density));
     }
 
     @Override
@@ -140,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onResume();
 
         // Установка темы
-        THEMES savedTheme = mainPresenter.getSettings(this);
+        THEMES savedTheme = mainPresenter.getSettings(this, displayWidth);
         if ((currentTheme != savedTheme) || (mainPresenter.doChangeRadius)) {
             currentTheme = savedTheme;
             mainPresenter.doChangeRadius = false;
@@ -280,7 +297,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     // Инициализаци текстовых полей
     private void initTextFields() {
-        if ((this.getResources().getDisplayMetrics().widthPixels >= BORDER_WIDTH) &&
+        if ((displayWidth >= BORDER_WIDTH) &&
             (mainPresenter.curRadiusButtons >= DEFAULT_BUTTON_BORDER_RADIUS)) {
             // Инициализация текстовых полей
             outputResultText = findViewById(R.id.result);
@@ -288,14 +305,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             // Отображение и скрытие контейнеров
             findViewById(R.id.input_history).setVisibility(View.VISIBLE);
             findViewById(R.id.input_history_small).setVisibility(View.GONE);
+            findViewById(R.id.inputted_history_text_small).setVisibility(View.GONE);
             findViewById(R.id.result_small).setVisibility(View.GONE);
         } else {
             // Инициализация текстовых полей
             outputResultText = findViewById(R.id.result_small);
             inputtedHistoryText = findViewById(R.id.inputted_history_text_small);
             // Отображение и скрытие контейнеров
-            findViewById(R.id.input_history_small).setVisibility(View.VISIBLE);
             findViewById(R.id.input_history).setVisibility(View.INVISIBLE);
+            findViewById(R.id.input_history_small).setVisibility(View.VISIBLE);
+            findViewById(R.id.inputted_history_text).setVisibility(View.INVISIBLE);
             findViewById(R.id.result).setVisibility(View.INVISIBLE);
         }
         // Показать текущие текстовые поля
@@ -385,16 +404,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int buttonsActionsHeight = (int) getResources().getDimension(
                 R.dimen.button_action_height_standard);
         // Задание новых размеров для кнопок
-        if ((this.getResources().getDisplayMetrics().widthPixels < BORDER_WIDTH) ||
+        if ((displayWidth < BORDER_WIDTH) ||
             (mainPresenter.curRadiusButtons < DEFAULT_BUTTON_BORDER_RADIUS)) {
             buttonsNumbersWidth = (int) getResources().getDimension(
                 R.dimen.button_number_width_small);
             buttonsNumbersHeight = (int) getResources().getDimension(
                 R.dimen.button_number_height_small);
             buttonsActionsWidth = (int) getResources().getDimension(
-                R.dimen.small_button_action_width);
+                R.dimen.button_action_width_small);
             buttonsActionsHeight = (int) getResources().getDimension(
-                R.dimen.small_button_action_height);
+                R.dimen.button_action_height_small);
         }
 
         // Задание нового радиуса кнопок с цифрами и их новых размеров
@@ -417,13 +436,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void firstRunDetection(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
             // Умножаем на 2, потому что ширина чисел вдвое меньше величины EMS
-            if ((this.getResources().getDisplayMetrics().widthPixels >= BORDER_WIDTH) &&
-                (mainPresenter.curRadiusButtons >= DEFAULT_BUTTON_BORDER_RADIUS))
+            if ((displayWidth >= BORDER_WIDTH) &&
+                (mainPresenter.curRadiusButtons >= DEFAULT_BUTTON_BORDER_RADIUS)) {
                 mainPresenter.setMaxNumberSymbolsInOutputTextField(
                     getResources().getInteger(R.integer.number_output_symbols_forEMS) * 2);
-            else
+            } else {
                 mainPresenter.setMaxNumberSymbolsInOutputTextField(
                     getResources().getInteger(R.integer.number_output_symbols_forEMS_small) * 2);
+            }
         } else {
             // Восстановление класса mainPresenter после поворота экрана
             mainPresenter = (MainPresenter) savedInstanceState.getSerializable(MAIN_PRESENTER_KEY);

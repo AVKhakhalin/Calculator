@@ -9,14 +9,14 @@
     <dimen name="button_number_height_small">40dp</dimen>
     <dimen name="button_action_width_standard">43dp</dimen>
     <dimen name="button_action_height_standard">43dp</dimen>
-    <dimen name="small_button_action_width">35dp</dimen>
-    <dimen name="small_button_action_height">35dp</dimen>
+    <dimen name="button_action_width_small">35dp</dimen>
+    <dimen name="button_action_height_small">35dp</dimen>
     <dimen name="text_button_numbers_size">32sp</dimen>
     <dimen name="text_button_actions_size">19sp</dimen>
     <dimen name="buttons_right_margin">0dp</dimen>
     <dimen name="result_history_text_size">24sp</dimen>
     <dimen name="input_history_margin_start">0dp</dimen>
-    <dimen name="coners_radius">45dp</dimen>
+    <dimen name="menu_corners_radius">45dp</dimen>
     <dimen name="text_in_button_padding">0dp</dimen>
     <dimen name="height_result_text">43dp</dimen>
     <dimen name="padding_output_text">3dp</dimen>

@@ -12,11 +12,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import ru.geekbrains.lessions2345.calculator.view.main.MainActivity;
 
 import androidx.test.espresso.Espresso;
-import androidx.test.espresso.assertion.ViewAssertions;
-import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import junit.framework.TestCase;
@@ -28,11 +27,15 @@ import static androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static ru.geekbrains.lessions2345.calculator.view.ViewConstants.BORDER_WIDTH;
+import static ru.geekbrains.lessions2345.calculator.view.ViewConstants.DEFAULT_BUTTON_RADIUS;
 
 // Для запуска нужно установить compileSdkVersion 30 и targetSdkVersion 30
 @RunWith(AndroidJUnit4.class)
 public class MainActivityEspressoTest {
-    /** Задание переменных */ //region
+    /**
+     * Задание переменных
+     */ //region
     private ActivityScenario<MainActivity> scenario;
     //endregion
 
@@ -43,8 +46,8 @@ public class MainActivityEspressoTest {
 
     @Test // Проверка на существование активити
     public void activity_AssertNotNull() {
-        scenario.onActivity( it ->
-            TestCase.assertNotNull(it)
+        scenario.onActivity(it ->
+                TestCase.assertNotNull(it)
         );
     }
 
@@ -60,12 +63,12 @@ public class MainActivityEspressoTest {
             public void perform(MainActivity activity) {
                 ImageView backgroundTheme =
                         (ImageView) activity.findViewById(R.id.background_theme);
-                            TestCase.assertNotNull(backgroundTheme);
+                TestCase.assertNotNull(backgroundTheme);
             }
         });
     }
 
-    @Test // Проверка наличия на экране элементов дневной темы
+    @Test // Проверка наличия элементов
     public void activityDayThemeElements_NotNull() {
         scenario.onActivity(new ActivityScenario.ActivityAction<MainActivity>() {
             @Override
@@ -124,85 +127,20 @@ public class MainActivityEspressoTest {
                 TestCase.assertNotNull(menuTheme);
                 TextView result = (TextView) activity.findViewById(R.id.result);
                 TestCase.assertNotNull(result);
+                TextView resultSmall = (TextView) activity.findViewById(R.id.result_small);
+                TestCase.assertNotNull(resultSmall);
                 NestedScrollView inputHistory =
                         (NestedScrollView) activity.findViewById(R.id.input_history);
                 TestCase.assertNotNull(inputHistory);
-                TextView inputedHistoryText =
-                        (TextView) activity.findViewById(R.id.inputed_history_text);
-                TestCase.assertNotNull(inputedHistoryText);
-            }
-        });
-    }
-
-    @Test // Проверка наличия на экране элементов ночной темы
-    public void activityNightThemeElements_NotNull() {
-        scenario.onActivity(new ActivityScenario.ActivityAction<MainActivity>() {
-            @Override
-            public void perform(MainActivity activity) {
-                Button button_0_night = (Button) activity.findViewById(R.id.zero_night);
-                TestCase.assertNotNull(button_0_night);
-                Button button_1_night = (Button) activity.findViewById(R.id.one_night);
-                TestCase.assertNotNull(button_1_night);
-                Button button_2_night = (Button) activity.findViewById(R.id.two_night);
-                TestCase.assertNotNull(button_2_night);
-                Button button_3_night = (Button) activity.findViewById(R.id.three_night);
-                TestCase.assertNotNull(button_3_night);
-                Button button_4_night = (Button) activity.findViewById(R.id.four_night);
-                TestCase.assertNotNull(button_4_night);
-                Button button_5_night = (Button) activity.findViewById(R.id.five_night);
-                TestCase.assertNotNull(button_5_night);
-                Button button_6_night = (Button) activity.findViewById(R.id.six_night);
-                TestCase.assertNotNull(button_6_night);
-                Button button_7_night = (Button) activity.findViewById(R.id.seven_night);
-                TestCase.assertNotNull(button_7_night);
-                Button button_8_night = (Button) activity.findViewById(R.id.eight_night);
-                TestCase.assertNotNull(button_8_night);
-                Button button_9_night = (Button) activity.findViewById(R.id.nine_night);
-                TestCase.assertNotNull(button_9_night);
-                Button divide_night = (Button) activity.findViewById(R.id.divide_night);
-                TestCase.assertNotNull(divide_night);
-                Button minus_night = (Button) activity.findViewById(R.id.minus_night);
-                TestCase.assertNotNull(minus_night);
-                Button zapitay_night = (Button) activity.findViewById(R.id.zapitay_night);
-                TestCase.assertNotNull(zapitay_night);
-                Button multiply_night = (Button) activity.findViewById(R.id.multiply_night);
-                TestCase.assertNotNull(multiply_night);
-                Button plus_night = (Button) activity.findViewById(R.id.plus_night);
-                TestCase.assertNotNull(plus_night);
-                Button bracketOpen_night =
-                        (Button) activity.findViewById(R.id.bracket_open_night);
-                TestCase.assertNotNull(bracketOpen_night);
-                Button bracketClose_night =
-                        (Button) activity.findViewById(R.id.bracket_close_night);
-                TestCase.assertNotNull(bracketClose_night);
-                Button percent_night = (Button) activity.findViewById(R.id.percent_night);
-                TestCase.assertNotNull(percent_night);
-                Button plusMinus_night = (Button) activity.findViewById(R.id.plus_minus_night);
-                TestCase.assertNotNull(plusMinus_night);
-                Button stepen_night = (Button) activity.findViewById(R.id.stepen_night);
-                TestCase.assertNotNull(stepen_night);
-                Button sqrt_night = (Button) activity.findViewById(R.id.sqrt_night);
-                TestCase.assertNotNull(sqrt_night);
-                Button equal_night = (Button) activity.findViewById(R.id.equal_night);
-                TestCase.assertNotNull(equal_night);
-                Button backspaceOne_night =
-                        (Button) activity.findViewById(R.id.backspace_one_night);
-                TestCase.assertNotNull(backspaceOne_night);
-                Button backspaceTwo_night =
-                        (Button) activity.findViewById(R.id.backspace_two_night);
-                TestCase.assertNotNull(backspaceTwo_night);
-                Button backspace_night = (Button) activity.findViewById(R.id.backspace_night);
-                TestCase.assertNotNull(backspace_night);
-                Button menuTheme_night = (Button) activity.findViewById(R.id.menu_theme_night);
-                TestCase.assertNotNull(menuTheme_night);
-                TextView result_night = (TextView) activity.findViewById(R.id._result_night);
-                TestCase.assertNotNull(result_night);
-                NestedScrollView inputHistory_night =
-                        (NestedScrollView) activity.findViewById(R.id.input_history_night);
-                TestCase.assertNotNull(inputHistory_night);
-                TextView inputedHistoryText_night =
-                        (TextView) activity.findViewById(R.id.inputed_history_text_night);
-                TestCase.assertNotNull(inputedHistoryText_night);
+                TextView inputtedHistoryText =
+                        (TextView) activity.findViewById(R.id.inputted_history_text);
+                TestCase.assertNotNull(inputtedHistoryText);
+                NestedScrollView inputHistorySmall =
+                        (NestedScrollView) activity.findViewById(R.id.input_history_small);
+                TestCase.assertNotNull(inputHistorySmall);
+                TextView inputtedHistoryTextSmall =
+                        (TextView) activity.findViewById(R.id.inputted_history_text_small);
+                TestCase.assertNotNull(inputtedHistoryTextSmall);
             }
         });
     }
@@ -242,7 +180,7 @@ public class MainActivityEspressoTest {
         Espresso.onView(withId(R.id.menu_theme)).check(matches(isDisplayed()));
         Espresso.onView(withId(R.id.result)).check(matches(isDisplayed()));
         Espresso.onView(withId(R.id.input_history)).check(matches(isDisplayed()));
-        Espresso.onView(withId(R.id.inputed_history_text)).check(matches(isDisplayed()));
+        Espresso.onView(withId(R.id.inputted_history_text)).check(matches(isDisplayed()));
     }
 
     @Test // Проверка полного отображения на экране элемента с картинкой фона
@@ -280,78 +218,10 @@ public class MainActivityEspressoTest {
         Espresso.onView(withId(R.id.menu_theme)).check(matches(isCompletelyDisplayed()));
         Espresso.onView(withId(R.id.result)).check(matches(isCompletelyDisplayed()));
         Espresso.onView(withId(R.id.input_history)).check(matches(isCompletelyDisplayed()));
-        Espresso.onView(withId(R.id.inputed_history_text)).check(matches(isCompletelyDisplayed()));
-    }
-    
-    @Test // Проверка свойства видимости элементов ночной темы
-    public void activityNightThemeElements_AreEffectiveNotVisible() {
-        Espresso.onView(withId(R.id.zero_night)).check(ViewAssertions.matches(ViewMatchers
-            .withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
-        Espresso.onView(withId(R.id.one_night)).check(ViewAssertions.matches(ViewMatchers
-            .withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
-        Espresso.onView(withId(R.id.two_night)).check(ViewAssertions.matches(ViewMatchers
-            .withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
-        Espresso.onView(withId(R.id.three_night)).check(ViewAssertions.matches(ViewMatchers
-            .withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
-        Espresso.onView(withId(R.id.four_night)).check(ViewAssertions.matches(ViewMatchers
-            .withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
-        Espresso.onView(withId(R.id.five_night)).check(ViewAssertions.matches(ViewMatchers
-            .withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
-        Espresso.onView(withId(R.id.six_night)).check(ViewAssertions.matches(ViewMatchers
-            .withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
-        Espresso.onView(withId(R.id.seven_night)).check(ViewAssertions.matches(ViewMatchers
-            .withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
-        Espresso.onView(withId(R.id.eight_night)).check(ViewAssertions.matches(ViewMatchers
-                .withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
-        Espresso.onView(withId(R.id.nine_night)).check(ViewAssertions.matches(ViewMatchers
-                .withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
-        Espresso.onView(withId(R.id.divide_night)).check(ViewAssertions.matches(ViewMatchers
-                .withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
-        Espresso.onView(withId(R.id.minus_night)).check(ViewAssertions.matches(ViewMatchers
-                .withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
-        Espresso.onView(withId(R.id.zapitay_night)).check(ViewAssertions.matches(ViewMatchers
-                .withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
-        Espresso.onView(withId(R.id.multiply_night)).check(ViewAssertions.matches(ViewMatchers
-                .withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
-        Espresso.onView(withId(R.id.plus_night)).check(ViewAssertions.matches(ViewMatchers
-                .withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
-        Espresso.onView(withId(R.id.bracket_open_night))
-                .check(ViewAssertions.matches(ViewMatchers
-                .withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
-        Espresso.onView(withId(R.id.bracket_close_night))
-                .check(ViewAssertions.matches(ViewMatchers
-                .withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
-        Espresso.onView(withId(R.id.percent_night)).check(ViewAssertions.matches(ViewMatchers
-                .withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
-        Espresso.onView(withId(R.id.plus_minus_night)).check(ViewAssertions.matches(ViewMatchers
-                .withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
-        Espresso.onView(withId(R.id.stepen_night)).check(ViewAssertions.matches(ViewMatchers
-                .withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
-        Espresso.onView(withId(R.id.sqrt_night)).check(ViewAssertions.matches(ViewMatchers
-                .withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
-        Espresso.onView(withId(R.id.equal_night)).check(ViewAssertions.matches(ViewMatchers
-                .withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
-        Espresso.onView(withId(R.id.backspace_one_night))
-                .check(ViewAssertions.matches(ViewMatchers
-                .withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
-        Espresso.onView(withId(R.id.backspace_two_night))
-                .check(ViewAssertions.matches(ViewMatchers
-                .withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
-        Espresso.onView(withId(R.id.backspace_night)).check(ViewAssertions.matches(ViewMatchers
-                .withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
-        Espresso.onView(withId(R.id.menu_theme_night)).check(ViewAssertions.matches(ViewMatchers
-                .withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
-        Espresso.onView(withId(R.id._result_night)).check(ViewAssertions.matches(ViewMatchers
-                .withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
-        Espresso.onView(withId(R.id.input_history_night))
-                .check(ViewAssertions.matches(ViewMatchers
-                .withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
-        Espresso.onView(withId(R.id.inputed_history_text_night))
-                .check(ViewAssertions.matches(ViewMatchers
-                .withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
+        Espresso.onView(withId(R.id.inputted_history_text)).check(matches(isCompletelyDisplayed()));
     }
 
-    @Test // Проверка отображения корректного текста на элементе с id "toDetailsActivityButton"
+    @Test // Проверка отображения корректного текста на элементах
     public void activityDayThemeElements_IsCorrectText() {
         Espresso.onView(withId(R.id.zero)).check(matches(withText("0")));
         Espresso.onView(withId(R.id.one)).check(matches(withText("1")));
@@ -376,11 +246,11 @@ public class MainActivityEspressoTest {
         Espresso.onView(withId(R.id.sqrt)).check(matches(withText("Kx")));
         Espresso.onView(withId(R.id.equal)).check(matches(withText("=")));
         Espresso.onView(withId(R.id.backspace_one)).check(matches(withText("<-")));
-        Espresso.onView(withId(R.id.backspace_two)).check(matches(withText("<--")));
+        Espresso.onView(withId(R.id.backspace_two)).check(matches(withText("<—")));
         Espresso.onView(withId(R.id.backspace)).check(matches(withText("C")));
         Espresso.onView(withId(R.id.menu_theme)).check(matches(withText("Настройки")));
         Espresso.onView(withId(R.id.result)).check(matches(withText("0")));
-        Espresso.onView(withId(R.id.inputed_history_text)).check(matches(withText("")));
+        Espresso.onView(withId(R.id.inputted_history_text)).check(matches(withText("")));
     }
 
     @Test // Проверка корректности работы кнопок калькулятора
@@ -393,9 +263,10 @@ public class MainActivityEspressoTest {
         Espresso.onView(withId(R.id.six)).perform(click());
         Espresso.onView(withId(R.id.seven)).perform(click());
         Espresso.onView(withId(R.id.eight)).perform(click());
-        Espresso.onView(withId(R.id.zapitay)).perform(click());
         Espresso.onView(withId(R.id.nine)).perform(click());
-        Espresso.onView(withId(R.id.zero)).perform(click());
+        Espresso.onView(withId(R.id.one)).perform(click());
+        Espresso.onView(withId(R.id.zapitay)).perform(click());
+        Espresso.onView(withId(R.id.one)).perform(click());
         Espresso.onView(withId(R.id.zapitay)).perform(click());
         Espresso.onView(withId(R.id.plus)).perform(click());
         Espresso.onView(withId(R.id.sqrt)).perform(click());
@@ -427,15 +298,14 @@ public class MainActivityEspressoTest {
         Espresso.onView(withId(R.id.backspace_two)).perform(click());
         Espresso.onView(withId(R.id.bracket_close)).perform(click());
         Espresso.onView(withId(R.id.equal)).perform(click());
-        Espresso.onView(withId(R.id.inputed_history_text))
-                .check(matches(withText("12345678.90+SQRT(9*8%/4^2)-((-35689)*988)")));
-        Espresso.onView(withId(R.id.result)).check(matches(withText("47606411.536")));
+        Espresso.onView(withId(R.id.inputted_history_text))
+            .check(matches(withText("1234567891.1+SQRT(9*8%/4^2)-((-35689)*988)")));
+        Espresso.onView(withId(R.id.result)).check(matches(withText("1.270e+09")));
         Espresso.onView(withId(R.id.backspace)).perform(click());
-        Espresso.onView(withId(R.id.inputed_history_text))
-                .check(matches(withText("")));
+        Espresso.onView(withId(R.id.inputted_history_text)).check(matches(withText("")));
         Espresso.onView(withId(R.id.result)).check(matches(withText("0")));
     }
-    
+
     @After // Установка действия после завершения выполнения всех тестов
     public void close() {
         scenario.close();

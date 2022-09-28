@@ -5,7 +5,6 @@ import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTT
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.NUMBER_AFTER_BRACKET;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.PERCENT_NEEDS_TWO_NUMBERS;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.PERCENT_ON_OPEN_BRACKET;
-
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.LinkedList;
@@ -925,6 +924,8 @@ public class CalcLogic implements Constants, Serializable {
     public static String numberFormatOutput(double number, int numberSymbols) {
         DecimalFormat df;
         double comparedNumber =
+            // 0.1d стоит для того, чтобы в случае маленьго дисплея
+            // ещё на один разряд уменьшить количество выводимых символов (т.е. из 10 сделать 9)
             (numberSymbols >= MAX_NUMBER_SYMBOLS_IN_OUTPUT_TEXT_FIELD ? 1d : 0.1d);
         if (number > 0) {
             for (int i = 0; i < numberSymbols; i++) {
@@ -950,15 +951,14 @@ public class CalcLogic implements Constants, Serializable {
         if (number > 0) {
             if (numberSymbols == MAX_NUMBER_SYMBOLS_IN_OUTPUT_TEXT_FIELD)
                 return String.format(Locale.getDefault(),
-                    (number < 10E99d ? "%.6e" : "%.5e"), number);
+                        (number < 10E99d ? "%.6e" : "%.5e"), number);
             else
                 return String.format(Locale.getDefault(),
                         (number < 10E99d ? "%.3e" : "%.2e"), number);
-        }
-        else {
+        } else {
             if (numberSymbols == MAX_NUMBER_SYMBOLS_IN_OUTPUT_TEXT_FIELD)
                 return String.format(Locale.getDefault(),
-                    (Math.abs(number) < 10E99d ? "%.6e" : "%.5e"), number);
+                        (Math.abs(number) < 10E99d ? "%.6e" : "%.5e"), number);
             else
                 return String.format(Locale.getDefault(),
                         (Math.abs(number) < 10E99d ? "%.3e" : "%.2e"), number);

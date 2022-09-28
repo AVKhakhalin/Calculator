@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mainPresenter = (MainPresenter) savedInstanceState.getSerializable(MAIN_PRESENTER_KEY);
     }
 
+    // Данный метод нужен только для тестирования приложения
     @Override
     public void setDisplayWidthAndCurRadiusButtons(int displayWidth, int curRadiusButtons) {
         mainPresenter.setCurRadiusButtons(curRadiusButtons);
@@ -100,7 +101,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         currentTheme = mainPresenter.getSettings(this, displayWidth);
         // Установка темы
         setCalculatorTheme(currentTheme);
+        // Установка макета MainActivity
         setContentView(R.layout.calc_keyboard_layout);
+        // Инициализация или перестройка текстовых полей
+        initTextFields();
         // Инициализация кнопок
         initButtons();
         // Проверка режима ввода вещественных чисел

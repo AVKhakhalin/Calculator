@@ -193,10 +193,10 @@ public class MainPresenter implements PresenterMainContract, Serializable, Parce
             context.getSharedPreferences(KEY_SETTINGS, MODE_PRIVATE);
         int currentTheme = sharedPreferences.getInt(KEY_CURRENT_THEME, 1);
         if (displayWidth >= BORDER_WIDTH)
-            viewMain.setDisplayWidthAndCurRadiusButtons(displayWidth,
+            setCurRadiusButtons(
                 sharedPreferences.getInt(KEY_CURRENT_RADIUS, DEFAULT_BUTTON_RADIUS));
         else
-            viewMain.setDisplayWidthAndCurRadiusButtons(displayWidth,
+            setCurRadiusButtons(
                 sharedPreferences.getInt(KEY_CURRENT_RADIUS, DEFAULT_BUTTON_RADIUS_SMALL));
         doChangeRadius = sharedPreferences.getBoolean(KEY_DOCHANGE_RADIUS, false);
         if (currentTheme == 0) {

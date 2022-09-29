@@ -217,10 +217,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 showErrorMessage(getResources().
                         getString(R.string.error_many_zero_in_integer_part));
                 break;
-            case PERCENT_ON_OPEN_BRACKET:
-                showErrorMessage(getResources().
-                        getString(R.string.error_percent_on_open_bracket));
-                break;
             case INPUT_NUMBER_FIRST:
                 showErrorMessage(getResources().
                         getString(R.string.error_input_number_first));

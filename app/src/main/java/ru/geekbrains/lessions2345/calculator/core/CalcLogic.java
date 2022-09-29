@@ -5,7 +5,9 @@ import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTT
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.MANY_ZERO_IN_INTEGER_PART;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.NUMBER_AFTER_BRACKET;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.PERCENT_NEEDS_TWO_NUMBERS;
-import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.PERCENT_ON_OPEN_BRACKET;
+
+import android.util.Log;
+
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.LinkedList;
@@ -622,98 +624,92 @@ public class CalcLogic implements Constants, Serializable {
 
     // Установка нового действия над числами
     public void setNewAction(ACTIONS action) {
+        // Проверка возможности корректного задания знака процента
+        if (action == ACTIONS.ACT_PERS_MULTY) {
+            if (inputNumbers.size() > 1) {
+                if ((!inputNumbers.get(curNumber - 1).getIsValue()) ||
+                    (!inputNumbers.get(curNumber).getIsValue())){
+                    // Вывести сообщение о том, что для применения процента нужно ввести два числа
+                    // с любой арифметической операцией между ними: *, /, +, -
+                    errorMessages.sendErrorInputting(PERCENT_NEEDS_TWO_NUMBERS);
+                    return;
+                }
+            } else {
+                // Вывести сообщение о том, что для применения процента нужно ввести два числа
+                // и любую следующую арифметическую операцию между ними: *, /, +, -
+                errorMessages.sendErrorInputting(PERCENT_NEEDS_TWO_NUMBERS);
+                return;
+            }
+        // Проверка возможности корректного задания других действий
+        } else {
+            // Проверка на применение действия числу
+            if (inputNumbers.size() > 0) {
+                if ((!inputNumbers.get(curNumber).getIsValue()) &&
+                    ((!inputNumbers.get(curNumber).getIsBracket()) &&
+                    (!inputNumbers.get(curNumber).getIsClose()))) {
+                    // Вывести сообщение о том, что нужно сначала ввести число
+                    errorMessages.sendErrorInputting(INPUT_NUMBER_FIRST);
+                    return;
+                }
+            }
+        }
+        // Обработка нового действия
         int positionBracketBegin = curNumber;
         boolean isPrevDatesComplited = false;
         if (curNumber > 0) {
             iterInputNumbersForCalc = inputNumbers.listIterator();
             Dates prevDates = iterInputNumbersForCalc.next();
             if ((prevDates.getIsValue()) || ((prevDates.getIsBracket()) &&
-                    (!prevDates.getIsClose())) || ((prevDates.getIsBracket()) &&
-                    (prevDates.getIsClose()))) {
+                (!prevDates.getIsClose())) || ((prevDates.getIsBracket()) &&
+                (prevDates.getIsClose()))) {
                 isPrevDatesComplited = true;
             }
         } else {
             isPrevDatesComplited = true;
         }
-
-        if ((!inputNumbers.get(curNumber).getIsValue()) &&
-                (!inputNumbers.get(curNumber).getIsBracket()) &&
-                (!inputNumbers.get(curNumber).getIsClose()) && (action != ACTIONS.ACT_PERS_MULTY)) {
-            if (inputNumbers.size() > 1) {
-                if ((inputNumbers.get(curNumber).getIsBracket()) &&
-                        (!inputNumbers.get(curNumber).getIsClose())) {
-                    // Вывести сообщение о том, что процент нельзя применять к открытой скобке,
-                    // а нужно применять только к простым арифметическим операциям *, /, +, -
-                    errorMessages.sendErrorInputting(PERCENT_ON_OPEN_BRACKET);
-                } else {
-                    inputNumbers.get(curNumber).setAction(action);
+        if ((action == ACTIONS.ACT_PERS_MULTY) && (inputNumbers.get(curNumber).getIsValue())) {
+            if ((inputNumbers.get(curNumber).getIsBracket()) &&
+                    (inputNumbers.get(curNumber).getIsClose())) {
+                // Определение позиции (positionBracketBegin)
+                Dates prevDates;
+                int counter = 0;
+                iterInputNumbersForCalc = inputNumbers.listIterator(curNumber);
+                while (iterInputNumbersForCalc.hasPrevious()) {
+                    prevDates = iterInputNumbersForCalc.previous();
+                    counter++;
+                    if ((prevDates.getBracketLevel() == curBracketLevel + 1) &&
+                            (prevDates.getIsBracket()) && (!prevDates.getIsClose())) {
+                        positionBracketBegin -= counter;
+                        break;
+                    }
                 }
+            }
+            if (inputNumbers.get(positionBracketBegin).getAction() == ACTIONS.ACT_MULTY) {
+                inputNumbers.get(curNumber).setAction(ACTIONS.ACT_PERS_MULTY);
+                inputNumbers.get(positionBracketBegin).setAction(ACTIONS.ACT_PERS_MULTY);
+            } else if (inputNumbers.get(positionBracketBegin).getAction() ==
+                    ACTIONS.ACT_DIV) {
+                inputNumbers.get(curNumber).setAction(ACTIONS.ACT_PERS_DIV);
+                inputNumbers.get(positionBracketBegin).setAction(ACTIONS.ACT_PERS_DIV);
+            } else if (inputNumbers.get(positionBracketBegin).getAction() ==
+                    ACTIONS.ACT_PLUS) {
+                inputNumbers.get(curNumber).setAction(ACTIONS.ACT_PERS_PLUS);
+                inputNumbers.get(positionBracketBegin).setAction(ACTIONS.ACT_PERS_PLUS);
+            } else if (inputNumbers.get(positionBracketBegin).getAction() ==
+                    ACTIONS.ACT_MINUS) {
+                inputNumbers.get(curNumber).setAction(ACTIONS.ACT_PERS_MINUS);
+                inputNumbers.get(positionBracketBegin).setAction(ACTIONS.ACT_PERS_MINUS);
             } else {
-                // Вывести сообщение о том, что нужно сначала ввести число
-                errorMessages.sendErrorInputting(INPUT_NUMBER_FIRST);
+                // Вывести сообщение о том, что процент нужно применять только
+                // к простым арифметическим операциям *, /, +, -
+                inputNumbers.get(curNumber).setAction(ACTIONS.ACT_PLUS);
+                inputNumbers.get(curNumber).setIsPercent(false);
             }
         } else {
-            if ((action == ACTIONS.ACT_PERS_MULTY) && (inputNumbers.get(curNumber).getIsValue())) {
-                if ((inputNumbers.get(curNumber).getIsBracket()) &&
-                        (!inputNumbers.get(curNumber).getIsClose())) {
-                    // Вывести сообщение о том, что процент нельзя применять к открытой скобке,
-                    // а нужно применять только к простым арифметическим операциям *, /, +, -
-                    errorMessages.sendErrorInputting(PERCENT_ON_OPEN_BRACKET);
-                } else if (curNumber == 0) {
-                    // Вывести сообщение о том, что для применения процента нужно ввести два числа
-                    // и любую следующую арифметическую операцию между ними: *, /, +, -
-                    errorMessages.sendErrorInputting(PERCENT_NEEDS_TWO_NUMBERS);
-                } else if (((inputNumbers.get(curNumber - 1).getIsBracket()) &&
-                        (!inputNumbers.get(curNumber - 1).getIsClose())) ||
-                        !inputNumbers.get(curNumber).getIsValue()) {
-                    // Вывести сообщение о том, что для применения процента нужно ввести два числа
-                    // и любую следующую арифметическую операцию между ними: *, /, +, -
-                    errorMessages.sendErrorInputting(PERCENT_NEEDS_TWO_NUMBERS);
-                } else {
-                    if ((inputNumbers.get(curNumber).getIsBracket()) &&
-                            (inputNumbers.get(curNumber).getIsClose())) {
-                        // Определение позиции (positionBracketBegin)
-                        Dates prevDates;
-                        int counter = 0;
-                        iterInputNumbersForCalc = inputNumbers.listIterator(curNumber);
-                        while (iterInputNumbersForCalc.hasPrevious()) {
-                            prevDates = iterInputNumbersForCalc.previous();
-                            counter++;
-                            if ((prevDates.getBracketLevel() == curBracketLevel + 1) &&
-                                    (prevDates.getIsBracket()) && (!prevDates.getIsClose())) {
-                                positionBracketBegin -= counter;
-                                break;
-                            }
-                        }
-                    }
-                    if (inputNumbers.get(positionBracketBegin).getAction() == ACTIONS.ACT_MULTY) {
-                        inputNumbers.get(curNumber).setAction(ACTIONS.ACT_PERS_MULTY);
-                        inputNumbers.get(positionBracketBegin).setAction(ACTIONS.ACT_PERS_MULTY);
-                    } else if (inputNumbers.get(positionBracketBegin).getAction() ==
-                            ACTIONS.ACT_DIV) {
-                        inputNumbers.get(curNumber).setAction(ACTIONS.ACT_PERS_DIV);
-                        inputNumbers.get(positionBracketBegin).setAction(ACTIONS.ACT_PERS_DIV);
-                    } else if (inputNumbers.get(positionBracketBegin).getAction() ==
-                            ACTIONS.ACT_PLUS) {
-                        inputNumbers.get(curNumber).setAction(ACTIONS.ACT_PERS_PLUS);
-                        inputNumbers.get(positionBracketBegin).setAction(ACTIONS.ACT_PERS_PLUS);
-                    } else if (inputNumbers.get(positionBracketBegin).getAction() ==
-                            ACTIONS.ACT_MINUS) {
-                        inputNumbers.get(curNumber).setAction(ACTIONS.ACT_PERS_MINUS);
-                        inputNumbers.get(positionBracketBegin).setAction(ACTIONS.ACT_PERS_MINUS);
-                    } else {
-                        // Вывести сообщение о том, что процент нужно применять только
-                        // к простым арифметическим операциям *, /, +, -
-                        inputNumbers.get(curNumber).setAction(ACTIONS.ACT_PLUS);
-                        inputNumbers.get(curNumber).setIsPercent(false);
-                    }
-                }
-            } else {
-                if ((isPrevDatesComplited) && (action != ACTIONS.ACT_PERS_MULTY)) {
-                    add(false, false, FUNCTIONS.FUNC_NO, 1, 0d,
-                            false, action, false);
-                    curNumber++;
-                }
+            if ((isPrevDatesComplited) && (action != ACTIONS.ACT_PERS_MULTY)) {
+                add(false, false, FUNCTIONS.FUNC_NO, 1, 0d,
+                        false, action, false);
+                curNumber++;
             }
         }
     }

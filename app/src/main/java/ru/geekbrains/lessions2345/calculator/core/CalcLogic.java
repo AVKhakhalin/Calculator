@@ -1,5 +1,6 @@
 package ru.geekbrains.lessions2345.calculator.core;
 
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.CHANGE_SIGN_EMPTY;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.INPUT_NUMBER_FIRST;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.MANY_ZERO_IN_INTEGER_PART;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.NUMBER_AFTER_BRACKET;
@@ -50,9 +51,9 @@ public class CalcLogic implements Constants, Serializable {
         inputNumbersForBaseCalc = new LinkedList<>();
         iterInputNumbersForCalc = inputNumbersForBaseCalc.listIterator();
 
-        // Создание первого пустого элемента
+        // Создание первого пустого элемента в списка с классами со значениями inputNumbers
         add(false, false, FUNCTIONS.FUNC_NO, 1, 0d, false,
-                ACTIONS.ACT_PLUS, false);
+            ACTIONS.ACT_PLUS, false);
     }
 
     public void setMaxNumberSymbolsInOutputTextField(int maxNumberSymbolsInOutputTextField) {
@@ -721,18 +722,25 @@ public class CalcLogic implements Constants, Serializable {
     public void changeSign() {
         if ((inputNumbers.get(curNumber).getAction() == ACTIONS.ACT_PLUS) && (curNumber > 0) &&
                 (((inputNumbers.get(curNumber - 1).getIsBracket()) &&
-                        (inputNumbers.get(curNumber - 1).getIsClose())) ||
-                        ((!inputNumbers.get(curNumber - 1).getIsBracket()) &&
-                                (!inputNumbers.get(curNumber - 1).getIsClose())))) {
+                (inputNumbers.get(curNumber - 1).getIsClose())) ||
+                ((!inputNumbers.get(curNumber - 1).getIsBracket()) &&
+                (!inputNumbers.get(curNumber - 1).getIsClose())))) {
             inputNumbers.get(curNumber).setAction(ACTIONS.ACT_MINUS);
         } else if ((inputNumbers.get(curNumber).getAction() == ACTIONS.ACT_MINUS) &&
                 (curNumber > 0) && (((inputNumbers.get(curNumber - 1).getIsBracket()) &&
                 (inputNumbers.get(curNumber - 1).getIsClose())) ||
                 ((!inputNumbers.get(curNumber - 1).getIsBracket()) &&
-                        (!inputNumbers.get(curNumber - 1).getIsClose())))) {
+                (!inputNumbers.get(curNumber - 1).getIsClose())))) {
             inputNumbers.get(curNumber).setAction(ACTIONS.ACT_PLUS);
         } else {
-            inputNumbers.get(curNumber).setSign(inputNumbers.get(curNumber).getSign() * (-1));
+            if (((inputNumbers.get(curNumber).getIsValue())
+                && (inputNumbers.get(curNumber).getValue() != 0.0)) ||
+                (inputNumbers.get(curNumber).getTypeFuncInBracket() != FUNCTIONS.FUNC_NO))
+                inputNumbers.get(curNumber).setSign(inputNumbers.get(curNumber).getSign() * (-1));
+            else
+                // Вывод сообщения об ошибке
+                // нельзя производить смену знака не задав предварительно число или функцию
+                errorMessages.sendErrorInputting(CHANGE_SIGN_EMPTY);
         }
     }
 
@@ -763,7 +771,8 @@ public class CalcLogic implements Constants, Serializable {
 //          } else if (curDates.getTypeFuncInBracket() == FUNCTIONS.) {
                 // Сюда можно добавить другие функции для их отображения
                 // TODO
-                // stringFunction = "(";
+//                if (curDates.getSign() == 1) stringFunction = "...";
+//                else stringFunction = "-...";
             } else {
                 stringFunction = "(";
             }
@@ -781,30 +790,30 @@ public class CalcLogic implements Constants, Serializable {
         ACTIONS action = curDates.getAction();
         boolean turnOffZapitay = curDates.getTurnOffZapitay();
 
-        boolean isPrevBraketOpen = (prevDates != null) && (prevDates.getIsBracket())
+        boolean isPrevBracketOpen = (prevDates != null) && (prevDates.getIsBracket())
                 && (!prevDates.getIsClose());
         boolean isFirst = (prevDates == null);
         String stringAction = "";
         String valueString = "";
         if (isValue) {
             valueString = (curDates.getSign() < 0 ? "-" : "") +
-                    (curDates.getIntegerPartValue().length() > 0 ?
-                            curDates.getIntegerPartValue() : "0");
+                (curDates.getIntegerPartValue().length() > 0 ?
+                curDates.getIntegerPartValue() : "0");
             if ((!turnOffZapitay) || (curDates.getRealPartValue().length() > 0)) {
                 valueString += ".";
             }
             valueString = valueString + (curDates.getRealPartValue().length() > 0 ?
-                    curDates.getRealPartValue() : "");
+                curDates.getRealPartValue() : "");
         }
 
         if (!isFirst) {
             String notZeroOrZero = value >= 0 ? String.format("%s", valueString) :
-                    ("(" + String.format("%s", valueString) + ")");
+                ("(" + String.format("%s", valueString) + ")");
             switch (action) {
                 case ACT_STEP:
                     if (isValue) {
                         stringAction = "^" + outputStringFunctionOpen(curDates) +
-                                String.format("%s", valueString) + (isClose ? ")" : "");
+                        String.format("%s", valueString) + (isClose ? ")" : "");
                     } else {
                         stringAction = "^" + outputStringFunctionOpen(curDates);
                     }
@@ -835,9 +844,9 @@ public class CalcLogic implements Constants, Serializable {
                     } else if (isBracket) {
                         stringAction = ")%";
                     } else {
-                        stringAction = (!isPrevBraketOpen ? "+" : "") +
+                        stringAction = (!isPrevBracketOpen ? "+" : "") +
                             outputStringFunctionOpen(curDates) + notZeroOrZero + "%" +
-                                (isClose ? ")" : "");
+                            (isClose ? ")" : "");
                     }
                     break;
                 case ACT_PERS_MINUS:
@@ -870,13 +879,13 @@ public class CalcLogic implements Constants, Serializable {
                     break;
                 case ACT_PLUS:
                     if (isValue) {
-                        stringAction = (!isPrevBraketOpen ? "+" : "") +
+                        stringAction = (!isPrevBracketOpen ? "+" : "") +
                             outputStringFunctionOpen(curDates) + notZeroOrZero +
-                                (isClose ? ")" : "");
+                            (isClose ? ")" : "");
                     } else {
                         if (!curDates.getIsClose()) {
-                            stringAction = (!isPrevBraketOpen ? "+" : "") +
-                                    outputStringFunctionOpen(curDates);
+                            stringAction = (!isPrevBracketOpen ? "+" : "") +
+                                outputStringFunctionOpen(curDates);
                         } else {
                             stringAction = ")";
                         }
@@ -884,13 +893,13 @@ public class CalcLogic implements Constants, Serializable {
                     break;
                 case ACT_MINUS:
                     if (isValue) {
-                        stringAction = (!isPrevBraketOpen ? "-" : "") +
+                        stringAction = (!isPrevBracketOpen ? "-" : "") +
                             outputStringFunctionOpen(curDates) + notZeroOrZero +
-                                (isClose ? ")" : "");
+                            (isClose ? ")" : "");
                     } else {
                         if (!curDates.getIsClose()) {
-                            stringAction = (!isPrevBraketOpen ? "-" : "") +
-                                    outputStringFunctionOpen(curDates);
+                            stringAction = (!isPrevBracketOpen ? "-" : "") +
+                                outputStringFunctionOpen(curDates);
                         } else {
                             stringAction = ")";
                         }

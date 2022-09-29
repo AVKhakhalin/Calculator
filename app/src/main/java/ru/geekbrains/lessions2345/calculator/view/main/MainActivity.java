@@ -229,6 +229,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 showErrorMessage(getResources().
                         getString(R.string.error_needs_two_numbers));
                 break;
+            case CHANGE_SIGN_EMPTY:
+                showErrorMessage(getResources().
+                        getString(R.string.error_change_sign_empty));
+                break;
             default:
                 break;
         }

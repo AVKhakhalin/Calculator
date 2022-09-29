@@ -13,6 +13,7 @@
     <string name="error_percent_on_open_bracket">Ошибка: процент нельзя применять к открытой скобке, а нужно применять только к арифметическим операциям (*, /, +, -).</string>
     <string name="error_input_number_first">Ошибка: нужно сначала ввести число.</string>
     <string name="error_needs_two_numbers">Ошибка: для применения процента нужно ввести два числа и любую следующу арифметическую операцию между ними (*, /, +, -).</string>
+    <string name="error_change_sign_empty">Ошибка: нельзя производить смену знака, предварительно не задав число или функцию.</string>
 
     <string name="_0">0</string>
     <string name="_1">1</string>

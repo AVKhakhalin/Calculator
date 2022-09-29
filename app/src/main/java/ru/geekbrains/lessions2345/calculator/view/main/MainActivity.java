@@ -324,9 +324,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Показать текущие текстовые поля
         outputResultText.setVisibility(View.VISIBLE);
         inputtedHistoryText.setVisibility(View.VISIBLE);
-        // Проведение пробных вычислений
-        mainPresenter.calculate();
+        // Получение текущей ошибки, если она есть
         mainPresenter.getError();
+        // Получение текущего значения, если оно есть
         mainPresenter.getInit();
     }
 

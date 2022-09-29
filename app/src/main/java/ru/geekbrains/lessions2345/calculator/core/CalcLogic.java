@@ -758,7 +758,8 @@ public class CalcLogic implements Constants, Serializable {
         String stringFunction = "";
         if ((curDates.getIsBracket()) && (!curDates.getIsClose())) {
             if (curDates.getTypeFuncInBracket() == FUNCTIONS.FUNC_SQRT) {
-                stringFunction = "SQRT(";
+                if (curDates.getSign() == 1) stringFunction = "SQRT(";
+                else stringFunction = "-SQRT(";
 //          } else if (curDates.getTypeFuncInBracket() == FUNCTIONS.) {
                 // Сюда можно добавить другие функции для их отображения
                 // TODO

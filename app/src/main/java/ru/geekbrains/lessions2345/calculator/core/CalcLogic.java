@@ -6,10 +6,12 @@ import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTT
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.NUMBER_AFTER_BRACKET;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.PERCENT_NEEDS_TWO_NUMBERS;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Locale;
@@ -56,6 +58,10 @@ public class CalcLogic implements Constants, Serializable {
         // Создание первого пустого элемента в списка с классами со значениями inputNumbers
         add(false, false, FUNCTIONS.FUNC_NO, 1, 0d, false,
             ACTIONS.ACT_PLUS, false);
+    }
+
+    public int getMaxNumberSymbolsInOutputTextField() {
+        return maxNumberSymbolsInOutputTextField;
     }
 
     public void setMaxNumberSymbolsInOutputTextField(int maxNumberSymbolsInOutputTextField) {
@@ -930,10 +936,10 @@ public class CalcLogic implements Constants, Serializable {
     public static String numberFormatOutput(double number, int numberSymbols) {
         DecimalFormat df;
         double comparedNumber =
-            // 0.1d стоит для того, чтобы в случае маленьго дисплея
+            // 0.1d стоит для того, чтобы в случае маленького дисплея
             // ещё на один разряд уменьшить количество выводимых символов (т.е. из 10 сделать 9)
             (numberSymbols >= MAX_NUMBER_SYMBOLS_IN_OUTPUT_TEXT_FIELD ? 1d : 0.1d);
-        if (number > 0) {
+        if ((number == 0.0) || (number >= 1.0)) {
             for (int i = 0; i < numberSymbols; i++) {
                 comparedNumber *= 10d;
                 if (number < comparedNumber) {
@@ -943,7 +949,18 @@ public class CalcLogic implements Constants, Serializable {
                             df.format(number));
                 }
             }
-        } else {
+        } else if (number > -1.0) {
+            NumberFormat numberFormat = NumberFormat.getInstance();
+            numberFormat.setGroupingUsed(false);
+            numberFormat.setMaximumFractionDigits(MAX_NUMBER_SYMBOLS_IN_OUTPUT_TEXT_FIELD);
+            String numberString = numberFormat.format(number);
+            if (numberString.length() - (number >= 0 ? 2 : 3) <=
+                (numberSymbols >= MAX_NUMBER_SYMBOLS_IN_OUTPUT_TEXT_FIELD ?
+                MAX_FRACTIONAL_SYMBOLS_IN_SMALL_NUMBER_OUTPUT_TEXT_FIELD :
+                MAX_FRACTIONAL_SYMBOLS_IN_SMALL_NUMBER_OUTPUT_TEXT_FIELD - 2)) {
+                return numberString;
+            }
+        } else if (number <= -1) {
             for (int i = 0; i < numberSymbols - 1; i++) {
                 comparedNumber *= 10d;
                 if (Math.abs(number) < comparedNumber) {
@@ -954,6 +971,7 @@ public class CalcLogic implements Constants, Serializable {
                 }
             }
         }
+        // Работа с большими числами
         if (number > 0) {
             if (numberSymbols == MAX_NUMBER_SYMBOLS_IN_OUTPUT_TEXT_FIELD)
                 return String.format(Locale.getDefault(),

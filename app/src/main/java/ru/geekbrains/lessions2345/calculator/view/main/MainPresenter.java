@@ -2,6 +2,7 @@ package ru.geekbrains.lessions2345.calculator.view.main;
 
 import static android.content.Context.MODE_PRIVATE;
 import static ru.geekbrains.lessions2345.calculator.view.ViewConstants.BORDER_WIDTH;
+import static ru.geekbrains.lessions2345.calculator.view.ViewConstants.DEFAULT_BUTTON_BORDER_RADIUS;
 import static ru.geekbrains.lessions2345.calculator.view.ViewConstants.DEFAULT_BUTTON_RADIUS;
 import static ru.geekbrains.lessions2345.calculator.view.ViewConstants.DEFAULT_BUTTON_RADIUS_SMALL;
 import static ru.geekbrains.lessions2345.calculator.view.ViewConstants.KEY_CURRENT_RADIUS;
@@ -12,9 +13,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import java.io.Serializable;
 import java.util.Locale;
+
+import ru.geekbrains.lessions2345.calculator.R;
 import ru.geekbrains.lessions2345.calculator.core.CalcLogic;
 import ru.geekbrains.lessions2345.calculator.core.Constants;
 import ru.geekbrains.lessions2345.calculator.view.ViewConstants;
@@ -24,7 +28,6 @@ public class MainPresenter implements PresenterMainContract, Serializable, Parce
     /** Исходные данные */ //region
     private ViewMainContract viewMain;
     private final CalcLogic calcLogic = new CalcLogic(this::showErrorInputting);
-    public int curRadiusButtons;
     public boolean doChangeRadius = false;
     //endregion
 
@@ -188,17 +191,30 @@ public class MainPresenter implements PresenterMainContract, Serializable, Parce
     }
 
     // Считать информацию о текущих настройках программы (теме и радиусе кнопок)
-    ViewConstants.THEMES getSettings(Context context, int displayWidth) {
+    ViewConstants.THEMES getSettings(Context context) {
         SharedPreferences sharedPreferences =
             context.getSharedPreferences(KEY_SETTINGS, MODE_PRIVATE);
         int currentTheme = sharedPreferences.getInt(KEY_CURRENT_THEME, 1);
-        if (displayWidth >= BORDER_WIDTH)
-            setCurRadiusButtons(
+        if (viewMain.getDisplayWidth() >= BORDER_WIDTH)
+            viewMain.setCurRadiusButtons(
                 sharedPreferences.getInt(KEY_CURRENT_RADIUS, DEFAULT_BUTTON_RADIUS));
         else
-            setCurRadiusButtons(
+            viewMain.setCurRadiusButtons(
                 sharedPreferences.getInt(KEY_CURRENT_RADIUS, DEFAULT_BUTTON_RADIUS_SMALL));
         doChangeRadius = sharedPreferences.getBoolean(KEY_DOCHANGE_RADIUS, false);
+        // Установка максимального количества выводимых калькулятором цифр в поле с результатом
+        if ((viewMain.getDisplayWidth() >= BORDER_WIDTH) &&
+            (viewMain.getCurRadiusButtons() >= DEFAULT_BUTTON_BORDER_RADIUS)) {
+            setMaxNumberSymbolsInOutputTextField(
+                // Умножаем на 2, потому что ширина чисел вдвое меньше величины EMS
+                context.getResources().getInteger(R.integer.number_output_symbols_forEMS) * 2);
+        } else {
+            setMaxNumberSymbolsInOutputTextField(
+                context.getResources().getInteger(
+                // Умножаем на 2, потому что ширина чисел вдвое меньше величины EMS
+                R.integer.number_output_symbols_forEMS_small) * 2);
+        }
+        // Вывод текущей темы
         if (currentTheme == 0) {
             return ViewConstants.THEMES.NIGHT_THEME;
         } else {
@@ -206,10 +222,6 @@ public class MainPresenter implements PresenterMainContract, Serializable, Parce
             // если в настройках стоит 1 или ничего не будет стоять
             return ViewConstants.THEMES.DAY_THEME;
         }
-    }
-
-    void setCurRadiusButtons(int curRadiusButtons) {
-        this.curRadiusButtons = curRadiusButtons;
     }
 
     void saveSettings(ViewConstants.THEMES currentTheme, Context context) {
@@ -223,7 +235,7 @@ public class MainPresenter implements PresenterMainContract, Serializable, Parce
             editor.putInt(KEY_CURRENT_THEME, 0);
         }
         // Сохранение радиуса кнопок
-        editor.putInt(KEY_CURRENT_RADIUS, curRadiusButtons);
+        editor.putInt(KEY_CURRENT_RADIUS, viewMain.getCurRadiusButtons());
         // Ставим false, что говорит о том, что изменения радиуса отработали
         editor.putBoolean(KEY_DOCHANGE_RADIUS, false);
         editor.apply();
@@ -231,14 +243,12 @@ public class MainPresenter implements PresenterMainContract, Serializable, Parce
 
     //region Конструктор и методы для парселизации
     protected MainPresenter(Parcel in) {
-        curRadiusButtons = in.readInt();
         doChangeRadius = in.readByte() != 0;
     }
     @Override
     public int describeContents() { return 0; }
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(curRadiusButtons);
         parcel.writeByte((byte) (doChangeRadius ? 1 : 0));
     }
     //endregion

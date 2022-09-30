@@ -2,6 +2,7 @@ package ru.geekbrains.lessions2345.calculator.core;
 
 public interface Constants {
     int MAX_NUMBER_SYMBOLS_IN_OUTPUT_TEXT_FIELD = 12;
+    int MAX_FRACTIONAL_SYMBOLS_IN_SMALL_NUMBER_OUTPUT_TEXT_FIELD = 7;
 
     // Действия
     enum ACTIONS {

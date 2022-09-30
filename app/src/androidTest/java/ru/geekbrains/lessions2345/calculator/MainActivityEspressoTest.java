@@ -253,8 +253,8 @@ public class MainActivityEspressoTest {
         Espresso.onView(withId(R.id.inputted_history_text)).check(matches(withText("")));
     }
 
-    @Test // Проверка корректности работы кнопок калькулятора
-    public void activityButtons_IsCorrectWorking() {
+    @Test // Проверка корректности работы кнопок калькулятора на большом дисплее
+    public void activityButtonsLargeScreen_IsCorrectWorking() {
         Espresso.onView(withId(R.id.one)).perform(click());
         Espresso.onView(withId(R.id.two)).perform(click());
         Espresso.onView(withId(R.id.three)).perform(click());
@@ -300,10 +300,63 @@ public class MainActivityEspressoTest {
         Espresso.onView(withId(R.id.equal)).perform(click());
         Espresso.onView(withId(R.id.inputted_history_text))
             .check(matches(withText("1234567891.1+SQRT(9*8%/4^2)-((-35689)*988)")));
-        Espresso.onView(withId(R.id.result)).check(matches(withText("1.270e+09")));
+        Espresso.onView(withId(R.id.result)).check(matches(withText("1269828623.7")));
         Espresso.onView(withId(R.id.backspace)).perform(click());
         Espresso.onView(withId(R.id.inputted_history_text)).check(matches(withText("")));
         Espresso.onView(withId(R.id.result)).check(matches(withText("0")));
+    }
+
+    @Test // Проверка корректности работы кнопок калькулятора на маленьком дисплее
+    public void activityButtonsSmallScreen_IsCorrectWorking() {
+        Espresso.onView(withId(R.id.one)).perform(click());
+        Espresso.onView(withId(R.id.two)).perform(click());
+        Espresso.onView(withId(R.id.three)).perform(click());
+        Espresso.onView(withId(R.id.four)).perform(click());
+        Espresso.onView(withId(R.id.five)).perform(click());
+        Espresso.onView(withId(R.id.six)).perform(click());
+        Espresso.onView(withId(R.id.seven)).perform(click());
+        Espresso.onView(withId(R.id.eight)).perform(click());
+        Espresso.onView(withId(R.id.nine)).perform(click());
+        Espresso.onView(withId(R.id.one)).perform(click());
+        Espresso.onView(withId(R.id.zapitay)).perform(click());
+        Espresso.onView(withId(R.id.one)).perform(click());
+        Espresso.onView(withId(R.id.zapitay)).perform(click());
+        Espresso.onView(withId(R.id.plus)).perform(click());
+        Espresso.onView(withId(R.id.sqrt)).perform(click());
+        Espresso.onView(withId(R.id.nine)).perform(click());
+        Espresso.onView(withId(R.id.multiply)).perform(click());
+        Espresso.onView(withId(R.id.eight)).perform(click());
+        Espresso.onView(withId(R.id.percent)).perform(click());
+        Espresso.onView(withId(R.id.divide)).perform(click());
+        Espresso.onView(withId(R.id.four)).perform(click());
+        Espresso.onView(withId(R.id.stepen)).perform(click());
+        Espresso.onView(withId(R.id.two)).perform(click());
+        Espresso.onView(withId(R.id.bracket_close)).perform(click());
+        Espresso.onView(withId(R.id.minus)).perform(click());
+        Espresso.onView(withId(R.id.bracket_open)).perform(click());
+        Espresso.onView(withId(R.id.three)).perform(click());
+        Espresso.onView(withId(R.id.five)).perform(click());
+        Espresso.onView(withId(R.id.six)).perform(click());
+        Espresso.onView(withId(R.id.eight)).perform(click());
+        Espresso.onView(withId(R.id.nine)).perform(click());
+        Espresso.onView(withId(R.id.plus_minus)).perform(click());
+        Espresso.onView(withId(R.id.multiply)).perform(click());
+        Espresso.onView(withId(R.id.nine)).perform(click());
+        Espresso.onView(withId(R.id.eight)).perform(click());
+        Espresso.onView(withId(R.id.eight)).perform(click());
+        Espresso.onView(withId(R.id.divide)).perform(click());
+        Espresso.onView(withId(R.id.three)).perform(click());
+        Espresso.onView(withId(R.id.zero)).perform(click());
+        Espresso.onView(withId(R.id.backspace_one)).perform(click());
+        Espresso.onView(withId(R.id.backspace_two)).perform(click());
+        Espresso.onView(withId(R.id.bracket_close)).perform(click());
+        Espresso.onView(withId(R.id.equal)).perform(click());
+        Espresso.onView(withId(R.id.inputted_history_text_small))
+            .check(matches(withText("1234567891.1+SQRT(9*8%/4^2)-((-35689)*988)")));
+        Espresso.onView(withId(R.id.result_small)).check(matches(withText("1.270e+09")));
+        Espresso.onView(withId(R.id.backspace)).perform(click());
+        Espresso.onView(withId(R.id.inputted_history_text_small)).check(matches(withText("")));
+        Espresso.onView(withId(R.id.result_small)).check(matches(withText("0")));
     }
 
     @After // Установка действия после завершения выполнения всех тестов

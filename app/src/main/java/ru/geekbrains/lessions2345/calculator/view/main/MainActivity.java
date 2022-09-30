@@ -4,10 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
@@ -58,10 +61,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private MainPresenter mainPresenter = new MainPresenter();
     private int displayWidth = 0;
+    public int curRadiusButtons;
     //endregion
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable(MAIN_PRESENTER_KEY, mainPresenter);
     }
@@ -75,14 +79,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // Данный метод нужен только для тестирования приложения
     @Override
     public void setDisplayWidthAndCurRadiusButtons(int displayWidth, int curRadiusButtons) {
-        mainPresenter.setCurRadiusButtons(curRadiusButtons);
         this.displayWidth = displayWidth;
+        this.curRadiusButtons = curRadiusButtons;
         // Инициализация или перестройка текстовых полей
         initTextFields();
     }
     @Override
     public int getCurRadiusButtons() {
-        return mainPresenter.curRadiusButtons;
+        return curRadiusButtons;
+    }
+    @Override
+    public void setCurRadiusButtons(int curRadiusButtons) {
+        this.curRadiusButtons = curRadiusButtons;
     }
     @Override
     public int getDisplayWidth() {
@@ -93,12 +101,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Отслеживание первичного запуска или перезапуска активити
+        // Установка параметра дисплея текущего устройства
+        displayWidth = getResources().getDisplayMetrics().widthPixels;
         firstRunDetection(savedInstanceState);
         // Передача вью MainActivity в MainPresenter в рамках шаблона MVP
         mainPresenter.onAttach(this);
-        // Установка параметра дисплея текущего устройства
-        displayWidth = getResources().getDisplayMetrics().widthPixels;
-        currentTheme = mainPresenter.getSettings(this, displayWidth);
+        currentTheme = mainPresenter.getSettings(this);
         // Установка темы
         setCalculatorTheme(currentTheme);
         // Установка макета MainActivity
@@ -114,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setNewMaxHeightForInputHistory();
         // Установка обновлённых значений размеров элементов сцены
         setNewSizesElements(Math.round(
-            mainPresenter.curRadiusButtons * this.getResources().getDisplayMetrics().density));
+            curRadiusButtons * this.getResources().getDisplayMetrics().density));
     }
 
     @Override
@@ -161,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onResume();
 
         // Установка темы
-        THEMES savedTheme = mainPresenter.getSettings(this, displayWidth);
+        THEMES savedTheme = mainPresenter.getSettings(this);
         if ((currentTheme != savedTheme) || (mainPresenter.doChangeRadius)) {
             currentTheme = savedTheme;
             mainPresenter.doChangeRadius = false;
@@ -302,7 +310,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // Инициализаци текстовых полей
     private void initTextFields() {
         if ((displayWidth >= BORDER_WIDTH) &&
-            (mainPresenter.curRadiusButtons >= DEFAULT_BUTTON_BORDER_RADIUS)) {
+            (curRadiusButtons >= DEFAULT_BUTTON_BORDER_RADIUS)) {
             // Инициализация текстовых полей
             outputResultText = findViewById(R.id.result);
             inputtedHistoryText = findViewById(R.id.inputted_history_text);
@@ -326,7 +334,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         inputtedHistoryText.setVisibility(View.VISIBLE);
         // Получение текущей ошибки, если она есть
         mainPresenter.getError();
-        // Получение текущего значения, если оно есть
+        // Получение текущего результирующего значения, если оно есть
         mainPresenter.getInit();
     }
 
@@ -409,7 +417,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 R.dimen.button_action_height_standard);
         // Задание новых размеров для кнопок
         if ((displayWidth < BORDER_WIDTH) ||
-            (mainPresenter.curRadiusButtons < DEFAULT_BUTTON_BORDER_RADIUS)) {
+            (curRadiusButtons < DEFAULT_BUTTON_BORDER_RADIUS)) {
             buttonsNumbersWidth = (int) getResources().getDimension(
                 R.dimen.button_number_width_small);
             buttonsNumbersHeight = (int) getResources().getDimension(
@@ -438,19 +446,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     // Отслеживание первичного запуска или перезапуска активити
     private void firstRunDetection(Bundle savedInstanceState) {
-        if (savedInstanceState == null) {
-            // Умножаем на 2, потому что ширина чисел вдвое меньше величины EMS
-            if ((displayWidth >= BORDER_WIDTH) &&
-                (mainPresenter.curRadiusButtons >= DEFAULT_BUTTON_BORDER_RADIUS)) {
-                mainPresenter.setMaxNumberSymbolsInOutputTextField(
-                    getResources().getInteger(R.integer.number_output_symbols_forEMS) * 2);
-            } else {
-                mainPresenter.setMaxNumberSymbolsInOutputTextField(
-                    getResources().getInteger(R.integer.number_output_symbols_forEMS_small) * 2);
-            }
-        } else {
+        if (savedInstanceState != null)
             // Восстановление класса mainPresenter после поворота экрана
             mainPresenter = (MainPresenter) savedInstanceState.getSerializable(MAIN_PRESENTER_KEY);
-        }
     }
 }

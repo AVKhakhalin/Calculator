@@ -15,6 +15,7 @@ import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 import static org.mockito.Mockito.times;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.CLOSE_BRACKET_ON_EMPTY;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_IN_STRING.BRACKETS_EMPTY;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_IN_STRING.BRACKET_DISBALANCE;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_IN_STRING.NO;
@@ -84,9 +85,10 @@ public class MainPresenterTest {
         mainPresenter.setBracketOpen();
         Mockito.verify(viewMainContract, times(2)).
                 setInputtedHistoryText("(");
+        mainPresenter.addNumeral(1);
         mainPresenter.setBracketClose();
         Mockito.verify(viewMainContract, times(1)).
-                setInputtedHistoryText("()");
+                setInputtedHistoryText("(1)");
     }
 
     // Проверка корректности выполнения setBracketClose()
@@ -532,17 +534,14 @@ public class MainPresenterTest {
                 showErrorInString(ZERO_DIVIDE);
     }
 
-    @Test // Проверка корректности выполнения getError() для пустого выражения в скобках
-    public void getError_EMPTY_INSIGHT_BRACKETS_Test() {
+    @Test // Проверка корректности выполнения showErrorInputting() для пустого выражения в скобках
+    public void showErrorInputting_EMPTY_INSIGHT_BRACKETS_Test() {
         mainPresenter.setBracketOpen();
         Mockito.verify(viewMainContract, times(2)).
                 setInputtedHistoryText("(");
         mainPresenter.setBracketClose();
         Mockito.verify(viewMainContract, times(1)).
-                setInputtedHistoryText("()");
-        mainPresenter.setEqual();
-        Mockito.verify(viewMainContract, times(1)).
-                showErrorInString(BRACKETS_EMPTY);
+                showErrorInputting(CLOSE_BRACKET_ON_EMPTY);
     }
 
     @Test // Проверка корректности выполнения getInit()

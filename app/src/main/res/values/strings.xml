@@ -14,7 +14,8 @@
     <string name="error_needs_two_numbers">Ошибка: для применения процента нужно ввести два числа с любой из 4-х арифметических операций между ними (*, /, +, -).</string>
     <string name="error_change_sign_empty">Ошибка: нельзя производить смену знака, предварительно не задав число или функцию.</string>
     <string name="error_open_bracket_on_empty_action">Ошибка: нельзя создать новую открытую скобку, потому что не указано перед скобкой действие.</string>
-    <string name="error_close_bracket_on_empty">Ошибка: нельзя поставить закрывающую скобку, если предварительно не поставить ей соответствующую открывающую скобку.</string>
+    <string name="error_close_bracket_on_empty_open_bracket">Ошибка: нельзя поставить закрывающую скобку, если предварительно не поставить ей соответствующую открывающую скобку.</string>
+    <string name="error_close_bracket_on_empty">Ошибка: нельзя закрывать пустую скобку, в скобке как минимум должно быть одно число.</string>
 
     <string name="_0">0</string>
     <string name="_1">1</string>

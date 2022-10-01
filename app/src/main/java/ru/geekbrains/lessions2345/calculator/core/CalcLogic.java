@@ -2,6 +2,7 @@ package ru.geekbrains.lessions2345.calculator.core;
 
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.CHANGE_SIGN_EMPTY;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.CLOSE_BRACKET_ON_EMPTY;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.CLOSE_BRACKET_ON_EMPTY_OPEN_BRACKET;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.INPUT_NUMBER_FIRST;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.MANY_ZERO_IN_INTEGER_PART;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.NUMBER_AFTER_BRACKET;
@@ -633,14 +634,23 @@ public class CalcLogic implements Constants, Serializable {
     // Установка закрывающейся скобки
     public String closeBracket() {
         if (curBracketLevel > 0) {
-            add(true, true, FUNCTIONS.FUNC_NO, 1, 0d, false,
+            if ((!inputNumbers.get(curNumber).getIsBracket()) &&
+                (!inputNumbers.get(curNumber).getIsClose())) {
+                add(true, true, FUNCTIONS.FUNC_NO, 1, 0d, false,
                     ACTIONS.ACT_PLUS, false);
-            curBracketLevel--;
-            curNumber++;
+                curBracketLevel--;
+                curNumber++;
+            }
+            if ((inputNumbers.get(curNumber).getIsBracket()) &&
+                (!inputNumbers.get(curNumber).getIsClose())) {
+                // Вывод сообщения об ошибке: нельзя закрывать пустую скобку,
+                // в скобке как минимум должно быть одно число
+                errorMessages.sendErrorInputting(CLOSE_BRACKET_ON_EMPTY);
+            }
         } else {
-            // Вывод сообщения о ошибке: нельзя поставить закрывающую скобку,
+            // Вывод сообщения об ошибке: нельзя поставить закрывающую скобку,
             // если предварительно не поставить ей соответствующую открывающую скобку
-            errorMessages.sendErrorInputting(CLOSE_BRACKET_ON_EMPTY);
+            errorMessages.sendErrorInputting(CLOSE_BRACKET_ON_EMPTY_OPEN_BRACKET);
         }
         return createOutput();
     }

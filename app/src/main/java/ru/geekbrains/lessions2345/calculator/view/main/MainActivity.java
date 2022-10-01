@@ -239,6 +239,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 showErrorMessage(getResources().
                         getString(R.string.error_open_bracket_on_empty_action));
                 break;
+            case CLOSE_BRACKET_ON_EMPTY_OPEN_BRACKET:
+                showErrorMessage(getResources().
+                        getString(R.string.error_close_bracket_on_empty_open_bracket));
+                break;
             case CLOSE_BRACKET_ON_EMPTY:
                 showErrorMessage(getResources().
                         getString(R.string.error_close_bracket_on_empty));

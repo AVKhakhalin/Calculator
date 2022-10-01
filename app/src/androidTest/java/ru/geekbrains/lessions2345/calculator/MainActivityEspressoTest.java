@@ -253,6 +253,7 @@ public class MainActivityEspressoTest {
         Espresso.onView(withId(R.id.inputted_history_text)).check(matches(withText("")));
     }
 
+    // ЭТОТ ТЕСТ ДОЛЖЕН ВЫДАВАТЬ Failed НА МАЛЕНЬКОМ ДИСПЛЕЕ (С ШИРИНОЙ МЕНЕЕ 1080 px)
     @Test // Проверка корректности работы кнопок калькулятора на большом дисплее
     public void activityButtonsLargeScreen_IsCorrectWorking() {
         Espresso.onView(withId(R.id.one)).perform(click());
@@ -306,6 +307,7 @@ public class MainActivityEspressoTest {
         Espresso.onView(withId(R.id.result)).check(matches(withText("0")));
     }
 
+    // ЭТОТ ТЕСТ ДОЛЖЕН ВЫДАВАТЬ Failed НА БОЛЬШОМ ДИСПЛЕЕ (С ШИРИНОЙ БОЛЬШЕ 1080 px)
     @Test // Проверка корректности работы кнопок калькулятора на маленьком дисплее
     public void activityButtonsSmallScreen_IsCorrectWorking() {
         Espresso.onView(withId(R.id.one)).perform(click());

@@ -5,6 +5,7 @@ import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTT
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.INPUT_NUMBER_FIRST;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.MANY_ZERO_IN_INTEGER_PART;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.NUMBER_AFTER_BRACKET;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.OPEN_BRACKET_ON_EMPTY_ACTION;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.PERCENT_NEEDS_TWO_NUMBERS;
 import java.io.Serializable;
 import java.text.DecimalFormat;
@@ -594,22 +595,33 @@ public class CalcLogic implements Constants, Serializable {
         }
     }
 
-    // Установка для функции, а также новой скобки, поскольку функции без скобок не бывает
-    // Данный метод не только устанавливает новую функцию, но и открывает скобку
+    // Установка открытой скобки самой по себе, так для функции, поскольку функции без скобок
+    // не бывает. Данный метод не только устанавливает новую функцию, но и открывает скобку.
+    // Открытая скобка без функции имеет тип FUNCTIONS.FUNC_NO
     public String setNewFunction(FUNCTIONS typeFuncInBracket)
     {
         if (inputNumbers.get(curNumber).getIsBracket()) {
-            curBracketLevel++;
-            add(true, false, typeFuncInBracket, 1, 0d, false,
+            if (!inputNumbers.get(curNumber).getIsClose()) {
+                curBracketLevel++;
+                add(true, false, typeFuncInBracket, 1, 0d, false,
                     ACTIONS.ACT_PLUS, false);
-            curNumber++;
+                curNumber++;
+            } else {
+                // Вывод ошибки о невозможности создания новой открытой скобки,
+                // потому что не указано перед скобкой действие
+                errorMessages.sendErrorInputting(OPEN_BRACKET_ON_EMPTY_ACTION);
+            }
         } else {
             if ((inputNumbers.get(curNumber).getTypeFuncInBracket() == FUNCTIONS.FUNC_NO) &&
-                    (!inputNumbers.get(curNumber).getIsValue())) {
+                (!inputNumbers.get(curNumber).getIsValue())) {
                 curBracketLevel++;
                 inputNumbers.get(curNumber).setIsBracket(true);
                 inputNumbers.get(curNumber).setBracketLevel(curBracketLevel);
                 inputNumbers.get(curNumber).setTypeFuncInBracket(typeFuncInBracket);
+            } else {
+                // Вывод ошибки о невозможности создания новой открытой скобки,
+                // потому что не указано перед скобкой действие
+                errorMessages.sendErrorInputting(OPEN_BRACKET_ON_EMPTY_ACTION);
             }
         }
         if (maxBracketLevel < curBracketLevel) {

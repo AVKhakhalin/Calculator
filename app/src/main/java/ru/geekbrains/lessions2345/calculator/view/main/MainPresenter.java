@@ -13,11 +13,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
-
 import java.io.Serializable;
 import java.util.Locale;
-
 import ru.geekbrains.lessions2345.calculator.R;
 import ru.geekbrains.lessions2345.calculator.core.CalcLogic;
 import ru.geekbrains.lessions2345.calculator.core.Constants;

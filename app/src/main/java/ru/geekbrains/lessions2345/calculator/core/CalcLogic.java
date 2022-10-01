@@ -5,10 +5,6 @@ import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTT
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.MANY_ZERO_IN_INTEGER_PART;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.NUMBER_AFTER_BRACKET;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.PERCENT_NEEDS_TWO_NUMBERS;
-
-import android.annotation.SuppressLint;
-import android.util.Log;
-
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -161,7 +157,7 @@ public class CalcLogic implements Constants, Serializable {
         curNumber = 0;
         // Создание первого пустого элемента
         add(false, false, FUNCTIONS.FUNC_NO, 1, 0d, false,
-                ACTIONS.ACT_PLUS, false);
+            ACTIONS.ACT_PLUS, false);
         pressedZapitay = false;
     }
 
@@ -194,7 +190,7 @@ public class CalcLogic implements Constants, Serializable {
                 double realPartValue = 0d;
                 if (inputNumbers.get(curNumber).getIntegerPartValue().length() > 0) {
                     intPartValue = Double.parseDouble(inputNumbers.get(curNumber).
-                            getIntegerPartValue());
+                        getIntegerPartValue());
                 }
 
                 if (inputNumbers.get(curNumber).getRealPartValue().length() > 0) {
@@ -204,6 +200,10 @@ public class CalcLogic implements Constants, Serializable {
                 }
                 inputNumbers.get(curNumber).setValue(intPartValue + realPartValue);
             }
+            // Анализ обработанного элемента на предмет остатка пустого класса и его удаление
+            if ((inputNumbers.get(curNumber).getIntegerPartValue().length() == 0) &&
+                (inputNumbers.get(curNumber).getRealPartValue().length() == 0))
+                clearOne();
         } else {
             if (curNumber > 0) {
                 if ((inputNumbers.get(curNumber).getIsBracket()) &&
@@ -634,7 +634,7 @@ public class CalcLogic implements Constants, Serializable {
         if (action == ACTIONS.ACT_PERS_MULTY) {
             if (inputNumbers.size() > 1) {
                 if ((!inputNumbers.get(curNumber - 1).getIsValue()) ||
-                    (!inputNumbers.get(curNumber).getIsValue())){
+                        (!inputNumbers.get(curNumber).getIsValue())) {
                     // Вывести сообщение о том, что для применения процента нужно ввести два числа
                     // с любой арифметической операцией между ними: *, /, +, -
                     errorMessages.sendErrorInputting(PERCENT_NEEDS_TWO_NUMBERS);
@@ -648,11 +648,15 @@ public class CalcLogic implements Constants, Serializable {
             }
         // Проверка возможности корректного задания других действий
         } else {
-            // Проверка на применение действия числу
+            // Проверка на применение действия не к числу
             if (inputNumbers.size() > 0) {
                 if ((!inputNumbers.get(curNumber).getIsValue()) &&
-                    ((!inputNumbers.get(curNumber).getIsBracket()) &&
-                    (!inputNumbers.get(curNumber).getIsClose()))) {
+                    ((inputNumbers.get(curNumber).getIsBracket()) &&
+                    (!inputNumbers.get(curNumber).getIsClose())) ||
+                    ((!inputNumbers.get(curNumber).getIsValue()) &&
+                    (curNumber == 0)) ||
+                    ((!inputNumbers.get(curNumber).getIsValue()) &&
+                    (curNumber > 0) && (!inputNumbers.get(curNumber).getIsClose()))) {
                     // Вывести сообщение о том, что нужно сначала ввести число
                     errorMessages.sendErrorInputting(INPUT_NUMBER_FIRST);
                     return;

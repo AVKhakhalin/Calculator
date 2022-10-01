@@ -634,9 +634,10 @@ public class CalcLogic implements Constants, Serializable {
         if (action == ACTIONS.ACT_PERS_MULTY) {
             if (inputNumbers.size() > 1) {
                 if ((!inputNumbers.get(curNumber - 1).getIsValue()) ||
-                        (!inputNumbers.get(curNumber).getIsValue())) {
+                    (!inputNumbers.get(curNumber).getIsValue()) ||
+                    (inputNumbers.get(curNumber).getAction() == ACTIONS.ACT_STEP)) {
                     // Вывести сообщение о том, что для применения процента нужно ввести два числа
-                    // с любой арифметической операцией между ними: *, /, +, -
+                    // с любой из 4-х арифметических операцией между ними: *, /, +, -
                     errorMessages.sendErrorInputting(PERCENT_NEEDS_TWO_NUMBERS);
                     return;
                 }

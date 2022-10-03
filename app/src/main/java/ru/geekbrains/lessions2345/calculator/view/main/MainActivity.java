@@ -247,6 +247,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 showErrorMessage(getResources().
                         getString(R.string.error_close_bracket_on_empty));
                 break;
+            case CLOSE_BRACKET_ON_ACTION_WITHOUT_NUMBER:
+                showErrorMessage(getResources().
+                        getString(R.string.error_close_bracket_on_action_without_number));
+                break;
+            case MULTIPLE_PERCENT_IN_BRACKET:
+                showErrorMessage(getResources().
+                        getString(R.string.error_multiple_percent_in_bracket));
+                break;
             default:
                 break;
         }

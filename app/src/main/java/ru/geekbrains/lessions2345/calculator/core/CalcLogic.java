@@ -1,10 +1,12 @@
 package ru.geekbrains.lessions2345.calculator.core;
 
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.CHANGE_SIGN_EMPTY;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.CLOSE_BRACKET_ON_ACTION_WITHOUT_NUMBER;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.CLOSE_BRACKET_ON_EMPTY;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.CLOSE_BRACKET_ON_EMPTY_OPEN_BRACKET;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.INPUT_NUMBER_FIRST;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.MANY_ZERO_IN_INTEGER_PART;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.MULTIPLE_PERCENT_IN_BRACKET;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.NUMBER_AFTER_BRACKET;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.OPEN_BRACKET_ON_EMPTY_ACTION;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.PERCENT_NEEDS_TWO_NUMBERS;
@@ -14,7 +16,6 @@ import java.text.NumberFormat;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Locale;
-
 import ru.geekbrains.lessions2345.calculator.model.Dates;
 
 public class CalcLogic implements Constants, Serializable {
@@ -634,18 +635,23 @@ public class CalcLogic implements Constants, Serializable {
     // Установка закрывающейся скобки
     public String closeBracket() {
         if (curBracketLevel > 0) {
-            if ((!inputNumbers.get(curNumber).getIsBracket()) &&
-                (!inputNumbers.get(curNumber).getIsClose())) {
-                add(true, true, FUNCTIONS.FUNC_NO, 1, 0d, false,
-                    ACTIONS.ACT_PLUS, false);
-                curBracketLevel--;
-                curNumber++;
-            }
             if ((inputNumbers.get(curNumber).getIsBracket()) &&
                 (!inputNumbers.get(curNumber).getIsClose())) {
                 // Вывод сообщения об ошибке: нельзя закрывать пустую скобку,
                 // в скобке как минимум должно быть одно число
                 errorMessages.sendErrorInputting(CLOSE_BRACKET_ON_EMPTY);
+            } else if ((!inputNumbers.get(curNumber).getIsBracket()) &&
+                (!inputNumbers.get(curNumber).getIsValue())) {
+                // Вывод сообщения об ошибке: закрывающую скобку нельзя ставить
+                // на действии без указания числа
+                errorMessages.sendErrorInputting(CLOSE_BRACKET_ON_ACTION_WITHOUT_NUMBER);
+            } else {
+                if (curBracketLevel > 0) {
+                    add(true, true, FUNCTIONS.FUNC_NO, 1, 0d,
+                        false, ACTIONS.ACT_PLUS, false);
+                    curBracketLevel--;
+                    curNumber++;
+                }
             }
         } else {
             // Вывод сообщения об ошибке: нельзя поставить закрывающую скобку,
@@ -660,13 +666,36 @@ public class CalcLogic implements Constants, Serializable {
         // Проверка возможности корректного задания знака процента
         if (action == ACTIONS.ACT_PERS_MULTY) {
             if (inputNumbers.size() > 1) {
-                if ((!inputNumbers.get(curNumber - 1).getIsValue()) ||
-                    (!inputNumbers.get(curNumber).getIsValue()) ||
+                if (((!inputNumbers.get(curNumber - 1).getIsValue()) &&
+                    (!inputNumbers.get(curNumber - 1).getIsClose())) ||
+                    ((!inputNumbers.get(curNumber).getIsValue()) &&
+                    (!inputNumbers.get(curNumber).getIsClose())) ||
                     (inputNumbers.get(curNumber).getAction() == ACTIONS.ACT_STEP)) {
                     // Вывести сообщение о том, что для применения процента нужно ввести два числа
                     // с любой из 4-х арифметических операцией между ними: *, /, +, -
                     errorMessages.sendErrorInputting(PERCENT_NEEDS_TWO_NUMBERS);
                     return;
+                } else  {
+                    int indexSearchPercent = curNumber;
+                    while ((indexSearchPercent >= 0) && (inputNumbers.get(indexSearchPercent).
+                        getBracketLevel() == curBracketLevel)) {
+                        if ((inputNumbers.get(indexSearchPercent).getAction() ==
+                            ACTIONS.ACT_PERS_MULTY) ||
+                            (inputNumbers.get(indexSearchPercent).getAction() ==
+                            ACTIONS.ACT_PERS_DIV) ||
+                            (inputNumbers.get(indexSearchPercent).getAction() ==
+                            ACTIONS.ACT_PERS_MINUS) ||
+                            (inputNumbers.get(indexSearchPercent).getAction() ==
+                            ACTIONS.ACT_PERS_PLUS)) {
+                            // Вывести сообщение о том, что без скобок или в рамках одной скобки
+                            // нельзя вводить знак процента больше одного раза. Если нужно
+                            // произвести вычисление процента несколько раз, то нужно каждую такую
+                            // конструкцию оборачивать в отдельную скобку
+                            errorMessages.sendErrorInputting(MULTIPLE_PERCENT_IN_BRACKET);
+                            return;
+                        }
+                        indexSearchPercent--;
+                    }
                 }
             } else {
                 // Вывести сообщение о том, что для применения процента нужно ввести два числа
@@ -705,9 +734,10 @@ public class CalcLogic implements Constants, Serializable {
         } else {
             isPrevDatesComplited = true;
         }
-        if ((action == ACTIONS.ACT_PERS_MULTY) && (inputNumbers.get(curNumber).getIsValue())) {
+        if ((action == ACTIONS.ACT_PERS_MULTY) && ((inputNumbers.get(curNumber).getIsValue()) ||
+            (!inputNumbers.get(curNumber).getIsValue()))) {
             if ((inputNumbers.get(curNumber).getIsBracket()) &&
-                    (inputNumbers.get(curNumber).getIsClose())) {
+                (inputNumbers.get(curNumber).getIsClose())) {
                 // Определение позиции (positionBracketBegin)
                 Dates prevDates;
                 int counter = 0;
@@ -854,7 +884,7 @@ public class CalcLogic implements Constants, Serializable {
                     break;
                 case ACT_PERS_MULTY:
                     if ((isBracket) && (!isClose)) {
-                        stringAction = outputStringFunctionOpen(curDates);
+                        stringAction = "*" + outputStringFunctionOpen(curDates);
                     } else if (isBracket) {
                         stringAction = ")%";
                     } else {
@@ -864,7 +894,7 @@ public class CalcLogic implements Constants, Serializable {
                     break;
                 case ACT_PERS_DIV:
                     if ((isBracket) && (!isClose)) {
-                        stringAction = outputStringFunctionOpen(curDates);
+                        stringAction = "/" + outputStringFunctionOpen(curDates);
                     } else if (isBracket) {
                         stringAction = ")%";
                     } else {
@@ -874,7 +904,7 @@ public class CalcLogic implements Constants, Serializable {
                     break;
                 case ACT_PERS_PLUS:
                     if ((isBracket) && (!isClose)) {
-                        stringAction = outputStringFunctionOpen(curDates);
+                        stringAction = "+" + outputStringFunctionOpen(curDates);
                     } else if (isBracket) {
                         stringAction = ")%";
                     } else {
@@ -885,7 +915,7 @@ public class CalcLogic implements Constants, Serializable {
                     break;
                 case ACT_PERS_MINUS:
                     if ((isBracket) && (!isClose)) {
-                        stringAction = outputStringFunctionOpen(curDates);
+                        stringAction = "-" + outputStringFunctionOpen(curDates);
                     } else if (isBracket) {
                         stringAction = ")%";
                     } else {

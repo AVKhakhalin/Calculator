@@ -213,10 +213,10 @@ public class MainActivityTest {
                 Button menuTheme = (Button) activity.findViewById(R.id.menu_theme);
                 assertEquals("Настройки", menuTheme.getText());
                 TextView result = (TextView) activity.findViewById(R.id.result);
-                assertEquals("0", result.getText());
+                assertEquals("0", String.valueOf(result.getText()));
                 TextView inputtedHistoryText =
                         (TextView) activity.findViewById(R.id.inputted_history_text);
-                assertEquals("", inputtedHistoryText.getText());
+                assertEquals("", String.valueOf(inputtedHistoryText.getText()));
             }
         });
     }
@@ -411,7 +411,7 @@ public class MainActivityTest {
                 activity.setInputtedHistoryText("1000.00");
                 TextView inputtedHistoryText =
                         (TextView) activity.findViewById(R.id.inputted_history_text);
-                assertEquals("1000.00", inputtedHistoryText.getText());
+                assertEquals("1000.00", String.valueOf(inputtedHistoryText.getText()));
 
                 // Проверка вывод в текстовое поле inputted_history_text_small
                 activity.setDisplayWidthAndCurRadiusButtons(
@@ -419,11 +419,11 @@ public class MainActivityTest {
                 activity.setInputtedHistoryText("1000.00");
                 TextView inputtedHistoryTextSmall =
                         (TextView) activity.findViewById(R.id.inputted_history_text_small);
-                assertEquals("1000.00", inputtedHistoryTextSmall.getText());
+                assertEquals("1000.00", String.valueOf(inputtedHistoryTextSmall.getText()));
                 activity.setDisplayWidthAndCurRadiusButtons(
                         BORDER_WIDTH, DEFAULT_BUTTON_BORDER_RADIUS - 10);
                 activity.setInputtedHistoryText("2000.00");
-                assertEquals("2000.00", inputtedHistoryTextSmall.getText());
+                assertEquals("2000.00", String.valueOf(inputtedHistoryTextSmall.getText()));
             }
         });
     }
@@ -436,18 +436,18 @@ public class MainActivityTest {
                 activity.setDisplayWidthAndCurRadiusButtons(BORDER_WIDTH, DEFAULT_BUTTON_RADIUS);
                 activity.setOutputResultText("1000.00");
                 TextView result = (TextView) activity.findViewById(R.id.result);
-                assertEquals("1000.00", result.getText());
+                assertEquals("1000.00", String.valueOf(result.getText()));
 
                 // Проверка вывода в текстовое поле result_small
                 activity.setDisplayWidthAndCurRadiusButtons(
                         BORDER_WIDTH - 10, DEFAULT_BUTTON_RADIUS);
                 activity.setOutputResultText("1000.00");
                 TextView resultSmall = (TextView) activity.findViewById(R.id.result_small);
-                assertEquals("1000.00", resultSmall.getText());
+                assertEquals("1000.00", String.valueOf(resultSmall.getText()));
                 activity.setDisplayWidthAndCurRadiusButtons(
                         BORDER_WIDTH, DEFAULT_BUTTON_BORDER_RADIUS - 10);
                 activity.setOutputResultText("2000.00");
-                assertEquals("2000.00", resultSmall.getText());
+                assertEquals("2000.00", String.valueOf(resultSmall.getText()));
             }
         });
     }

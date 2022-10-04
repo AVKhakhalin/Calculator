@@ -483,8 +483,7 @@ public class CalcLogic implements Constants, Serializable {
         if (curNumbersForCals.size() > 0) {
             prevDates = curNumbersForCals.get(0);
         } else {
-            // Ошибка: внутри скобки нет никакого числа
-            errorCode = ERRORS_IN_STRING.BRACKETS_EMPTY;
+            // Случай, когда скобка пуста
             return result;
         }
         for (ACTIONS action : ACTIONS.values()) {
@@ -677,8 +676,12 @@ public class CalcLogic implements Constants, Serializable {
                     return;
                 } else  {
                     int indexSearchPercent = curNumber;
+                    int curPercBracketLevel = inputNumbers.get(indexSearchPercent).getBracketLevel();
+                    int numberPercBrackets = 0;
+                    boolean existStartCloseBracket = false;
+                    int numberNumberInBracket = 0;
                     while ((indexSearchPercent >= 0) && (inputNumbers.get(indexSearchPercent).
-                        getBracketLevel() == curBracketLevel)) {
+                        getBracketLevel() >= curPercBracketLevel)) {
                         if ((inputNumbers.get(indexSearchPercent).getAction() ==
                             ACTIONS.ACT_PERS_MULTY) ||
                             (inputNumbers.get(indexSearchPercent).getAction() ==
@@ -693,8 +696,33 @@ public class CalcLogic implements Constants, Serializable {
                             // конструкцию оборачивать в отдельную скобку
                             errorMessages.sendErrorInputting(MULTIPLE_PERCENT_IN_BRACKET);
                             return;
+                        } else if ((indexSearchPercent == curNumber) &&
+                            (inputNumbers.get(indexSearchPercent).getIsBracket()) &&
+                            (inputNumbers.get(indexSearchPercent).getIsClose()) &&
+                            (inputNumbers.get(indexSearchPercent).getBracketLevel() <=
+                            (curPercBracketLevel == 0 ? 1 : curPercBracketLevel))) {
+                            existStartCloseBracket = true;
+                            numberNumberInBracket = 0;
+                        } else if ((inputNumbers.get(indexSearchPercent).getIsBracket()) &&
+                            (!inputNumbers.get(indexSearchPercent).getIsClose()) &&
+                            (inputNumbers.get(indexSearchPercent).getBracketLevel() <=
+                            (curPercBracketLevel == 0 ? 1 : curPercBracketLevel))) {
+                            numberPercBrackets++;
+                        } else if ((inputNumbers.get(indexSearchPercent).getIsValue()) &&
+                            (inputNumbers.get(indexSearchPercent).getBracketLevel() <=
+                            (curPercBracketLevel == 0 ? 1 : curPercBracketLevel))) {
+                            if (!existStartCloseBracket) {
+                                numberNumberInBracket++;
+                            }
                         }
                         indexSearchPercent--;
+                    }
+                    if (numberPercBrackets + numberNumberInBracket < 2) {
+                        // Вывести сообщение о том, что для применения процента нужно ввести
+                        // два числа и любую следующую арифметическую операцию между ними:
+                        // *, /, +, -
+                        errorMessages.sendErrorInputting(PERCENT_NEEDS_TWO_NUMBERS);
+                        return;
                     }
                 }
             } else {

@@ -1,15 +1,24 @@
 package ru.geekbrains.lessions2345.calculator.core;
 
-import android.util.Log;
-
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.CHANGE_SIGN_EMPTY;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.CLOSE_BRACKET_ON_ACTION_WITHOUT_NUMBER;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.CLOSE_BRACKET_ON_EMPTY;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.CLOSE_BRACKET_ON_EMPTY_OPEN_BRACKET;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.INPUT_NUMBER_FIRST;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.MANY_ZERO_IN_INTEGER_PART;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.MULTIPLE_PERCENT_IN_BRACKET;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.NUMBER_AFTER_BRACKET;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.OPEN_BRACKET_ON_EMPTY_ACTION;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.PERCENT_NEEDS_TWO_NUMBERS;
+import java.io.Serializable;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Locale;
-
 import ru.geekbrains.lessions2345.calculator.model.Dates;
 
-public class CalcLogic implements Constants {
+public class CalcLogic implements Constants, Serializable {
     // Создание класса со значениями
     private LinkedList<Dates> inputNumbers;
     // Максимальный уровень вложенности во всех скобках
@@ -31,11 +40,14 @@ public class CalcLogic implements Constants {
     // Переменная, хранящая окончательный результат вычислений
     private double finalResult = 0d;
     // Ошибки вычислений
-    private ERRORS errorCode = ERRORS.NO;
+    private ERRORS_IN_STRING errorCode = ERRORS_IN_STRING.NO;
     // Максимальное количество символов, допустимое для вывода в поле с результатами вычислений
     private int maxNumberSymbolsInOutputTextField = MAX_NUMBER_SYMBOLS_IN_OUTPUT_TEXT_FIELD;
+    // Действия при ошибках ввода чисел в калькуляторе
+    private final ErrorMessages errorMessages;
 
-    public CalcLogic() {
+    public CalcLogic(ErrorMessages errorMessages) {
+        this.errorMessages = errorMessages;
         inputNumbers = new LinkedList<>();
         maxBracketLevel = 0;
         curBracketLevel = 0;
@@ -43,9 +55,13 @@ public class CalcLogic implements Constants {
         inputNumbersForBaseCalc = new LinkedList<>();
         iterInputNumbersForCalc = inputNumbersForBaseCalc.listIterator();
 
-        // Создание первого пустого элемента
+        // Создание первого пустого элемента в списка с классами со значениями inputNumbers
         add(false, false, FUNCTIONS.FUNC_NO, 1, 0d, false,
-                ACTIONS.ACT_PLUS, false);
+            ACTIONS.ACT_PLUS, false);
+    }
+
+    public int getMaxNumberSymbolsInOutputTextField() {
+        return maxNumberSymbolsInOutputTextField;
     }
 
     public void setMaxNumberSymbolsInOutputTextField(int maxNumberSymbolsInOutputTextField) {
@@ -53,6 +69,14 @@ public class CalcLogic implements Constants {
     }
 
     public double addNumeral(int newNumeral) {
+        // Проверка на добавление нового числа сразу после закрытой скобки без задания действия
+        if (inputNumbers.get(curNumber).getIsClose()) {
+            // Вывести сообщение о том, что нельзя сразу же после закрытой скобки вводить число,
+            // предварительно не указав действия с ним
+            errorMessages.sendErrorInputting(NUMBER_AFTER_BRACKET);
+            return -1.0; // Здесь можно вернуть любое число
+        }
+        // Добавление нового элемента
         if ((inputNumbers.get(curNumber).getIsBracket()) &&
                 (!inputNumbers.get(curNumber).getIsClose())) {
             add(false, false, FUNCTIONS.FUNC_NO, 1, 0d,
@@ -61,8 +85,9 @@ public class CalcLogic implements Constants {
         }
         if ((inputNumbers.get(curNumber).getValue() == 0d) && (inputNumbers.get(curNumber).
                 getIntegerPartValue().length() > 0) && (newNumeral == 0) && (!pressedZapitay)) {
-            // Показать уведомление о том, что для задания целой части числа вполне хватит и одного нуля
-            // TODO
+            // Показать уведомление о том,
+            // что для задания целой части числа вполне хватит и одного нуля
+            errorMessages.sendErrorInputting(MANY_ZERO_IN_INTEGER_PART);
         } else {
             double intPartValue = 0d;
             double realPartValue = 0d;
@@ -136,7 +161,7 @@ public class CalcLogic implements Constants {
         curNumber = 0;
         // Создание первого пустого элемента
         add(false, false, FUNCTIONS.FUNC_NO, 1, 0d, false,
-                ACTIONS.ACT_PLUS, false);
+            ACTIONS.ACT_PLUS, false);
         pressedZapitay = false;
     }
 
@@ -169,7 +194,7 @@ public class CalcLogic implements Constants {
                 double realPartValue = 0d;
                 if (inputNumbers.get(curNumber).getIntegerPartValue().length() > 0) {
                     intPartValue = Double.parseDouble(inputNumbers.get(curNumber).
-                            getIntegerPartValue());
+                        getIntegerPartValue());
                 }
 
                 if (inputNumbers.get(curNumber).getRealPartValue().length() > 0) {
@@ -179,6 +204,10 @@ public class CalcLogic implements Constants {
                 }
                 inputNumbers.get(curNumber).setValue(intPartValue + realPartValue);
             }
+            // Анализ обработанного элемента на предмет остатка пустого класса и его удаление
+            if ((inputNumbers.get(curNumber).getIntegerPartValue().length() == 0) &&
+                (inputNumbers.get(curNumber).getRealPartValue().length() == 0))
+                clearOne();
         } else {
             if (curNumber > 0) {
                 if ((inputNumbers.get(curNumber).getIsBracket()) &&
@@ -378,13 +407,13 @@ public class CalcLogic implements Constants {
                                 }
                             }
                             result = moveOnWithoutBracket(inputNumbersForBaseCalc);
-                            if (errorCode != ERRORS.NO) {
+                            if (errorCode != ERRORS_IN_STRING.NO) {
                                 return;
                             }
                             inputNumbersForBracketCalc.get(startBracketIndex).
                                     setValue(doFunction(result, inputNumbersForBracketCalc.
                                             get(startBracketIndex).getTypeFuncInBracket()));
-                            if (errorCode != ERRORS.NO) {
+                            if (errorCode != ERRORS_IN_STRING.NO) {
                                 return;
                             }
                             inputNumbersForBracketCalc.get(startBracketIndex).
@@ -417,7 +446,7 @@ public class CalcLogic implements Constants {
             result = moveOnWithoutBracket(inputNumbersForBaseCalc);
         } else {
             // Сообщить об ошибке: в анализируемом выражении есть незакрытые скобки
-            errorCode = ERRORS.BRACKET_DISBALANCE;
+            errorCode = ERRORS_IN_STRING.BRACKET_DISBALANCE;
         }
 
         // Сохранение результирующего значения
@@ -433,7 +462,7 @@ public class CalcLogic implements Constants {
                 result = Math.sqrt(value);
             } else {
                 // Добавить сообщение об ошибке: выражение под корнем не может быть меньше нуля!
-                errorCode = ERRORS.SQRT_MINUS;
+                errorCode = ERRORS_IN_STRING.SQRT_MINUS;
             }
         }
         // Подключить новую функцию для вычислений здесь
@@ -455,7 +484,7 @@ public class CalcLogic implements Constants {
             prevDates = curNumbersForCals.get(0);
         } else {
             // Ошибка: внутри скобки нет никакого числа
-            errorCode = ERRORS.BRACKETS_EMPTY;
+            errorCode = ERRORS_IN_STRING.BRACKETS_EMPTY;
             return result;
         }
         for (ACTIONS action : ACTIONS.values()) {
@@ -520,7 +549,7 @@ public class CalcLogic implements Constants {
                 result = (number1 * number2 != 0 ? (number1 / (number1 * number2 / 100)) : (0));
                 // Ошибка: деление на ноль
                 if (number1 * number2 == 0) {
-                    errorCode = ERRORS.ZERO_DIVIDE;
+                    errorCode = ERRORS_IN_STRING.ZERO_DIVIDE;
                 }
                 break;
             case ACT_PERS_MULTY:
@@ -536,7 +565,7 @@ public class CalcLogic implements Constants {
                 result = (number2 != 0 ? (number1 / number2) : (0));
                 // Ошибка: деление на ноль
                 if (number2 == 0) {
-                    errorCode = ERRORS.ZERO_DIVIDE;
+                    errorCode = ERRORS_IN_STRING.ZERO_DIVIDE;
                 }
                 break;
             case ACT_MULTY:
@@ -568,22 +597,33 @@ public class CalcLogic implements Constants {
         }
     }
 
-    // Установка для функции, а также новой скобки, поскольку функции без скобок не бывает
-    // Данный метод не только устанавливает новую функцию, но и открывает скобку
+    // Установка открытой скобки самой по себе, так для функции, поскольку функции без скобок
+    // не бывает. Данный метод не только устанавливает новую функцию, но и открывает скобку.
+    // Открытая скобка без функции имеет тип FUNCTIONS.FUNC_NO
     public String setNewFunction(FUNCTIONS typeFuncInBracket)
     {
         if (inputNumbers.get(curNumber).getIsBracket()) {
-            curBracketLevel++;
-            add(true, false, typeFuncInBracket, 1, 0d, false,
+            if (!inputNumbers.get(curNumber).getIsClose()) {
+                curBracketLevel++;
+                add(true, false, typeFuncInBracket, 1, 0d, false,
                     ACTIONS.ACT_PLUS, false);
-            curNumber++;
+                curNumber++;
+            } else {
+                // Вывод ошибки о невозможности создания новой открытой скобки,
+                // потому что не указано перед скобкой действие
+                errorMessages.sendErrorInputting(OPEN_BRACKET_ON_EMPTY_ACTION);
+            }
         } else {
             if ((inputNumbers.get(curNumber).getTypeFuncInBracket() == FUNCTIONS.FUNC_NO) &&
-                    (!inputNumbers.get(curNumber).getIsValue())) {
+                (!inputNumbers.get(curNumber).getIsValue())) {
                 curBracketLevel++;
                 inputNumbers.get(curNumber).setIsBracket(true);
                 inputNumbers.get(curNumber).setBracketLevel(curBracketLevel);
                 inputNumbers.get(curNumber).setTypeFuncInBracket(typeFuncInBracket);
+            } else {
+                // Вывод ошибки о невозможности создания новой открытой скобки,
+                // потому что не указано перед скобкой действие
+                errorMessages.sendErrorInputting(OPEN_BRACKET_ON_EMPTY_ACTION);
             }
         }
         if (maxBracketLevel < curBracketLevel) {
@@ -595,108 +635,149 @@ public class CalcLogic implements Constants {
     // Установка закрывающейся скобки
     public String closeBracket() {
         if (curBracketLevel > 0) {
-            add(true, true, FUNCTIONS.FUNC_NO, 1, 0d, false,
-                    ACTIONS.ACT_PLUS, false);
-            curBracketLevel--;
-            curNumber++;
+            if ((inputNumbers.get(curNumber).getIsBracket()) &&
+                (!inputNumbers.get(curNumber).getIsClose())) {
+                // Вывод сообщения об ошибке: нельзя закрывать пустую скобку,
+                // в скобке как минимум должно быть одно число
+                errorMessages.sendErrorInputting(CLOSE_BRACKET_ON_EMPTY);
+            } else if ((!inputNumbers.get(curNumber).getIsBracket()) &&
+                (!inputNumbers.get(curNumber).getIsValue())) {
+                // Вывод сообщения об ошибке: закрывающую скобку нельзя ставить
+                // на действии без указания числа
+                errorMessages.sendErrorInputting(CLOSE_BRACKET_ON_ACTION_WITHOUT_NUMBER);
+            } else {
+                if (curBracketLevel > 0) {
+                    add(true, true, FUNCTIONS.FUNC_NO, 1, 0d,
+                        false, ACTIONS.ACT_PLUS, false);
+                    curBracketLevel--;
+                    curNumber++;
+                }
+            }
+        } else {
+            // Вывод сообщения об ошибке: нельзя поставить закрывающую скобку,
+            // если предварительно не поставить ей соответствующую открывающую скобку
+            errorMessages.sendErrorInputting(CLOSE_BRACKET_ON_EMPTY_OPEN_BRACKET);
         }
         return createOutput();
     }
 
     // Установка нового действия над числами
     public void setNewAction(ACTIONS action) {
+        // Проверка возможности корректного задания знака процента
+        if (action == ACTIONS.ACT_PERS_MULTY) {
+            if (inputNumbers.size() > 1) {
+                if (((!inputNumbers.get(curNumber - 1).getIsValue()) &&
+                    (!inputNumbers.get(curNumber - 1).getIsClose())) ||
+                    ((!inputNumbers.get(curNumber).getIsValue()) &&
+                    (!inputNumbers.get(curNumber).getIsClose())) ||
+                    (inputNumbers.get(curNumber).getAction() == ACTIONS.ACT_STEP)) {
+                    // Вывести сообщение о том, что для применения процента нужно ввести два числа
+                    // с любой из 4-х арифметических операцией между ними: *, /, +, -
+                    errorMessages.sendErrorInputting(PERCENT_NEEDS_TWO_NUMBERS);
+                    return;
+                } else  {
+                    int indexSearchPercent = curNumber;
+                    while ((indexSearchPercent >= 0) && (inputNumbers.get(indexSearchPercent).
+                        getBracketLevel() == curBracketLevel)) {
+                        if ((inputNumbers.get(indexSearchPercent).getAction() ==
+                            ACTIONS.ACT_PERS_MULTY) ||
+                            (inputNumbers.get(indexSearchPercent).getAction() ==
+                            ACTIONS.ACT_PERS_DIV) ||
+                            (inputNumbers.get(indexSearchPercent).getAction() ==
+                            ACTIONS.ACT_PERS_MINUS) ||
+                            (inputNumbers.get(indexSearchPercent).getAction() ==
+                            ACTIONS.ACT_PERS_PLUS)) {
+                            // Вывести сообщение о том, что без скобок или в рамках одной скобки
+                            // нельзя вводить знак процента больше одного раза. Если нужно
+                            // произвести вычисление процента несколько раз, то нужно каждую такую
+                            // конструкцию оборачивать в отдельную скобку
+                            errorMessages.sendErrorInputting(MULTIPLE_PERCENT_IN_BRACKET);
+                            return;
+                        }
+                        indexSearchPercent--;
+                    }
+                }
+            } else {
+                // Вывести сообщение о том, что для применения процента нужно ввести два числа
+                // и любую следующую арифметическую операцию между ними: *, /, +, -
+                errorMessages.sendErrorInputting(PERCENT_NEEDS_TWO_NUMBERS);
+                return;
+            }
+        // Проверка возможности корректного задания других действий
+        } else {
+            // Проверка на применение действия не к числу
+            if (inputNumbers.size() > 0) {
+                if ((!inputNumbers.get(curNumber).getIsValue()) &&
+                    ((inputNumbers.get(curNumber).getIsBracket()) &&
+                    (!inputNumbers.get(curNumber).getIsClose())) ||
+                    ((!inputNumbers.get(curNumber).getIsValue()) &&
+                    (curNumber == 0)) ||
+                    ((!inputNumbers.get(curNumber).getIsValue()) &&
+                    (curNumber > 0) && (!inputNumbers.get(curNumber).getIsClose()))) {
+                    // Вывести сообщение о том, что нужно сначала ввести число
+                    errorMessages.sendErrorInputting(INPUT_NUMBER_FIRST);
+                    return;
+                }
+            }
+        }
+        // Обработка нового действия
         int positionBracketBegin = curNumber;
         boolean isPrevDatesComplited = false;
         if (curNumber > 0) {
             iterInputNumbersForCalc = inputNumbers.listIterator();
             Dates prevDates = iterInputNumbersForCalc.next();
             if ((prevDates.getIsValue()) || ((prevDates.getIsBracket()) &&
-                    (!prevDates.getIsClose())) || ((prevDates.getIsBracket()) &&
-                    (prevDates.getIsClose()))) {
+                (!prevDates.getIsClose())) || ((prevDates.getIsBracket()) &&
+                (prevDates.getIsClose()))) {
                 isPrevDatesComplited = true;
             }
         } else {
             isPrevDatesComplited = true;
         }
-
-        if ((!inputNumbers.get(curNumber).getIsValue()) &&
-                (!inputNumbers.get(curNumber).getIsBracket()) &&
-                (!inputNumbers.get(curNumber).getIsClose()) && (action != ACTIONS.ACT_PERS_MULTY)) {
-            if (inputNumbers.size() > 1) {
-                if ((inputNumbers.get(curNumber).getIsBracket()) &&
-                        (!inputNumbers.get(curNumber).getIsClose())) {
-                    // Вывести сообщение о том, что процент нельзя применять к открытой скобке,
-                    // а нужно применять только к простым арифметическим операциям *, /, +, -
-                    // TODO
-                } else {
-                    inputNumbers.get(curNumber).setAction(action);
+        if ((action == ACTIONS.ACT_PERS_MULTY) && ((inputNumbers.get(curNumber).getIsValue()) ||
+            (!inputNumbers.get(curNumber).getIsValue()))) {
+            if ((inputNumbers.get(curNumber).getIsBracket()) &&
+                (inputNumbers.get(curNumber).getIsClose())) {
+                // Определение позиции (positionBracketBegin)
+                Dates prevDates;
+                int counter = 0;
+                iterInputNumbersForCalc = inputNumbers.listIterator(curNumber);
+                while (iterInputNumbersForCalc.hasPrevious()) {
+                    prevDates = iterInputNumbersForCalc.previous();
+                    counter++;
+                    if ((prevDates.getBracketLevel() == curBracketLevel + 1) &&
+                            (prevDates.getIsBracket()) && (!prevDates.getIsClose())) {
+                        positionBracketBegin -= counter;
+                        break;
+                    }
                 }
+            }
+            if (inputNumbers.get(positionBracketBegin).getAction() == ACTIONS.ACT_MULTY) {
+                inputNumbers.get(curNumber).setAction(ACTIONS.ACT_PERS_MULTY);
+                inputNumbers.get(positionBracketBegin).setAction(ACTIONS.ACT_PERS_MULTY);
+            } else if (inputNumbers.get(positionBracketBegin).getAction() ==
+                    ACTIONS.ACT_DIV) {
+                inputNumbers.get(curNumber).setAction(ACTIONS.ACT_PERS_DIV);
+                inputNumbers.get(positionBracketBegin).setAction(ACTIONS.ACT_PERS_DIV);
+            } else if (inputNumbers.get(positionBracketBegin).getAction() ==
+                    ACTIONS.ACT_PLUS) {
+                inputNumbers.get(curNumber).setAction(ACTIONS.ACT_PERS_PLUS);
+                inputNumbers.get(positionBracketBegin).setAction(ACTIONS.ACT_PERS_PLUS);
+            } else if (inputNumbers.get(positionBracketBegin).getAction() ==
+                    ACTIONS.ACT_MINUS) {
+                inputNumbers.get(curNumber).setAction(ACTIONS.ACT_PERS_MINUS);
+                inputNumbers.get(positionBracketBegin).setAction(ACTIONS.ACT_PERS_MINUS);
             } else {
-                // Вывести сообщение о том, что нужно сначала ввести число
-                // TODO
+                // Вывести сообщение о том, что процент нужно применять только
+                // к простым арифметическим операциям *, /, +, -
+                inputNumbers.get(curNumber).setAction(ACTIONS.ACT_PLUS);
+                inputNumbers.get(curNumber).setIsPercent(false);
             }
         } else {
-            if ((action == ACTIONS.ACT_PERS_MULTY) && (inputNumbers.get(curNumber).getIsValue())) {
-                if ((inputNumbers.get(curNumber).getIsBracket()) &&
-                        (!inputNumbers.get(curNumber).getIsClose())) {
-                    // Вывести сообщение о том, что процент нельзя применять к открытой скобке,
-                    // а нужно применять только к простым арифметическим операциям *, /, +, -
-                    // TODO
-                } else if (curNumber == 0) {
-                    // Вывести сообщение о том, что для применения процента нужно ввести два числа
-                    // и любую следующую арифметическую операцию между ними: *, /, +, -
-                    // TODO
-                } else if (((inputNumbers.get(curNumber - 1).getIsBracket()) &&
-                        (!inputNumbers.get(curNumber - 1).getIsClose())) ||
-                        !inputNumbers.get(curNumber).getIsValue()) {
-                    // Вывести сообщение о том, что для применения процента нужно ввести два числа
-                    // и любую следующую арифметическую операцию между ними: *, /, +, -
-                    // TODO
-                } else {
-                    if ((inputNumbers.get(curNumber).getIsBracket()) &&
-                            (inputNumbers.get(curNumber).getIsClose())) {
-                        // Определение позиции (positionBracketBegin)
-                        Dates prevDates;
-                        int counter = 0;
-                        iterInputNumbersForCalc = inputNumbers.listIterator(curNumber);
-                        while (iterInputNumbersForCalc.hasPrevious()) {
-                            prevDates = iterInputNumbersForCalc.previous();
-                            counter++;
-                            if ((prevDates.getBracketLevel() == curBracketLevel + 1) &&
-                                    (prevDates.getIsBracket()) && (!prevDates.getIsClose())) {
-                                positionBracketBegin -= counter;
-                                break;
-                            }
-                        }
-                    }
-                    if (inputNumbers.get(positionBracketBegin).getAction() == ACTIONS.ACT_MULTY) {
-                        inputNumbers.get(curNumber).setAction(ACTIONS.ACT_PERS_MULTY);
-                        inputNumbers.get(positionBracketBegin).setAction(ACTIONS.ACT_PERS_MULTY);
-                    } else if (inputNumbers.get(positionBracketBegin).getAction() ==
-                            ACTIONS.ACT_DIV) {
-                        inputNumbers.get(curNumber).setAction(ACTIONS.ACT_PERS_DIV);
-                        inputNumbers.get(positionBracketBegin).setAction(ACTIONS.ACT_PERS_DIV);
-                    } else if (inputNumbers.get(positionBracketBegin).getAction() ==
-                            ACTIONS.ACT_PLUS) {
-                        inputNumbers.get(curNumber).setAction(ACTIONS.ACT_PERS_PLUS);
-                        inputNumbers.get(positionBracketBegin).setAction(ACTIONS.ACT_PERS_PLUS);
-                    } else if (inputNumbers.get(positionBracketBegin).getAction() ==
-                            ACTIONS.ACT_MINUS) {
-                        inputNumbers.get(curNumber).setAction(ACTIONS.ACT_PERS_MINUS);
-                        inputNumbers.get(positionBracketBegin).setAction(ACTIONS.ACT_PERS_MINUS);
-                    } else {
-                        // Вывести сообщение о том, что процент нужно применять только
-                        // к простым арифметическим операциям *, /, +, -
-                        inputNumbers.get(curNumber).setAction(ACTIONS.ACT_PLUS);
-                        inputNumbers.get(curNumber).setIsPercent(false);
-                    }
-                }
-            } else {
-                if ((isPrevDatesComplited) && (action != ACTIONS.ACT_PERS_MULTY)) {
-                    add(false, false, FUNCTIONS.FUNC_NO, 1, 0d,
-                            false, action, false);
-                    curNumber++;
-                }
+            if ((isPrevDatesComplited) && (action != ACTIONS.ACT_PERS_MULTY)) {
+                add(false, false, FUNCTIONS.FUNC_NO, 1, 0d,
+                        false, action, false);
+                curNumber++;
             }
         }
     }
@@ -705,18 +786,25 @@ public class CalcLogic implements Constants {
     public void changeSign() {
         if ((inputNumbers.get(curNumber).getAction() == ACTIONS.ACT_PLUS) && (curNumber > 0) &&
                 (((inputNumbers.get(curNumber - 1).getIsBracket()) &&
-                        (inputNumbers.get(curNumber - 1).getIsClose())) ||
-                        ((!inputNumbers.get(curNumber - 1).getIsBracket()) &&
-                                (!inputNumbers.get(curNumber - 1).getIsClose())))) {
+                (inputNumbers.get(curNumber - 1).getIsClose())) ||
+                ((!inputNumbers.get(curNumber - 1).getIsBracket()) &&
+                (!inputNumbers.get(curNumber - 1).getIsClose())))) {
             inputNumbers.get(curNumber).setAction(ACTIONS.ACT_MINUS);
         } else if ((inputNumbers.get(curNumber).getAction() == ACTIONS.ACT_MINUS) &&
                 (curNumber > 0) && (((inputNumbers.get(curNumber - 1).getIsBracket()) &&
                 (inputNumbers.get(curNumber - 1).getIsClose())) ||
                 ((!inputNumbers.get(curNumber - 1).getIsBracket()) &&
-                        (!inputNumbers.get(curNumber - 1).getIsClose())))) {
+                (!inputNumbers.get(curNumber - 1).getIsClose())))) {
             inputNumbers.get(curNumber).setAction(ACTIONS.ACT_PLUS);
         } else {
-            inputNumbers.get(curNumber).setSign(inputNumbers.get(curNumber).getSign() * (-1));
+            if (((inputNumbers.get(curNumber).getIsValue())
+                && (inputNumbers.get(curNumber).getValue() != 0.0)) ||
+                (inputNumbers.get(curNumber).getTypeFuncInBracket() != FUNCTIONS.FUNC_NO))
+                inputNumbers.get(curNumber).setSign(inputNumbers.get(curNumber).getSign() * (-1));
+            else
+                // Вывод сообщения об ошибке
+                // нельзя производить смену знака не задав предварительно число или функцию
+                errorMessages.sendErrorInputting(CHANGE_SIGN_EMPTY);
         }
     }
 
@@ -742,11 +830,13 @@ public class CalcLogic implements Constants {
         String stringFunction = "";
         if ((curDates.getIsBracket()) && (!curDates.getIsClose())) {
             if (curDates.getTypeFuncInBracket() == FUNCTIONS.FUNC_SQRT) {
-                stringFunction = "SQRT(";
+                if (curDates.getSign() == 1) stringFunction = "SQRT(";
+                else stringFunction = "-SQRT(";
 //          } else if (curDates.getTypeFuncInBracket() == FUNCTIONS.) {
                 // Сюда можно добавить другие функции для их отображения
                 // TODO
-                // stringFunction = "(";
+//                if (curDates.getSign() == 1) stringFunction = "...";
+//                else stringFunction = "-...";
             } else {
                 stringFunction = "(";
             }
@@ -764,37 +854,37 @@ public class CalcLogic implements Constants {
         ACTIONS action = curDates.getAction();
         boolean turnOffZapitay = curDates.getTurnOffZapitay();
 
-        boolean isPrevBraketOpen = (prevDates != null) && (prevDates.getIsBracket())
+        boolean isPrevBracketOpen = (prevDates != null) && (prevDates.getIsBracket())
                 && (!prevDates.getIsClose());
         boolean isFirst = (prevDates == null);
         String stringAction = "";
         String valueString = "";
         if (isValue) {
             valueString = (curDates.getSign() < 0 ? "-" : "") +
-                    (curDates.getIntegerPartValue().length() > 0 ?
-                            curDates.getIntegerPartValue() : "0");
+                (curDates.getIntegerPartValue().length() > 0 ?
+                curDates.getIntegerPartValue() : "0");
             if ((!turnOffZapitay) || (curDates.getRealPartValue().length() > 0)) {
                 valueString += ".";
             }
             valueString = valueString + (curDates.getRealPartValue().length() > 0 ?
-                    curDates.getRealPartValue() : "");
+                curDates.getRealPartValue() : "");
         }
 
         if (!isFirst) {
             String notZeroOrZero = value >= 0 ? String.format("%s", valueString) :
-                    ("(" + String.format("%s", valueString) + ")");
+                ("(" + String.format("%s", valueString) + ")");
             switch (action) {
                 case ACT_STEP:
                     if (isValue) {
                         stringAction = "^" + outputStringFunctionOpen(curDates) +
-                                String.format("%s", valueString) + (isClose ? ")" : "");
+                        String.format("%s", valueString) + (isClose ? ")" : "");
                     } else {
                         stringAction = "^" + outputStringFunctionOpen(curDates);
                     }
                     break;
                 case ACT_PERS_MULTY:
                     if ((isBracket) && (!isClose)) {
-                        stringAction = outputStringFunctionOpen(curDates);
+                        stringAction = "*" + outputStringFunctionOpen(curDates);
                     } else if (isBracket) {
                         stringAction = ")%";
                     } else {
@@ -804,7 +894,7 @@ public class CalcLogic implements Constants {
                     break;
                 case ACT_PERS_DIV:
                     if ((isBracket) && (!isClose)) {
-                        stringAction = outputStringFunctionOpen(curDates);
+                        stringAction = "/" + outputStringFunctionOpen(curDates);
                     } else if (isBracket) {
                         stringAction = ")%";
                     } else {
@@ -814,18 +904,18 @@ public class CalcLogic implements Constants {
                     break;
                 case ACT_PERS_PLUS:
                     if ((isBracket) && (!isClose)) {
-                        stringAction = outputStringFunctionOpen(curDates);
+                        stringAction = "+" + outputStringFunctionOpen(curDates);
                     } else if (isBracket) {
                         stringAction = ")%";
                     } else {
-                        stringAction = (!isPrevBraketOpen ? "+" : "") +
+                        stringAction = (!isPrevBracketOpen ? "+" : "") +
                             outputStringFunctionOpen(curDates) + notZeroOrZero + "%" +
-                                (isClose ? ")" : "");
+                            (isClose ? ")" : "");
                     }
                     break;
                 case ACT_PERS_MINUS:
                     if ((isBracket) && (!isClose)) {
-                        stringAction = outputStringFunctionOpen(curDates);
+                        stringAction = "-" + outputStringFunctionOpen(curDates);
                     } else if (isBracket) {
                         stringAction = ")%";
                     } else {
@@ -853,13 +943,13 @@ public class CalcLogic implements Constants {
                     break;
                 case ACT_PLUS:
                     if (isValue) {
-                        stringAction = (!isPrevBraketOpen ? "+" : "") +
+                        stringAction = (!isPrevBracketOpen ? "+" : "") +
                             outputStringFunctionOpen(curDates) + notZeroOrZero +
-                                (isClose ? ")" : "");
+                            (isClose ? ")" : "");
                     } else {
                         if (!curDates.getIsClose()) {
-                            stringAction = (!isPrevBraketOpen ? "+" : "") +
-                                    outputStringFunctionOpen(curDates);
+                            stringAction = (!isPrevBracketOpen ? "+" : "") +
+                                outputStringFunctionOpen(curDates);
                         } else {
                             stringAction = ")";
                         }
@@ -867,13 +957,13 @@ public class CalcLogic implements Constants {
                     break;
                 case ACT_MINUS:
                     if (isValue) {
-                        stringAction = (!isPrevBraketOpen ? "-" : "") +
+                        stringAction = (!isPrevBracketOpen ? "-" : "") +
                             outputStringFunctionOpen(curDates) + notZeroOrZero +
-                                (isClose ? ")" : "");
+                            (isClose ? ")" : "");
                     } else {
                         if (!curDates.getIsClose()) {
-                            stringAction = (!isPrevBraketOpen ? "-" : "") +
-                                    outputStringFunctionOpen(curDates);
+                            stringAction = (!isPrevBracketOpen ? "-" : "") +
+                                outputStringFunctionOpen(curDates);
                         } else {
                             stringAction = ")";
                         }
@@ -899,7 +989,7 @@ public class CalcLogic implements Constants {
 
     public String getFinalResult() {
         String finalResultString = "";
-        if (errorCode == ERRORS.NO) {
+        if (errorCode == ERRORS_IN_STRING.NO) {
             finalResultString = numberFormatOutput(finalResult, maxNumberSymbolsInOutputTextField);
         }
         return finalResultString;
@@ -908,8 +998,10 @@ public class CalcLogic implements Constants {
     public static String numberFormatOutput(double number, int numberSymbols) {
         DecimalFormat df;
         double comparedNumber =
+            // 0.1d стоит для того, чтобы в случае маленького дисплея
+            // ещё на один разряд уменьшить количество выводимых символов (т.е. из 10 сделать 9)
             (numberSymbols >= MAX_NUMBER_SYMBOLS_IN_OUTPUT_TEXT_FIELD ? 1d : 0.1d);
-        if (number > 0) {
+        if ((number == 0.0) || (number >= 1.0)) {
             for (int i = 0; i < numberSymbols; i++) {
                 comparedNumber *= 10d;
                 if (number < comparedNumber) {
@@ -919,7 +1011,18 @@ public class CalcLogic implements Constants {
                             df.format(number));
                 }
             }
-        } else {
+        } else if (number > -1.0) {
+            NumberFormat numberFormat = NumberFormat.getInstance();
+            numberFormat.setGroupingUsed(false);
+            numberFormat.setMaximumFractionDigits(MAX_NUMBER_SYMBOLS_IN_OUTPUT_TEXT_FIELD);
+            String numberString = numberFormat.format(number);
+            if (numberString.length() - (number >= 0 ? 2 : 3) <=
+                (numberSymbols >= MAX_NUMBER_SYMBOLS_IN_OUTPUT_TEXT_FIELD ?
+                MAX_FRACTIONAL_SYMBOLS_IN_SMALL_NUMBER_OUTPUT_TEXT_FIELD :
+                MAX_FRACTIONAL_SYMBOLS_IN_SMALL_NUMBER_OUTPUT_TEXT_FIELD - 2)) {
+                return numberString;
+            }
+        } else if (number <= -1) {
             for (int i = 0; i < numberSymbols - 1; i++) {
                 comparedNumber *= 10d;
                 if (Math.abs(number) < comparedNumber) {
@@ -930,18 +1033,18 @@ public class CalcLogic implements Constants {
                 }
             }
         }
+        // Работа с большими числами
         if (number > 0) {
             if (numberSymbols == MAX_NUMBER_SYMBOLS_IN_OUTPUT_TEXT_FIELD)
                 return String.format(Locale.getDefault(),
-                    (number < 10E99d ? "%.6e" : "%.5e"), number);
+                        (number < 10E99d ? "%.6e" : "%.5e"), number);
             else
                 return String.format(Locale.getDefault(),
                         (number < 10E99d ? "%.3e" : "%.2e"), number);
-        }
-        else {
+        } else {
             if (numberSymbols == MAX_NUMBER_SYMBOLS_IN_OUTPUT_TEXT_FIELD)
                 return String.format(Locale.getDefault(),
-                    (Math.abs(number) < 10E99d ? "%.6e" : "%.5e"), number);
+                        (Math.abs(number) < 10E99d ? "%.6e" : "%.5e"), number);
             else
                 return String.format(Locale.getDefault(),
                         (Math.abs(number) < 10E99d ? "%.3e" : "%.2e"), number);
@@ -962,11 +1065,11 @@ public class CalcLogic implements Constants {
         return format.toString();
     }
 
-    public ERRORS getErrorCode() {
+    public ERRORS_IN_STRING getErrorCode() {
         return errorCode;
     }
 
     public void clearErrorCode() {
-        errorCode = ERRORS.NO;
+        errorCode = ERRORS_IN_STRING.NO;
     }
 }

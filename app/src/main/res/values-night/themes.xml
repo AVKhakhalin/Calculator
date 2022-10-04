@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.Calculator" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.Calculator" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/red_night</item>
         <item name="colorPrimaryVariant">@color/red_erase_night</item>
@@ -16,7 +16,7 @@
         <item name="colorAccent">@color/green_night</item>
     </style>
 
-    <style name="Day" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Day" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/red_night</item>
         <item name="colorPrimaryVariant">@color/red_erase_night</item>

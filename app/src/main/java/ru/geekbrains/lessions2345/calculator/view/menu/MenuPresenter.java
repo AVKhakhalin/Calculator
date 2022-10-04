@@ -1,4 +1,4 @@
-package ru.geekbrains.lessions2345.calculator.view.ui_menu;
+package ru.geekbrains.lessions2345.calculator.view.menu;
 
 import static android.content.Context.MODE_PRIVATE;
 import static ru.geekbrains.lessions2345.calculator.view.ViewConstants.BORDER_WIDTH;
@@ -9,11 +9,13 @@ import static ru.geekbrains.lessions2345.calculator.view.ViewConstants.KEY_CURRE
 import static ru.geekbrains.lessions2345.calculator.view.ViewConstants.KEY_DOCHANGE_RADIUS;
 import static ru.geekbrains.lessions2345.calculator.view.ViewConstants.KEY_SETTINGS;
 import static ru.geekbrains.lessions2345.calculator.view.ViewConstants.MAX_RADIUS_BUTTONS;
+
 import android.content.Context;
 import android.content.SharedPreferences;
+
 import ru.geekbrains.lessions2345.calculator.view.ViewConstants;
 import ru.geekbrains.lessions2345.calculator.view.ViewContract;
-import ru.geekbrains.lessions2345.calculator.view.ui_main.MainActivity;
+import ru.geekbrains.lessions2345.calculator.view.main.MainActivity;
 
 public class MenuPresenter implements PresenterMenuContract {
     /** Исходные данные */ //region

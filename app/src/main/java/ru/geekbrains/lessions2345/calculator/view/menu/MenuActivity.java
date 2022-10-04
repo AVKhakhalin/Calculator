@@ -1,10 +1,12 @@
-package ru.geekbrains.lessions2345.calculator.view.ui_menu;
+package ru.geekbrains.lessions2345.calculator.view.menu;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import ru.geekbrains.lessions2345.calculator.R;
 import ru.geekbrains.lessions2345.calculator.view.ViewConstants;
 

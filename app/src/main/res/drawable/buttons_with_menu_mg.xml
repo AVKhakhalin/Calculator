@@ -7,10 +7,12 @@
         <ripple
             android:color="?colorOnPrimary">
             <item>
-                <shape android:shape="oval">
+                <shape android:shape="rectangle">
                     <stroke
                         android:width="@dimen/stroke_width"
                         android:color="?colorPrimary" />
+                    <corners
+                        android:radius="@dimen/menu_corners_radius" />
                     <gradient
                         android:angle="45"
                         android:endColor="?colorOnPrimary"
@@ -23,8 +25,8 @@
                         android:right="@dimen/paddings_zero"
                         android:bottom="@dimen/paddings_zero" />
                     <size
-                        android:width="@dimen/circle_width"
-                        android:height="@dimen/circle_height" />
+                        android:width="@dimen/green_yellow_width"
+                        android:height="@dimen/green_yellow_height" />
                 </shape>
             </item>
         </ripple>

@@ -7,21 +7,28 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import ru.geekbrains.lessions2345.calculator.core.Constants;
-import ru.geekbrains.lessions2345.calculator.view.ui_main.MainPresenter;
-import ru.geekbrains.lessions2345.calculator.view.ui_main.ViewMainContract;
+import ru.geekbrains.lessions2345.calculator.view.main.MainActivity;
+import ru.geekbrains.lessions2345.calculator.view.main.MainPresenter;
+import ru.geekbrains.lessions2345.calculator.view.main.ViewMainContract;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 import static org.mockito.Mockito.times;
-import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS.BRACKETS_EMPTY;
-import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS.BRACKET_DISBALANCE;
-import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS.NO;
-import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS.SQRT_MINUS;
-import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS.ZERO_DIVIDE;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.CLOSE_BRACKET_ON_EMPTY;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_IN_STRING.BRACKETS_EMPTY;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_IN_STRING.BRACKET_DISBALANCE;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_IN_STRING.NO;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_IN_STRING.SQRT_MINUS;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_IN_STRING.ZERO_DIVIDE;
+import static ru.geekbrains.lessions2345.calculator.view.ViewConstants.BORDER_WIDTH;
+
+import android.content.Context;
+
+import androidx.test.core.app.ActivityScenario;
+import androidx.test.core.app.ApplicationProvider;
 
 public class MainPresenterTest {
-
     /** Задание переменных */ //region
     public MainPresenter mainPresenter;
     //endregion
@@ -78,9 +85,10 @@ public class MainPresenterTest {
         mainPresenter.setBracketOpen();
         Mockito.verify(viewMainContract, times(2)).
                 setInputtedHistoryText("(");
+        mainPresenter.addNumeral(1);
         mainPresenter.setBracketClose();
         Mockito.verify(viewMainContract, times(1)).
-                setInputtedHistoryText("()");
+                setInputtedHistoryText("(1)");
     }
 
     // Проверка корректности выполнения setBracketClose()
@@ -251,49 +259,53 @@ public class MainPresenterTest {
     // Проверка установки максимального количества символов для отображения в результирующем поле
     @Test
     public void setMaxNumberSymbolsInOutputTextField_Test() {
-        mainPresenter.setMaxNumberSymbolsInOutputTextField(6);
         mainPresenter.addNumeral(1);
         Mockito.verify(viewMainContract, times(1)).
-                setInputtedHistoryText("1");
+            setInputtedHistoryText("1");
         mainPresenter.addNumeral(2);
         Mockito.verify(viewMainContract, times(1)).
-                setInputtedHistoryText("12");
+            setInputtedHistoryText("12");
         mainPresenter.addNumeral(3);
         Mockito.verify(viewMainContract, times(1)).
-                setInputtedHistoryText("123");
+            setInputtedHistoryText("123");
         mainPresenter.addNumeral(4);
         Mockito.verify(viewMainContract, times(1)).
-                setInputtedHistoryText("1234");
+            setInputtedHistoryText("1234");
         mainPresenter.addNumeral(5);
         Mockito.verify(viewMainContract, times(1)).
-                setInputtedHistoryText("12345");
+            setInputtedHistoryText("12345");
         mainPresenter.addNumeral(6);
         Mockito.verify(viewMainContract, times(1)).
-                setInputtedHistoryText("123456");
+            setInputtedHistoryText("123456");
         mainPresenter.addNumeral(7);
         Mockito.verify(viewMainContract, times(1)).
-                setInputtedHistoryText("1234567");
+            setInputtedHistoryText("1234567");
         mainPresenter.addNumeral(8);
         Mockito.verify(viewMainContract, times(1)).
-                setInputtedHistoryText("12345678");
+            setInputtedHistoryText("12345678");
         mainPresenter.addNumeral(9);
         Mockito.verify(viewMainContract, times(1)).
-                setInputtedHistoryText("123456789");
+            setInputtedHistoryText("123456789");
         mainPresenter.addNumeral(0);
         Mockito.verify(viewMainContract, times(1)).
-                setInputtedHistoryText("1234567890");
+            setInputtedHistoryText("1234567890");
         mainPresenter.addNumeral(1);
         Mockito.verify(viewMainContract, times(1)).
-                setInputtedHistoryText("12345678901");
+            setInputtedHistoryText("12345678901");
         mainPresenter.addNumeral(2);
         Mockito.verify(viewMainContract, times(1)).
-                setInputtedHistoryText("123456789012");
+            setInputtedHistoryText("123456789012");
         mainPresenter.addNumeral(3);
         Mockito.verify(viewMainContract, times(1)).
-                setInputtedHistoryText("1234567890123");
+            setInputtedHistoryText("1234567890123");
+        mainPresenter.setMaxNumberSymbolsInOutputTextField( 6 * 2);
         mainPresenter.setEqual();
         Mockito.verify(viewMainContract, times(1)).
-                setOutputResultText("1,234568e+12");
+            setOutputResultText("1,234568e+12");
+        mainPresenter.setMaxNumberSymbolsInOutputTextField( 5 * 2);
+        mainPresenter.setEqual();
+        Mockito.verify(viewMainContract, times(1)).
+            setOutputResultText("1,235e+12");
     }
 
     @Test // Проверка корректности работы метод calculate()
@@ -473,7 +485,7 @@ public class MainPresenterTest {
                 setInputtedHistoryText("4");
         mainPresenter.setEqual();
         Mockito.verify(viewMainContract, times(1)).
-                setErrorText(NO);
+                showErrorInString(NO);
     }
 
     @Test // Проверка корректности выполнения getError() для подкоренного значения
@@ -490,7 +502,7 @@ public class MainPresenterTest {
                 setInputtedHistoryText("SQRT((-4))");
         mainPresenter.setEqual();
         Mockito.verify(viewMainContract, times(1)).
-                setErrorText(SQRT_MINUS);
+                showErrorInString(SQRT_MINUS);
     }
 
     @Test // Проверка корректности выполнения getError() для равенства открытых и закрытых скобок
@@ -503,7 +515,7 @@ public class MainPresenterTest {
                 setInputtedHistoryText("(4");
         mainPresenter.setEqual();
         Mockito.verify(viewMainContract, times(1)).
-                setErrorText(BRACKET_DISBALANCE);
+                showErrorInString(BRACKET_DISBALANCE);
     }
 
     @Test // Проверка корректности выполнения getError() для деления на ноль
@@ -519,20 +531,17 @@ public class MainPresenterTest {
                 setInputtedHistoryText("4/0");
         mainPresenter.setEqual();
         Mockito.verify(viewMainContract, times(1)).
-                setErrorText(ZERO_DIVIDE);
+                showErrorInString(ZERO_DIVIDE);
     }
 
-    @Test // Проверка корректности выполнения getError() для пустого выражения в скобках
-    public void getError_EMPTY_INSIGHT_BRACKETS_Test() {
+    @Test // Проверка корректности выполнения showErrorInputting() для пустого выражения в скобках
+    public void showErrorInputting_EMPTY_INSIGHT_BRACKETS_Test() {
         mainPresenter.setBracketOpen();
         Mockito.verify(viewMainContract, times(2)).
                 setInputtedHistoryText("(");
         mainPresenter.setBracketClose();
         Mockito.verify(viewMainContract, times(1)).
-                setInputtedHistoryText("()");
-        mainPresenter.setEqual();
-        Mockito.verify(viewMainContract, times(1)).
-                setErrorText(BRACKETS_EMPTY);
+                showErrorInputting(CLOSE_BRACKET_ON_EMPTY);
     }
 
     @Test // Проверка корректности выполнения getInit()

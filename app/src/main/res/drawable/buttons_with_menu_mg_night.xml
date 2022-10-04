@@ -12,7 +12,7 @@
                         android:width="@dimen/stroke_width"
                         android:color="@color/red_night" />
                     <corners
-                        android:radius="@dimen/coners_radius" />
+                        android:radius="@dimen/menu_corners_radius" />
                     <gradient
                         android:angle="45"
                         android:endColor="@color/background_input_history_color_night"

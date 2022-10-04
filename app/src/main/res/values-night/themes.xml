@@ -10,10 +10,12 @@
         <item name="colorSecondaryVariant">@color/red_center_night</item>
         <item name="colorOnSecondary">@color/red_erase_night</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <!-- User element color -->
         <item name="colorAccent">@color/green_night</item>
+        <!-- Selected text color-->
+        <item name="android:textColorHighlight">@color/red_day</item>
     </style>
 
     <style name="Day" parent="Theme.MaterialComponents.DayNight.NoActionBar">
@@ -26,9 +28,11 @@
         <item name="colorSecondaryVariant">@color/red_center_night</item>
         <item name="colorOnSecondary">@color/red_erase_night</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <!-- User element color -->
         <item name="colorAccent">@color/green_night</item>
+        <!-- Selected text color-->
+        <item name="android:textColorHighlight">@color/red_night</item>
     </style>
 </resources>

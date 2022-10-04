@@ -16,17 +16,10 @@ import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 import static org.mockito.Mockito.times;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.CLOSE_BRACKET_ON_EMPTY;
-import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_IN_STRING.BRACKETS_EMPTY;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_IN_STRING.BRACKET_DISBALANCE;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_IN_STRING.NO;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_IN_STRING.SQRT_MINUS;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_IN_STRING.ZERO_DIVIDE;
-import static ru.geekbrains.lessions2345.calculator.view.ViewConstants.BORDER_WIDTH;
-
-import android.content.Context;
-
-import androidx.test.core.app.ActivityScenario;
-import androidx.test.core.app.ApplicationProvider;
 
 public class MainPresenterTest {
     /** Задание переменных */ //region

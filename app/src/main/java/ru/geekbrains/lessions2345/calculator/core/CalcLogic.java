@@ -713,21 +713,19 @@ public class CalcLogic implements Constants, Serializable {
                         } else if ((indexSearchPercent == curNumber) &&
                             (inputNumbers.get(indexSearchPercent).getIsBracket()) &&
                             (inputNumbers.get(indexSearchPercent).getIsClose()) &&
-                            (inputNumbers.get(indexSearchPercent).getBracketLevel() <=
-                            (curPercBracketLevel == 0 ? 1 : curPercBracketLevel))) {
+                            (inputNumbers.get(indexSearchPercent).getBracketLevel() ==
+                            curPercBracketLevel + 1)) {
                             existStartCloseBracket = true;
-                            numberNumberInBracket = 0;
                         } else if ((inputNumbers.get(indexSearchPercent).getIsBracket()) &&
                             (!inputNumbers.get(indexSearchPercent).getIsClose()) &&
-                            (inputNumbers.get(indexSearchPercent).getBracketLevel() <=
-                            (curPercBracketLevel == 0 ? 1 : curPercBracketLevel))) {
-                            numberPercBrackets++;
+                            (inputNumbers.get(indexSearchPercent).getBracketLevel() ==
+                            curPercBracketLevel + 1)) {
+                            if (existStartCloseBracket) existStartCloseBracket = false;
+                            else numberPercBrackets++;
                         } else if ((inputNumbers.get(indexSearchPercent).getIsValue()) &&
-                            (inputNumbers.get(indexSearchPercent).getBracketLevel() <=
-                            (curPercBracketLevel == 0 ? 1 : curPercBracketLevel))) {
-                            if (!existStartCloseBracket) {
-                                numberNumberInBracket++;
-                            }
+                            (inputNumbers.get(indexSearchPercent).getBracketLevel() ==
+                            curPercBracketLevel)) {
+                            numberNumberInBracket++;
                         }
                         indexSearchPercent--;
                     }

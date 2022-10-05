@@ -685,6 +685,13 @@ public class CalcLogic implements Constants, Serializable {
                     int numberNumberInBracket = 0;
                     while ((indexSearchPercent >= 0) && (inputNumbers.get(indexSearchPercent).
                         getBracketLevel() >= curPercBracketLevel)) {
+                        // Условие выхода, если анализ производится внутри скобки
+                        // (дошли до открытой скобки)
+                        if ((inputNumbers.get(indexSearchPercent).getBracketLevel() ==
+                            curPercBracketLevel) &&
+                            (inputNumbers.get(indexSearchPercent).getIsBracket()) &&
+                            (!inputNumbers.get(indexSearchPercent).getIsClose()))
+                            break;
                         if (((inputNumbers.get(indexSearchPercent).getAction() ==
                             ACTIONS.ACT_PERS_MULTY) ||
                             (inputNumbers.get(indexSearchPercent).getAction() ==
@@ -700,7 +707,7 @@ public class CalcLogic implements Constants, Serializable {
                             curPercBracketLevel + 1) &&
                             (inputNumbers.get(indexSearchPercent).getIsBracket()) &&
                             (inputNumbers.get(indexSearchPercent).getIsClose())) ||
-                            // Случай, когда % ставится на текущем уровне без использьвания скобок,
+                            // Случай, когда % ставится на текущем уровне без использования скобок,
                             // например, 7 + 5% + 8% (здесь два знак процента на одном уровне)
                             (inputNumbers.get(indexSearchPercent).getBracketLevel() ==
                             curPercBracketLevel))) {

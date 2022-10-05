@@ -545,4 +545,38 @@ public class MainPresenterTest {
         Mockito.verify(viewMainContract, times(1)).
                 setOutputResultText("0");
     }
+
+    @Test // Проверка корректности задания процента после скобки с процентом: 6+(6+5%)%
+    public void setPercentAfterBracketWithPercent_Test() {
+        mainPresenter.addNumeral(6);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("6");
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PLUS);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("6+");
+        mainPresenter.setBracketOpen();
+        Mockito.verify(viewMainContract, times(2)).
+                setInputtedHistoryText("6+(");
+        mainPresenter.addNumeral(6);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("6+(6");
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PLUS);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("6+(6+");
+        mainPresenter.addNumeral(5);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("6+(6+5");
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERS_MULTY);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("6+(6+5%");
+        mainPresenter.setBracketClose();
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("6+(6+5%)");
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERS_MULTY);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("6+(6+5%)%");
+        mainPresenter.setEqual();
+        Mockito.verify(viewMainContract, times(1)).
+                setOutputResultText("6,378");
+    }
 }

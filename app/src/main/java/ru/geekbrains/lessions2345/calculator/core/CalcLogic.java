@@ -10,9 +10,6 @@ import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTT
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.NUMBER_AFTER_BRACKET;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.OPEN_BRACKET_ON_EMPTY_ACTION;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.PERCENT_NEEDS_TWO_NUMBERS;
-
-import android.util.Log;
-
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -61,10 +58,6 @@ public class CalcLogic implements Constants, Serializable {
         // Создание первого пустого элемента в списка с классами со значениями inputNumbers
         add(false, false, FUNCTIONS.FUNC_NO, 1, 0d, false,
             ACTIONS.ACT_PLUS, false);
-    }
-
-    public int getMaxNumberSymbolsInOutputTextField() {
-        return maxNumberSymbolsInOutputTextField;
     }
 
     public void setMaxNumberSymbolsInOutputTextField(int maxNumberSymbolsInOutputTextField) {
@@ -710,7 +703,7 @@ public class CalcLogic implements Constants, Serializable {
                             // Случай, когда % ставится на текущем уровне без использования скобок,
                             // например, 7 + 5% + 8% (здесь два знак процента на одном уровне)
                             (inputNumbers.get(indexSearchPercent).getBracketLevel() ==
-                            curPercBracketLevel))) {
+                            curBracketLevel))) {
                             // Вывести сообщение о том, что без скобок или в рамках одной скобки
                             // нельзя вводить знак процента больше одного раза. Если нужно
                             // произвести вычисление процента несколько раз, то нужно каждую такую

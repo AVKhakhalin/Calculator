@@ -10,6 +10,9 @@ import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTT
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.NUMBER_AFTER_BRACKET;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.OPEN_BRACKET_ON_EMPTY_ACTION;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.PERCENT_NEEDS_TWO_NUMBERS;
+
+import android.util.Log;
+
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -682,14 +685,25 @@ public class CalcLogic implements Constants, Serializable {
                     int numberNumberInBracket = 0;
                     while ((indexSearchPercent >= 0) && (inputNumbers.get(indexSearchPercent).
                         getBracketLevel() >= curPercBracketLevel)) {
-                        if ((inputNumbers.get(indexSearchPercent).getAction() ==
+                        if (((inputNumbers.get(indexSearchPercent).getAction() ==
                             ACTIONS.ACT_PERS_MULTY) ||
                             (inputNumbers.get(indexSearchPercent).getAction() ==
                             ACTIONS.ACT_PERS_DIV) ||
                             (inputNumbers.get(indexSearchPercent).getAction() ==
                             ACTIONS.ACT_PERS_MINUS) ||
                             (inputNumbers.get(indexSearchPercent).getAction() ==
-                            ACTIONS.ACT_PERS_PLUS)) {
+                            ACTIONS.ACT_PERS_PLUS)) &&
+                            // Случай, когда % ставится в скобке на ближайшем верхнем уровне
+                            // за скобкой, например,
+                            // 7 + (5 + 6)% + 5% (здесь два знака процента на ближайших уровнях)
+                            (((inputNumbers.get(indexSearchPercent).getBracketLevel() ==
+                            curPercBracketLevel + 1) &&
+                            (inputNumbers.get(indexSearchPercent).getIsBracket()) &&
+                            (inputNumbers.get(indexSearchPercent).getIsClose())) ||
+                            // Случай, когда % ставится на текущем уровне без использьвания скобок,
+                            // например, 7 + 5% + 8% (здесь два знак процента на одном уровне)
+                            (inputNumbers.get(indexSearchPercent).getBracketLevel() ==
+                            curPercBracketLevel))) {
                             // Вывести сообщение о том, что без скобок или в рамках одной скобки
                             // нельзя вводить знак процента больше одного раза. Если нужно
                             // произвести вычисление процента несколько раз, то нужно каждую такую

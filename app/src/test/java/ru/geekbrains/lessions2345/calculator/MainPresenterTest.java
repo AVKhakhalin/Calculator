@@ -15,7 +15,16 @@ import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 import static org.mockito.Mockito.times;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.CHANGE_SIGN_EMPTY;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.CLOSE_BRACKET_ON_ACTION_WITHOUT_NUMBER;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.CLOSE_BRACKET_ON_EMPTY;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.CLOSE_BRACKET_ON_EMPTY_OPEN_BRACKET;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.INPUT_NUMBER_FIRST;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.MANY_ZERO_IN_INTEGER_PART;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.MULTIPLE_PERCENT_IN_BRACKET;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.NUMBER_AFTER_BRACKET;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.OPEN_BRACKET_ON_EMPTY_ACTION;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.PERCENT_NEEDS_TWO_NUMBERS;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_IN_STRING.BRACKET_DISBALANCE;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_IN_STRING.NO;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_IN_STRING.SQRT_MINUS;
@@ -527,14 +536,180 @@ public class MainPresenterTest {
                 showErrorInString(ZERO_DIVIDE);
     }
 
+    // Проверка корректности выполнения showErrorInputting()
+    // для простановки числа сразу же после скобки без указания действйи с ним
+    @Test
+    public void showErrorInputting_NUMBER_AFTER_BRACKET_Test() {
+        mainPresenter.setBracketOpen();
+        Mockito.verify(viewMainContract, times(2)).
+                setInputtedHistoryText("(");
+        mainPresenter.addNumeral(5);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("(5");
+        mainPresenter.setBracketClose();
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("(5)");
+        mainPresenter.addNumeral(1);
+        Mockito.verify(viewMainContract, times(1)).
+                showErrorInputting(NUMBER_AFTER_BRACKET);
+    }
+
+    // Проверка корректности выполнения showErrorInputting()
+    // для показа уведомление о том, что для задания целой части числа вполне хватит и одного нуля
+    @Test
+    public void showErrorInputting_MANY_ZERO_IN_INTEGER_PART_Test() {
+        mainPresenter.addNumeral(0);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("0");
+        mainPresenter.addNumeral(0);
+        Mockito.verify(viewMainContract, times(1)).
+                showErrorInputting(MANY_ZERO_IN_INTEGER_PART);
+    }
+
+    // Проверка корректности выполнения showErrorInputting()
+    // для показа уведомления, если не ввести число сначала
+    @Test
+    public void showErrorInputting_INPUT_NUMBER_FIRST_Test() {
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_MINUS);
+        Mockito.verify(viewMainContract, times(1)).
+                showErrorInputting(INPUT_NUMBER_FIRST);
+    }
+
+    // Проверка корректности выполнения showErrorInputting()
+    // для показа уведомления о том, что для применения процента нужно ввести два числа и любую
+    // следующую арифметическую операцию между ними: *, /, +, -
+    @Test
+    public void showErrorInputting_PERCENT_NEEDS_TWO_NUMBERS_Test() {
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERS_MULTY);
+        Mockito.verify(viewMainContract, times(1)).
+                showErrorInputting(PERCENT_NEEDS_TWO_NUMBERS);
+        mainPresenter.addNumeral(1);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("1");
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERS_MULTY);
+        Mockito.verify(viewMainContract, times(2)).
+                showErrorInputting(PERCENT_NEEDS_TWO_NUMBERS);
+    }
+
+    // Проверка корректности выполнения showErrorInputting()
+    // для показа уведомления о том, что нельзя производить смену знака,
+    // предварительно не задав число или функцию
+    @Test
+    public void showErrorInputting_CHANGE_SIGN_EMPTY_Test() {
+        mainPresenter.changeSign();
+        Mockito.verify(viewMainContract, times(1)).
+                showErrorInputting(CHANGE_SIGN_EMPTY);
+        mainPresenter.setBracketOpen();
+        Mockito.verify(viewMainContract, times(2)).
+                setInputtedHistoryText("(");
+        mainPresenter.addNumeral(1);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("(1");
+        mainPresenter.setBracketClose();
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("(1)");
+        mainPresenter.changeSign();
+        Mockito.verify(viewMainContract, times(1)).
+                showErrorInputting(CHANGE_SIGN_EMPTY);
+    }
+
+    // Проверка корректности выполнения showErrorInputting()
+    // для показа уведомления о том, что нельзя создать новую открытую скобку,
+    // потому что не указано перед скобкой действие
+    @Test
+    public void showErrorInputting_OPEN_BRACKET_ON_EMPTY_ACTION_Test() {
+        mainPresenter.setBracketOpen();
+        Mockito.verify(viewMainContract, times(2)).
+                setInputtedHistoryText("(");
+        mainPresenter.addNumeral(1);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("(1");
+        mainPresenter.setBracketClose();
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("(1)");
+        mainPresenter.setBracketOpen();
+        Mockito.verify(viewMainContract, times(1)).
+                showErrorInputting(OPEN_BRACKET_ON_EMPTY_ACTION);
+    }
+
+    // Проверка корректности выполнения showErrorInputting()
+    // для показа уведомления о том, что нельзя поставить закрывающую скобку, если
+    // предварительно не поставить ей соответствующую открывающую скобку
+    @Test
+    public void showErrorInputting_CLOSE_BRACKET_ON_EMPTY_OPEN_BRACKET_Test() {
+        mainPresenter.setBracketClose();
+        Mockito.verify(viewMainContract, times(1)).
+                showErrorInputting(CLOSE_BRACKET_ON_EMPTY_OPEN_BRACKET);
+        mainPresenter.setBracketOpen();
+        Mockito.verify(viewMainContract, times(2)).
+                setInputtedHistoryText("(");
+        mainPresenter.addNumeral(1);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("(1");
+        mainPresenter.setBracketClose();
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("(1)");
+        mainPresenter.setBracketClose();
+        Mockito.verify(viewMainContract, times(2)).
+                showErrorInputting(CLOSE_BRACKET_ON_EMPTY_OPEN_BRACKET);
+    }
+
     @Test // Проверка корректности выполнения showErrorInputting() для пустого выражения в скобках
-    public void showErrorInputting_EMPTY_INSIGHT_BRACKETS_Test() {
+    public void showErrorInputting_CLOSE_BRACKET_ON_EMPTY_Test() {
         mainPresenter.setBracketOpen();
         Mockito.verify(viewMainContract, times(2)).
                 setInputtedHistoryText("(");
         mainPresenter.setBracketClose();
         Mockito.verify(viewMainContract, times(1)).
                 showErrorInputting(CLOSE_BRACKET_ON_EMPTY);
+    }
+
+    // Проверка корректности выполнения showErrorInputting()
+    // для показа уведомления о том, что нельзя закрывающую скобку ставить
+    // на действии без указания числа
+    @Test
+    public void showErrorInputting_CLOSE_BRACKET_ON_ACTION_WITHOUT_NUMBER_Test() {
+        mainPresenter.setBracketOpen();
+        Mockito.verify(viewMainContract, times(2)).
+                setInputtedHistoryText("(");
+        mainPresenter.addNumeral(1);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("(1");
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PLUS);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("(1+");
+        mainPresenter.setBracketClose();
+        Mockito.verify(viewMainContract, times(1)).
+                showErrorInputting(CLOSE_BRACKET_ON_ACTION_WITHOUT_NUMBER);
+    }
+
+    // Проверка корректности выполнения showErrorInputting()
+    // для показа уведомления о том, что без скобок или в рамках одной скобки нельзя вводить знак
+    // процента больше одного раза. Если нужно произвести вычисление процента несколько раз,
+    // то нужно каждую такую конструкцию оборачивать в отдельную скобку
+    @Test
+    public void showErrorInputting_MULTIPLE_PERCENT_IN_BRACKET_Test() {
+        mainPresenter.addNumeral(1);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("1");
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PLUS);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("1+");
+        mainPresenter.addNumeral(2);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("1+2");
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERS_MULTY);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("1+2%");
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PLUS);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("1+2%+");
+        mainPresenter.addNumeral(3);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("1+2%+3");
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERS_MULTY);
+        Mockito.verify(viewMainContract, times(1)).
+                showErrorInputting(MULTIPLE_PERCENT_IN_BRACKET);
     }
 
     @Test // Проверка корректности выполнения getInit()
@@ -578,6 +753,92 @@ public class MainPresenterTest {
         mainPresenter.setEqual();
         Mockito.verify(viewMainContract, times(1)).
                 setOutputResultText("6,378");
+    }
+
+    @Test // Проверка корректности задания процента во второй скобке подряд: 7+(6+5%)+(6+5%)
+    public void setPercentIntoTwoBrackets_Test() {
+        mainPresenter.addNumeral(7);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("7");
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PLUS);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("7+");
+        mainPresenter.setBracketOpen();
+        Mockito.verify(viewMainContract, times(2)).
+                setInputtedHistoryText("7+(");
+        mainPresenter.addNumeral(6);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("7+(6");
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PLUS);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("7+(6+");
+        mainPresenter.addNumeral(5);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("7+(6+5");
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERS_MULTY);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("7+(6+5%");
+        mainPresenter.setBracketClose();
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("7+(6+5%)");
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PLUS);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("7+(6+5%)+");
+        mainPresenter.setBracketOpen();
+        Mockito.verify(viewMainContract, times(2)).
+                setInputtedHistoryText("7+(6+5%)+(");
+        mainPresenter.addNumeral(6);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("7+(6+5%)+(6");
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PLUS);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("7+(6+5%)+(6+");
+        mainPresenter.addNumeral(5);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("7+(6+5%)+(6+5");
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERS_MULTY);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("7+(6+5%)+(6+5%");
+        mainPresenter.setBracketClose();
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("7+(6+5%)+(6+5%)");
+        mainPresenter.setEqual();
+        Mockito.verify(viewMainContract, times(1)).
+                setOutputResultText("19,6");
+    }
+
+    @Test // Проверка корректности задания процента в первой скобке и без скобки: (7+4%)+5%
+    public void setPercentIntoFirstBracketAndWithoutBracket_Test() {
+        mainPresenter.setBracketOpen();
+        Mockito.verify(viewMainContract, times(2)).
+                setInputtedHistoryText("(");
+        mainPresenter.addNumeral(7);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("(7");
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PLUS);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("(7+");
+        mainPresenter.addNumeral(4);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("(7+4");
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERS_MULTY);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("(7+4%");
+        mainPresenter.setBracketClose();
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("(7+4%)");
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PLUS);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("(7+4%)+");
+        mainPresenter.addNumeral(5);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("(7+4%)+5");
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERS_MULTY);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("(7+4%)+5%");
+        mainPresenter.setEqual();
+        Mockito.verify(viewMainContract, times(1)).
+                setOutputResultText("7,644");
     }
 
     @Test // Проверка корректности задания пустых скобок
@@ -688,5 +949,28 @@ public class MainPresenterTest {
         mainPresenter.setEqual();
         Mockito.verify(viewMainContract, times(1)).
                 setOutputResultText("12");
+    }
+
+    @Test // Проверка возможности поставить несколько нулей в целой части числа: 0000.1
+    public void setMultipleZeroInDecimalPartOfNumber_Test() {
+        mainPresenter.addNumeral(0);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("0");
+        mainPresenter.addNumeral(0);
+        Mockito.verify(viewMainContract, times(2)).
+                setInputtedHistoryText("0");
+        mainPresenter.addNumeral(0);
+        Mockito.verify(viewMainContract, times(3)).
+                setInputtedHistoryText("0");
+        mainPresenter.addNumeral(0);
+        Mockito.verify(viewMainContract, times(4)).
+                setInputtedHistoryText("0");
+        mainPresenter.setCurZapitay();
+        mainPresenter.addNumeral(1);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("0.1");
+        mainPresenter.setEqual();
+        Mockito.verify(viewMainContract, times(1)).
+                setOutputResultText("0,1");
     }
 }

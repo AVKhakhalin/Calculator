@@ -367,13 +367,21 @@ public class CalcLogic implements Constants, Serializable {
 
         if (bracketBalance == 0) {
             // Здесь происходит обработка всех скобок
-            while (isBracketExist) {
-                for (int i = maxBracketLevel; i > 0; i--) {
+            Dates curBracketValue = null; // Переменная с данными обработанной скобки
+            for (int i = maxBracketLevel; i > 0; i--) {
+                while (isBracketExist) {
                     iterInputNumbersForCalc = inputNumbersForBracketCalc.listIterator();
                     counter = -1;
                     while (iterInputNumbersForCalc.hasNext()) {
                         counter++;
                         curDates = iterInputNumbersForCalc.next();
+                        curBracketValue = new Dates(curDates.getIsBracket(),
+                                curDates.getIsClose(), curDates.getTypeFuncInBracket(),
+                                curDates.getBracketLevel(), curDates.getSign(),
+                                curDates.getValue(), curDates.getIsValue(),
+                                curDates.getAction(), curDates.getIsPercent(),
+                                curDates.getNumberZapitay(),
+                                curDates.getTurnOffZapitay());
                         if (curDates.getBracketLevel() == i) {
                             // Не забыть вернуть этой переменной значение -1,
                             // когда встретим закрывающую скобку
@@ -402,6 +410,19 @@ public class CalcLogic implements Constants, Serializable {
                                     break;
                                 }
                             }
+                            // В случае пустой скобки, данные берутся из переменной
+                            // с данными обработанной скобки - curBracketValue
+                            if (inputNumbersForBaseCalc.size() == 0) {
+                                inputNumbersForBaseCalc.add(new Dates(
+                                        curBracketValue.getIsBracket(),
+                                        curBracketValue.getIsClose(),
+                                        curBracketValue.getTypeFuncInBracket(),
+                                        curBracketValue.getBracketLevel(), curBracketValue.getSign(),
+                                        curBracketValue.getValue(), curBracketValue.getIsValue(),
+                                        curBracketValue.getAction(), curBracketValue.getIsPercent(),
+                                        curBracketValue.getNumberZapitay(),
+                                        curBracketValue.getTurnOffZapitay()));
+                            }
                             result = moveOnWithoutBracket(inputNumbersForBaseCalc);
                             if (errorCode != ERRORS_IN_STRING.NO) {
                                 return;
@@ -422,16 +443,15 @@ public class CalcLogic implements Constants, Serializable {
                             inputNumbersForBracketCalc.get(startBracketIndex).setIsClose(false);
                         }
                     }
-                }
-
-                // Проверка наличия скобок в списке
-                isBracketExist = false;
-                iterInputNumbersForCalc = inputNumbersForBracketCalc.listIterator();
-                while (iterInputNumbersForCalc.hasNext()) {
-                    curDates = iterInputNumbersForCalc.next();
-                    if (curDates.getIsBracket()) {
-                        isBracketExist = true;
-                        break;
+                    // Проверка наличия скобок в списке
+                    isBracketExist = false;
+                    iterInputNumbersForCalc = inputNumbersForBracketCalc.listIterator();
+                    while (iterInputNumbersForCalc.hasNext()) {
+                        curDates = iterInputNumbersForCalc.next();
+                        if ((curDates.getIsBracket()) && (curDates.getBracketLevel() == i)) {
+                            isBracketExist = true;
+                            break;
+                        }
                     }
                 }
             }

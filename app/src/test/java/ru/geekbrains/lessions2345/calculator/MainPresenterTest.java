@@ -579,4 +579,114 @@ public class MainPresenterTest {
         Mockito.verify(viewMainContract, times(1)).
                 setOutputResultText("6,378");
     }
+
+    @Test // Проверка корректности задания пустых скобок
+    public void emptyBracketSet_Test() {
+        mainPresenter.setBracketOpen();
+        Mockito.verify(viewMainContract, times(2)).
+                setInputtedHistoryText("(");
+        mainPresenter.setBracketOpen();
+        Mockito.verify(viewMainContract, times(2)).
+                setInputtedHistoryText("((");
+        mainPresenter.setBracketOpen();
+        Mockito.verify(viewMainContract, times(2)).
+                setInputtedHistoryText("(((");
+        mainPresenter.addNumeral(6);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("(((6");
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PLUS);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("(((6+");
+        mainPresenter.addNumeral(5);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("(((6+5");
+        mainPresenter.setBracketClose();
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("(((6+5)");
+        mainPresenter.setBracketClose();
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("(((6+5))");
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PLUS);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("(((6+5))+");
+        mainPresenter.setBracketOpen();
+        Mockito.verify(viewMainContract, times(2)).
+                setInputtedHistoryText("(((6+5))+(");
+        mainPresenter.addNumeral(5);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("(((6+5))+(5");
+        mainPresenter.setBracketClose();
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("(((6+5))+(5)");
+        mainPresenter.setBracketClose();
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("(((6+5))+(5))");
+        mainPresenter.setEqual();
+        Mockito.verify(viewMainContract, times(1)).
+                setOutputResultText("16");
+    }
+
+    @Test // Проверка корректности задания пустых скобок в различной комбинации уровней
+    public void emptyBracketWithDifferentLevelsSet_Test() {
+        mainPresenter.setBracketOpen();
+        Mockito.verify(viewMainContract, times(2)).
+                setInputtedHistoryText("(");
+        mainPresenter.setBracketOpen();
+        Mockito.verify(viewMainContract, times(2)).
+                setInputtedHistoryText("((");
+        mainPresenter.setBracketOpen();
+        Mockito.verify(viewMainContract, times(2)).
+                setInputtedHistoryText("(((");
+        mainPresenter.setBracketOpen();
+        Mockito.verify(viewMainContract, times(2)).
+                setInputtedHistoryText("((((");
+        mainPresenter.addNumeral(6);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("((((6");
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PLUS);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("((((6+");
+        mainPresenter.addNumeral(5);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("((((6+5");
+        mainPresenter.setBracketClose();
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("((((6+5)");
+        mainPresenter.setBracketClose();
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("((((6+5))");
+        mainPresenter.setBracketClose();
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("((((6+5)))");
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PLUS);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("((((6+5)))+");
+        mainPresenter.setBracketOpen();
+        Mockito.verify(viewMainContract, times(2)).
+                setInputtedHistoryText("((((6+5)))+(");
+        mainPresenter.setBracketOpen();
+        Mockito.verify(viewMainContract, times(2)).
+                setInputtedHistoryText("((((6+5)))+((");
+        mainPresenter.addNumeral(5);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("((((6+5)))+((5");
+        mainPresenter.setBracketClose();
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("((((6+5)))+((5)");
+        mainPresenter.setBracketClose();
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("((((6+5)))+((5))");
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_MINUS);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("((((6+5)))+((5))-");
+        mainPresenter.addNumeral(4);
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("((((6+5)))+((5))-4");
+        mainPresenter.setBracketClose();
+        Mockito.verify(viewMainContract, times(1)).
+                setInputtedHistoryText("((((6+5)))+((5))-4)");
+        mainPresenter.setEqual();
+        Mockito.verify(viewMainContract, times(1)).
+                setOutputResultText("12");
+    }
 }

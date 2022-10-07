@@ -60,10 +60,6 @@ public class CalcLogic implements Constants, Serializable {
             ACTIONS.ACT_PLUS, false);
     }
 
-    public int getMaxNumberSymbolsInOutputTextField() {
-        return maxNumberSymbolsInOutputTextField;
-    }
-
     public void setMaxNumberSymbolsInOutputTextField(int maxNumberSymbolsInOutputTextField) {
         this.maxNumberSymbolsInOutputTextField = maxNumberSymbolsInOutputTextField;
     }
@@ -371,13 +367,21 @@ public class CalcLogic implements Constants, Serializable {
 
         if (bracketBalance == 0) {
             // Здесь происходит обработка всех скобок
-            while (isBracketExist) {
-                for (int i = maxBracketLevel; i > 0; i--) {
+            Dates curBracketValue = null; // Переменная с данными обработанной скобки
+            for (int i = maxBracketLevel; i > 0; i--) {
+                while (isBracketExist) {
                     iterInputNumbersForCalc = inputNumbersForBracketCalc.listIterator();
                     counter = -1;
                     while (iterInputNumbersForCalc.hasNext()) {
                         counter++;
                         curDates = iterInputNumbersForCalc.next();
+                        curBracketValue = new Dates(curDates.getIsBracket(),
+                                curDates.getIsClose(), curDates.getTypeFuncInBracket(),
+                                curDates.getBracketLevel(), curDates.getSign(),
+                                curDates.getValue(), curDates.getIsValue(),
+                                curDates.getAction(), curDates.getIsPercent(),
+                                curDates.getNumberZapitay(),
+                                curDates.getTurnOffZapitay());
                         if (curDates.getBracketLevel() == i) {
                             // Не забыть вернуть этой переменной значение -1,
                             // когда встретим закрывающую скобку
@@ -406,6 +410,19 @@ public class CalcLogic implements Constants, Serializable {
                                     break;
                                 }
                             }
+                            // В случае пустой скобки, данные берутся из переменной
+                            // с данными обработанной скобки - curBracketValue
+                            if (inputNumbersForBaseCalc.size() == 0) {
+                                inputNumbersForBaseCalc.add(new Dates(
+                                        curBracketValue.getIsBracket(),
+                                        curBracketValue.getIsClose(),
+                                        curBracketValue.getTypeFuncInBracket(),
+                                        curBracketValue.getBracketLevel(), curBracketValue.getSign(),
+                                        curBracketValue.getValue(), curBracketValue.getIsValue(),
+                                        curBracketValue.getAction(), curBracketValue.getIsPercent(),
+                                        curBracketValue.getNumberZapitay(),
+                                        curBracketValue.getTurnOffZapitay()));
+                            }
                             result = moveOnWithoutBracket(inputNumbersForBaseCalc);
                             if (errorCode != ERRORS_IN_STRING.NO) {
                                 return;
@@ -426,16 +443,15 @@ public class CalcLogic implements Constants, Serializable {
                             inputNumbersForBracketCalc.get(startBracketIndex).setIsClose(false);
                         }
                     }
-                }
-
-                // Проверка наличия скобок в списке
-                isBracketExist = false;
-                iterInputNumbersForCalc = inputNumbersForBracketCalc.listIterator();
-                while (iterInputNumbersForCalc.hasNext()) {
-                    curDates = iterInputNumbersForCalc.next();
-                    if (curDates.getIsBracket()) {
-                        isBracketExist = true;
-                        break;
+                    // Проверка наличия скобок в списке
+                    isBracketExist = false;
+                    iterInputNumbersForCalc = inputNumbersForBracketCalc.listIterator();
+                    while (iterInputNumbersForCalc.hasNext()) {
+                        curDates = iterInputNumbersForCalc.next();
+                        if ((curDates.getIsBracket()) && (curDates.getBracketLevel() == i)) {
+                            isBracketExist = true;
+                            break;
+                        }
                     }
                 }
             }
@@ -682,14 +698,32 @@ public class CalcLogic implements Constants, Serializable {
                     int numberNumberInBracket = 0;
                     while ((indexSearchPercent >= 0) && (inputNumbers.get(indexSearchPercent).
                         getBracketLevel() >= curPercBracketLevel)) {
-                        if ((inputNumbers.get(indexSearchPercent).getAction() ==
+                        // Условие выхода, если анализ производится внутри скобки
+                        // (дошли до открытой скобки)
+                        if ((inputNumbers.get(indexSearchPercent).getBracketLevel() ==
+                            curPercBracketLevel) &&
+                            (inputNumbers.get(indexSearchPercent).getIsBracket()) &&
+                            (!inputNumbers.get(indexSearchPercent).getIsClose()))
+                            break;
+                        if (((inputNumbers.get(indexSearchPercent).getAction() ==
                             ACTIONS.ACT_PERS_MULTY) ||
                             (inputNumbers.get(indexSearchPercent).getAction() ==
                             ACTIONS.ACT_PERS_DIV) ||
                             (inputNumbers.get(indexSearchPercent).getAction() ==
                             ACTIONS.ACT_PERS_MINUS) ||
                             (inputNumbers.get(indexSearchPercent).getAction() ==
-                            ACTIONS.ACT_PERS_PLUS)) {
+                            ACTIONS.ACT_PERS_PLUS)) &&
+                            // Случай, когда % ставится в скобке на ближайшем верхнем уровне
+                            // за скобкой, например,
+                            // 7 + (5 + 6)% + 5% (здесь два знака процента на ближайших уровнях)
+                            (((inputNumbers.get(indexSearchPercent).getBracketLevel() ==
+                            curPercBracketLevel + 1) &&
+                            (inputNumbers.get(indexSearchPercent).getIsBracket()) &&
+                            (inputNumbers.get(indexSearchPercent).getIsClose())) ||
+                            // Случай, когда % ставится на текущем уровне без использования скобок,
+                            // например, 7 + 5% + 8% (здесь два знак процента на одном уровне)
+                            (inputNumbers.get(indexSearchPercent).getBracketLevel() ==
+                            curBracketLevel))) {
                             // Вывести сообщение о том, что без скобок или в рамках одной скобки
                             // нельзя вводить знак процента больше одного раза. Если нужно
                             // произвести вычисление процента несколько раз, то нужно каждую такую
@@ -699,21 +733,19 @@ public class CalcLogic implements Constants, Serializable {
                         } else if ((indexSearchPercent == curNumber) &&
                             (inputNumbers.get(indexSearchPercent).getIsBracket()) &&
                             (inputNumbers.get(indexSearchPercent).getIsClose()) &&
-                            (inputNumbers.get(indexSearchPercent).getBracketLevel() <=
-                            (curPercBracketLevel == 0 ? 1 : curPercBracketLevel))) {
+                            (inputNumbers.get(indexSearchPercent).getBracketLevel() ==
+                            curPercBracketLevel + 1)) {
                             existStartCloseBracket = true;
-                            numberNumberInBracket = 0;
                         } else if ((inputNumbers.get(indexSearchPercent).getIsBracket()) &&
                             (!inputNumbers.get(indexSearchPercent).getIsClose()) &&
-                            (inputNumbers.get(indexSearchPercent).getBracketLevel() <=
-                            (curPercBracketLevel == 0 ? 1 : curPercBracketLevel))) {
-                            numberPercBrackets++;
+                            (inputNumbers.get(indexSearchPercent).getBracketLevel() ==
+                            curPercBracketLevel + 1)) {
+                            if (existStartCloseBracket) existStartCloseBracket = false;
+                            else numberPercBrackets++;
                         } else if ((inputNumbers.get(indexSearchPercent).getIsValue()) &&
-                            (inputNumbers.get(indexSearchPercent).getBracketLevel() <=
-                            (curPercBracketLevel == 0 ? 1 : curPercBracketLevel))) {
-                            if (!existStartCloseBracket) {
-                                numberNumberInBracket++;
-                            }
+                            (inputNumbers.get(indexSearchPercent).getBracketLevel() ==
+                            curPercBracketLevel)) {
+                            numberNumberInBracket++;
                         }
                         indexSearchPercent--;
                     }

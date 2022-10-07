@@ -243,7 +243,7 @@ public class MainActivityEspressoTest {
         Espresso.onView(withId(R.id.percent)).check(matches(withText("%")));
         Espresso.onView(withId(R.id.plus_minus)).check(matches(withText("+/-")));
         Espresso.onView(withId(R.id.stepen)).check(matches(withText("x^n")));
-        Espresso.onView(withId(R.id.sqrt)).check(matches(withText("Kx")));
+        Espresso.onView(withId(R.id.sqrt)).check(matches(withText("\u221Ax")));
         Espresso.onView(withId(R.id.equal)).check(matches(withText("=")));
         Espresso.onView(withId(R.id.backspace_one)).check(matches(withText("<-")));
         Espresso.onView(withId(R.id.backspace_two)).check(matches(withText("<—")));
@@ -300,7 +300,7 @@ public class MainActivityEspressoTest {
         Espresso.onView(withId(R.id.bracket_close)).perform(click());
         Espresso.onView(withId(R.id.equal)).perform(click());
         Espresso.onView(withId(R.id.inputted_history_text))
-            .check(matches(withText("1234567891.1+SQRT(9*8%/4^2)-((-35689)*988)")));
+            .check(matches(withText("1234567891.1+\u221A(9*8%/4^2)-((-35689)*988)")));
         Espresso.onView(withId(R.id.result)).check(matches(withText("1269828623.7")));
         Espresso.onView(withId(R.id.backspace)).perform(click());
         Espresso.onView(withId(R.id.inputted_history_text)).check(matches(withText("")));
@@ -354,7 +354,7 @@ public class MainActivityEspressoTest {
         Espresso.onView(withId(R.id.bracket_close)).perform(click());
         Espresso.onView(withId(R.id.equal)).perform(click());
         Espresso.onView(withId(R.id.inputted_history_text_small))
-            .check(matches(withText("1234567891.1+SQRT(9*8%/4^2)-((-35689)*988)")));
+            .check(matches(withText("1234567891.1+\u221A(9*8%/4^2)-((-35689)*988)")));
         Espresso.onView(withId(R.id.result_small)).check(matches(withText("1.270e+09")));
         Espresso.onView(withId(R.id.backspace)).perform(click());
         Espresso.onView(withId(R.id.inputted_history_text_small)).check(matches(withText("")));

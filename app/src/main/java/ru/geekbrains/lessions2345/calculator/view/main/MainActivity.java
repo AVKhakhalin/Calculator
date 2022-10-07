@@ -4,6 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.SuperscriptSpan;
 import android.view.Display;
 import android.view.View;
 import android.widget.Button;
@@ -393,6 +397,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonPlusMinus = findViewById(R.id.plus_minus);
         buttonSqrt = findViewById(R.id.sqrt);
         buttonStepen = findViewById(R.id.stepen);
+        plotStepen(buttonStepen);
         buttonChangeTheme = findViewById(R.id.menu_theme);
 
         // Установка слушателей событий на кнопки
@@ -409,6 +414,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             button.setOnClickListener(this);
         });
         buttonChangeTheme.setOnClickListener(this);
+    }
+
+    // Отображение знака степени на кнопке
+    private void plotStepen(Button buttonStepen) {
+        SpannableString result = new SpannableString(getString(R.string._stepen));
+        result.setSpan(new SuperscriptSpan(), 1, 2, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        result.setSpan(new RelativeSizeSpan(SQUARE_TEXT_RELATIVE_SIZE), 1, 2,
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        buttonStepen.setText(result);
     }
 
     // Отобразить индикатор ввода вещественного числа

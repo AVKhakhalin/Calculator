@@ -13,6 +13,7 @@ public interface ViewConstants {
     int MAX_RADIUS_BUTTONS = 200;
     int BORDER_WIDTH = 1080;
     String ERROR_MESSAGE_KEY = "Error Message";
+    String ERROR_TYPE_KEY = "Error Type Message";
     String ERROR_MESSAGE_FRAGMENT_KEY = "Error Message Fragment";
     String MAIN_PRESENTER_KEY = "Main Presenter";
 

@@ -1,6 +1,8 @@
 package ru.geekbrains.lessions2345.calculator.view.main;
 
 import static android.content.Context.MODE_PRIVATE;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING_TYPE;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_IN_STRING_TYPE;
 import static ru.geekbrains.lessions2345.calculator.view.ViewConstants.BORDER_WIDTH;
 import static ru.geekbrains.lessions2345.calculator.view.ViewConstants.DEFAULT_BUTTON_BORDER_RADIUS;
 import static ru.geekbrains.lessions2345.calculator.view.ViewConstants.DEFAULT_BUTTON_RADIUS;
@@ -41,7 +43,7 @@ public class MainPresenter implements PresenterMainContract, Serializable, Parce
     };
 
     public void showErrorInputting(Constants.ERRORS_INPUTTING errorInputting) {
-        if (viewMain != null) viewMain.showErrorInputting(errorInputting);
+        if (viewMain != null) viewMain.showErrorInputting(errorInputting, ERRORS_INPUTTING_TYPE);
     }
 
     /** Задание различных конструкторов для презентера */ //region
@@ -152,7 +154,8 @@ public class MainPresenter implements PresenterMainContract, Serializable, Parce
 
     @Override
     public void getError() {
-        if (viewMain != null) viewMain.showErrorInString(calcLogic.getErrorCode());
+        if (viewMain != null) viewMain.showErrorInString(
+            calcLogic.getErrorCode(), ERRORS_IN_STRING_TYPE);
         calcLogic.clearErrorCode();
     }
 

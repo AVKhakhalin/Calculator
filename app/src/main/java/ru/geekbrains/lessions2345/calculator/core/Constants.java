@@ -27,6 +27,7 @@ public interface Constants {
 
     // Ошибки
     // Ошибки во введённой строке
+    int ERRORS_IN_STRING_TYPE = 0;
     enum ERRORS_IN_STRING {
         NO,                  // ошибок нет
         SQRT_MINUS,          // подкоренное значение меньше нуля
@@ -36,6 +37,7 @@ public interface Constants {
     }
 
     // Ошибки при вводе строки
+    int ERRORS_INPUTTING_TYPE = 1;
     enum ERRORS_INPUTTING {
         NUMBER_AFTER_BRACKET,      // ставится число сразу же после скобки
                                    // без указания действий с ним

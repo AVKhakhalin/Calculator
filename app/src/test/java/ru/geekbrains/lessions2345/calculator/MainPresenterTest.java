@@ -25,10 +25,12 @@ import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTT
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.NUMBER_AFTER_BRACKET;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.OPEN_BRACKET_ON_EMPTY_ACTION;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.PERCENT_NEEDS_TWO_NUMBERS;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING_TYPE;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_IN_STRING.BRACKET_DISBALANCE;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_IN_STRING.NO;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_IN_STRING.SQRT_MINUS;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_IN_STRING.ZERO_DIVIDE;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_IN_STRING_TYPE;
 
 public class MainPresenterTest {
     /** Задание переменных */ //region
@@ -487,7 +489,7 @@ public class MainPresenterTest {
                 setInputtedHistoryText("4");
         mainPresenter.setEqual();
         Mockito.verify(viewMainContract, times(1)).
-                showErrorInString(NO);
+                showErrorInString(NO, ERRORS_IN_STRING_TYPE);
     }
 
     @Test // Проверка корректности выполнения getError() для подкоренного значения
@@ -504,7 +506,7 @@ public class MainPresenterTest {
                 setInputtedHistoryText("SQRT((-4))");
         mainPresenter.setEqual();
         Mockito.verify(viewMainContract, times(1)).
-                showErrorInString(SQRT_MINUS);
+                showErrorInString(SQRT_MINUS, ERRORS_IN_STRING_TYPE);
     }
 
     @Test // Проверка корректности выполнения getError() для равенства открытых и закрытых скобок
@@ -517,7 +519,7 @@ public class MainPresenterTest {
                 setInputtedHistoryText("(4");
         mainPresenter.setEqual();
         Mockito.verify(viewMainContract, times(1)).
-                showErrorInString(BRACKET_DISBALANCE);
+                showErrorInString(BRACKET_DISBALANCE, ERRORS_IN_STRING_TYPE);
     }
 
     @Test // Проверка корректности выполнения getError() для деления на ноль
@@ -533,7 +535,7 @@ public class MainPresenterTest {
                 setInputtedHistoryText("4/0");
         mainPresenter.setEqual();
         Mockito.verify(viewMainContract, times(1)).
-                showErrorInString(ZERO_DIVIDE);
+                showErrorInString(ZERO_DIVIDE, ERRORS_IN_STRING_TYPE);
     }
 
     // Проверка корректности выполнения showErrorInputting()
@@ -551,7 +553,7 @@ public class MainPresenterTest {
                 setInputtedHistoryText("(5)");
         mainPresenter.addNumeral(1);
         Mockito.verify(viewMainContract, times(1)).
-                showErrorInputting(NUMBER_AFTER_BRACKET);
+                showErrorInputting(NUMBER_AFTER_BRACKET, ERRORS_INPUTTING_TYPE);
     }
 
     // Проверка корректности выполнения showErrorInputting()
@@ -563,7 +565,7 @@ public class MainPresenterTest {
                 setInputtedHistoryText("0");
         mainPresenter.addNumeral(0);
         Mockito.verify(viewMainContract, times(1)).
-                showErrorInputting(MANY_ZERO_IN_INTEGER_PART);
+                showErrorInputting(MANY_ZERO_IN_INTEGER_PART, ERRORS_INPUTTING_TYPE);
     }
 
     // Проверка корректности выполнения showErrorInputting()
@@ -572,7 +574,7 @@ public class MainPresenterTest {
     public void showErrorInputting_INPUT_NUMBER_FIRST_Test() {
         mainPresenter.setNewAction(Constants.ACTIONS.ACT_MINUS);
         Mockito.verify(viewMainContract, times(1)).
-                showErrorInputting(INPUT_NUMBER_FIRST);
+                showErrorInputting(INPUT_NUMBER_FIRST, ERRORS_INPUTTING_TYPE);
     }
 
     // Проверка корректности выполнения showErrorInputting()
@@ -582,13 +584,13 @@ public class MainPresenterTest {
     public void showErrorInputting_PERCENT_NEEDS_TWO_NUMBERS_Test() {
         mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERS_MULTY);
         Mockito.verify(viewMainContract, times(1)).
-                showErrorInputting(PERCENT_NEEDS_TWO_NUMBERS);
+                showErrorInputting(PERCENT_NEEDS_TWO_NUMBERS, ERRORS_INPUTTING_TYPE);
         mainPresenter.addNumeral(1);
         Mockito.verify(viewMainContract, times(1)).
                 setInputtedHistoryText("1");
         mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERS_MULTY);
         Mockito.verify(viewMainContract, times(2)).
-                showErrorInputting(PERCENT_NEEDS_TWO_NUMBERS);
+                showErrorInputting(PERCENT_NEEDS_TWO_NUMBERS, ERRORS_INPUTTING_TYPE);
     }
 
     // Проверка корректности выполнения showErrorInputting()
@@ -598,7 +600,7 @@ public class MainPresenterTest {
     public void showErrorInputting_CHANGE_SIGN_EMPTY_Test() {
         mainPresenter.changeSign();
         Mockito.verify(viewMainContract, times(1)).
-                showErrorInputting(CHANGE_SIGN_EMPTY);
+                showErrorInputting(CHANGE_SIGN_EMPTY, ERRORS_INPUTTING_TYPE);
         mainPresenter.setBracketOpen();
         Mockito.verify(viewMainContract, times(2)).
                 setInputtedHistoryText("(");
@@ -610,7 +612,7 @@ public class MainPresenterTest {
                 setInputtedHistoryText("(1)");
         mainPresenter.changeSign();
         Mockito.verify(viewMainContract, times(1)).
-                showErrorInputting(CHANGE_SIGN_EMPTY);
+                showErrorInputting(CHANGE_SIGN_EMPTY, ERRORS_INPUTTING_TYPE);
     }
 
     // Проверка корректности выполнения showErrorInputting()
@@ -629,7 +631,7 @@ public class MainPresenterTest {
                 setInputtedHistoryText("(1)");
         mainPresenter.setBracketOpen();
         Mockito.verify(viewMainContract, times(1)).
-                showErrorInputting(OPEN_BRACKET_ON_EMPTY_ACTION);
+                showErrorInputting(OPEN_BRACKET_ON_EMPTY_ACTION, ERRORS_INPUTTING_TYPE);
     }
 
     // Проверка корректности выполнения showErrorInputting()
@@ -639,7 +641,7 @@ public class MainPresenterTest {
     public void showErrorInputting_CLOSE_BRACKET_ON_EMPTY_OPEN_BRACKET_Test() {
         mainPresenter.setBracketClose();
         Mockito.verify(viewMainContract, times(1)).
-                showErrorInputting(CLOSE_BRACKET_ON_EMPTY_OPEN_BRACKET);
+                showErrorInputting(CLOSE_BRACKET_ON_EMPTY_OPEN_BRACKET, ERRORS_INPUTTING_TYPE);
         mainPresenter.setBracketOpen();
         Mockito.verify(viewMainContract, times(2)).
                 setInputtedHistoryText("(");
@@ -651,7 +653,7 @@ public class MainPresenterTest {
                 setInputtedHistoryText("(1)");
         mainPresenter.setBracketClose();
         Mockito.verify(viewMainContract, times(2)).
-                showErrorInputting(CLOSE_BRACKET_ON_EMPTY_OPEN_BRACKET);
+                showErrorInputting(CLOSE_BRACKET_ON_EMPTY_OPEN_BRACKET, ERRORS_INPUTTING_TYPE);
     }
 
     @Test // Проверка корректности выполнения showErrorInputting() для пустого выражения в скобках
@@ -661,7 +663,7 @@ public class MainPresenterTest {
                 setInputtedHistoryText("(");
         mainPresenter.setBracketClose();
         Mockito.verify(viewMainContract, times(1)).
-                showErrorInputting(CLOSE_BRACKET_ON_EMPTY);
+                showErrorInputting(CLOSE_BRACKET_ON_EMPTY, ERRORS_INPUTTING_TYPE);
     }
 
     // Проверка корректности выполнения showErrorInputting()
@@ -680,7 +682,7 @@ public class MainPresenterTest {
                 setInputtedHistoryText("(1+");
         mainPresenter.setBracketClose();
         Mockito.verify(viewMainContract, times(1)).
-                showErrorInputting(CLOSE_BRACKET_ON_ACTION_WITHOUT_NUMBER);
+                showErrorInputting(CLOSE_BRACKET_ON_ACTION_WITHOUT_NUMBER, ERRORS_INPUTTING_TYPE);
     }
 
     // Проверка корректности выполнения showErrorInputting()
@@ -709,7 +711,7 @@ public class MainPresenterTest {
                 setInputtedHistoryText("1+2%+3");
         mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERS_MULTY);
         Mockito.verify(viewMainContract, times(1)).
-                showErrorInputting(MULTIPLE_PERCENT_IN_BRACKET);
+                showErrorInputting(MULTIPLE_PERCENT_IN_BRACKET, ERRORS_INPUTTING_TYPE);
     }
 
     @Test // Проверка корректности выполнения getInit()

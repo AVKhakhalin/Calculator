@@ -187,20 +187,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void showErrorInString(ERRORS_IN_STRING error) {
+    public void showErrorInString(ERRORS_IN_STRING error, int errorType) {
         // Отобразить информацию о текущих ошибках
         switch (error) {
             case BRACKET_DISBALANCE:
                 showErrorMessage(getResources().
-                    getString(R.string.error_different_number_brackets));
+                    getString(R.string.error_different_number_brackets),
+                    errorType);
                 break;
             case SQRT_MINUS:
                 showErrorMessage(getResources().
-                    getString(R.string.error_undersquare_low_zero));
+                    getString(R.string.error_undersquare_low_zero),
+                    errorType);
                 break;
             case ZERO_DIVIDE:
                 showErrorMessage(getResources().
-                    getString(R.string.error_divide_on_zero));
+                    getString(R.string.error_divide_on_zero), errorType);
                 break;
             default:
                 break;
@@ -208,56 +210,65 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void showErrorInputting(ERRORS_INPUTTING error) {
+    public void showErrorInputting(ERRORS_INPUTTING error, int errorType) {
         // Отобразить информацию о текущих ошибках
         switch (error) {
             case NUMBER_AFTER_BRACKET:
                 showErrorMessage(getResources().
-                        getString(R.string.error_number_after_bracket));
+                        getString(R.string.error_number_after_bracket),
+                    errorType);
                 break;
             case MANY_ZERO_IN_INTEGER_PART:
                 showErrorMessage(getResources().
-                        getString(R.string.error_many_zero_in_integer_part));
+                        getString(R.string.error_many_zero_in_integer_part),
+                    errorType);
                 break;
             case INPUT_NUMBER_FIRST:
                 showErrorMessage(getResources().
-                        getString(R.string.error_input_number_first));
+                        getString(R.string.error_input_number_first), errorType);
                 break;
             case PERCENT_NEEDS_TWO_NUMBERS:
                 showErrorMessage(getResources().
-                        getString(R.string.error_needs_two_numbers));
+                        getString(R.string.error_needs_two_numbers),
+                    errorType);
                 break;
             case CHANGE_SIGN_EMPTY:
                 showErrorMessage(getResources().
-                        getString(R.string.error_change_sign_empty));
+                        getString(R.string.error_change_sign_empty),
+                    errorType);
                 break;
             case OPEN_BRACKET_ON_EMPTY_ACTION:
                 showErrorMessage(getResources().
-                        getString(R.string.error_open_bracket_on_empty_action));
+                        getString(R.string.error_open_bracket_on_empty_action),
+                    errorType);
                 break;
             case CLOSE_BRACKET_ON_EMPTY_OPEN_BRACKET:
                 showErrorMessage(getResources().
-                        getString(R.string.error_close_bracket_on_empty_open_bracket));
+                        getString(R.string.error_close_bracket_on_empty_open_bracket),
+                    errorType);
                 break;
             case CLOSE_BRACKET_ON_EMPTY:
                 showErrorMessage(getResources().
-                        getString(R.string.error_close_bracket_on_empty));
+                        getString(R.string.error_close_bracket_on_empty),
+                    errorType);
                 break;
             case CLOSE_BRACKET_ON_ACTION_WITHOUT_NUMBER:
                 showErrorMessage(getResources().
-                        getString(R.string.error_close_bracket_on_action_without_number));
+                        getString(R.string.error_close_bracket_on_action_without_number),
+                    errorType);
                 break;
             case MULTIPLE_PERCENT_IN_BRACKET:
                 showErrorMessage(getResources().
-                        getString(R.string.error_multiple_percent_in_bracket));
+                        getString(R.string.error_multiple_percent_in_bracket),
+                    errorType);
                 break;
             default:
                 break;
         }
     }
 
-    private void showErrorMessage(String message) {
-        new ErrorMessagesFragment().newInstance(message).
+    private void showErrorMessage(String message, int messageType) {
+        new ErrorMessagesFragment().newInstance(message, messageType).
                 show(getSupportFragmentManager(), ERROR_MESSAGE_FRAGMENT_KEY);
     }
 

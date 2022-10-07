@@ -39,7 +39,7 @@
     <string name="_bracket_close">)</string>
     <string name="_percent">%</string>
     <string name="_plus_minus">+/-</string>
-    <string name="_stepen">x^n</string>
+    <string name="_stepen">xn</string>
     <string name="_sqrt">\u221Ax</string>
     <string name="_backspaceTwo"><![CDATA[<—]]></string>
     <string name="_backspace">C</string>

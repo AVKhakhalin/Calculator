@@ -22,4 +22,8 @@ public interface ViewConstants {
         DAY_THEME,         // Дневная тема
         NIGHT_THEME        // Ночная тема
     }
+
+    // SpannableText
+    Float SQUARE_TEXT_RELATIVE_SIZE = 0.65f;
+
 }

@@ -2,6 +2,11 @@ package ru.geekbrains.lessions2345.calculator;
 
 import android.content.Context;
 import android.os.Build;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.SpannedString;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.SuperscriptSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -30,6 +35,7 @@ import static org.junit.Assert.assertTrue;
 import static ru.geekbrains.lessions2345.calculator.view.ViewConstants.BORDER_WIDTH;
 import static ru.geekbrains.lessions2345.calculator.view.ViewConstants.DEFAULT_BUTTON_BORDER_RADIUS;
 import static ru.geekbrains.lessions2345.calculator.view.ViewConstants.DEFAULT_BUTTON_RADIUS;
+import static ru.geekbrains.lessions2345.calculator.view.ViewConstants.SQUARE_TEXT_RELATIVE_SIZE;
 
 @RunWith(AndroidJUnit4.class)
 // Устранение ошибки: Failed to create a Robolectric sandbox: Android SDK 30 requires Java 9 (have Java 8)
@@ -199,7 +205,7 @@ public class MainActivityTest {
                 Button plusMinus = (Button) activity.findViewById(R.id.plus_minus);
                 assertEquals("+/-", plusMinus.getText());
                 Button stepen = (Button) activity.findViewById(R.id.stepen);
-                assertEquals("x^n", stepen.getText());
+                assertEquals("xn", stepen.getText().toString());
                 Button sqrt = (Button) activity.findViewById(R.id.sqrt);
                 assertEquals("\u221Ax", sqrt.getText());
                 Button equal = (Button) activity.findViewById(R.id.equal);

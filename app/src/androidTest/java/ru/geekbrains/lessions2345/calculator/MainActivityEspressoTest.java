@@ -242,7 +242,7 @@ public class MainActivityEspressoTest {
         Espresso.onView(withId(R.id.bracket_close)).check(matches(withText(")")));
         Espresso.onView(withId(R.id.percent)).check(matches(withText("%")));
         Espresso.onView(withId(R.id.plus_minus)).check(matches(withText("+/-")));
-        Espresso.onView(withId(R.id.stepen)).check(matches(withText("x^n")));
+        Espresso.onView(withId(R.id.stepen)).check(matches(withText("xn")));
         Espresso.onView(withId(R.id.sqrt)).check(matches(withText("\u221Ax")));
         Espresso.onView(withId(R.id.equal)).check(matches(withText("=")));
         Espresso.onView(withId(R.id.backspace_one)).check(matches(withText("<-")));

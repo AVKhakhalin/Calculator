@@ -473,10 +473,10 @@ public class MainPresenterTest {
         mainPresenter.setNewFunction(Constants.FUNCTIONS.FUNC_SQRT);
         mainPresenter.addNumeral(4);
         Mockito.verify(viewMainContract, times(1)).
-                setInputtedHistoryText("SQRT(4");
+                setInputtedHistoryText("\u221A(4");
         mainPresenter.setBracketClose();
         Mockito.verify(viewMainContract, times(1)).
-                setInputtedHistoryText("SQRT(4)");
+                setInputtedHistoryText("\u221A(4)");
         mainPresenter.setEqual();
         Mockito.verify(viewMainContract, times(1)).
                 setOutputResultText("2");
@@ -497,13 +497,13 @@ public class MainPresenterTest {
         mainPresenter.setNewFunction(Constants.FUNCTIONS.FUNC_SQRT);
         mainPresenter.addNumeral(4);
         Mockito.verify(viewMainContract, times(1)).
-                setInputtedHistoryText("SQRT(4");
+                setInputtedHistoryText("\u221A(4");
         mainPresenter.changeSign();
         Mockito.verify(viewMainContract, times(1)).
-                setInputtedHistoryText("SQRT((-4)");
+                setInputtedHistoryText("\u221A((-4)");
         mainPresenter.setBracketClose();
         Mockito.verify(viewMainContract, times(1)).
-                setInputtedHistoryText("SQRT((-4))");
+                setInputtedHistoryText("\u221A((-4))");
         mainPresenter.setEqual();
         Mockito.verify(viewMainContract, times(1)).
                 showErrorInString(SQRT_MINUS, ERRORS_IN_STRING_TYPE);

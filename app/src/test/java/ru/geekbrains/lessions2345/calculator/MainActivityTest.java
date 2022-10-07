@@ -201,7 +201,7 @@ public class MainActivityTest {
                 Button stepen = (Button) activity.findViewById(R.id.stepen);
                 assertEquals("x^n", stepen.getText());
                 Button sqrt = (Button) activity.findViewById(R.id.sqrt);
-                assertEquals("Kx", sqrt.getText());
+                assertEquals("\u221Ax", sqrt.getText());
                 Button equal = (Button) activity.findViewById(R.id.equal);
                 assertEquals("=", equal.getText());
                 Button backspaceOne = (Button) activity.findViewById(R.id.backspace_one);

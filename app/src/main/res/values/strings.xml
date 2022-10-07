@@ -40,7 +40,7 @@
     <string name="_percent">%</string>
     <string name="_plus_minus">+/-</string>
     <string name="_stepen">x^n</string>
-    <string name="_sqrt">Kx</string>
+    <string name="_sqrt">\u221Ax</string>
     <string name="_backspaceTwo"><![CDATA[<—]]></string>
     <string name="_backspace">C</string>
     <string name="InputHistory_text" />

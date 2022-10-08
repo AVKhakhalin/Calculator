@@ -3,7 +3,7 @@
 
     <!-- Сообщения об ошибках-->
         <!-- Ошибки в введенной строке-->
-    <string name="error_different_number_brackets">Различное количество открытых и закрытых скобок</string>
+    <string name="error_different_number_brackets">Различное количество открытых и закрытых скобок. Каждую открытую скобку нужно закрыть перед вычислением. Функции, например квадратный корень, открывают скобку</string>
     <string name="error_undersquare_low_zero">Подкоренное выражение меньше нуля</string>
     <string name="error_divide_on_zero">Деление на ноль</string>
     <string name="error_inside_brackets_empty">Внутри скобок ничего нет</string>

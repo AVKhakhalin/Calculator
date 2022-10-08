@@ -403,16 +403,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Установка слушателей событий на кнопки
         buttonsNumbersGroups.addAll(Arrays.asList(buttonZero, buttonOne, buttonTwo, buttonThree,
             buttonFour, buttonFive, buttonSix, buttonSeven, buttonEight, buttonNine));
-        buttonsNumbersGroups.forEach( button -> {
-            button.setOnClickListener(this);
-        });
+        for (int counter = 0; counter < buttonsNumbersGroups.size(); counter++) {
+            buttonsNumbersGroups.get(counter).setOnClickListener(this);
+        }
         buttonsActionsGroups.addAll(Arrays.asList(buttonEqual, buttonZapitay,
             buttonBracketClose, buttonBackspace, buttonBackspaceOne, buttonBackspaceTwo,
             buttonBracketOpen, buttonDivide, buttonMinus, buttonMultiply, buttonPercent,
             buttonPlus, buttonPlusMinus, buttonSqrt, buttonStepen));
-        buttonsActionsGroups.forEach( button -> {
-            button.setOnClickListener(this);
-        });
+        for (int counter = 0; counter < buttonsActionsGroups.size(); counter++) {
+            buttonsActionsGroups.get(counter).setOnClickListener(this);
+        }
         buttonChangeTheme.setOnClickListener(this);
     }
 

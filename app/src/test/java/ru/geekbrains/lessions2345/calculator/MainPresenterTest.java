@@ -7,7 +7,6 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import ru.geekbrains.lessions2345.calculator.core.Constants;
-import ru.geekbrains.lessions2345.calculator.view.main.MainActivity;
 import ru.geekbrains.lessions2345.calculator.view.main.MainPresenter;
 import ru.geekbrains.lessions2345.calculator.view.main.ViewMainContract;
 
@@ -131,7 +130,7 @@ public class MainPresenterTest {
         mainPresenter.addNumeral(10);
         Mockito.verify(viewMainContract, times(1)).
                 setInputtedHistoryText("9*10");
-        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERS_MULTY);
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERC_MULTY);
         Mockito.verify(viewMainContract, times(1)).
                 setInputtedHistoryText("9*10%");
         mainPresenter.setEqual();
@@ -150,7 +149,7 @@ public class MainPresenterTest {
         mainPresenter.addNumeral(10);
         Mockito.verify(viewMainContract, times(1)).
                 setInputtedHistoryText("9/10");
-        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERS_MULTY);
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERC_MULTY);
         Mockito.verify(viewMainContract, times(1)).
                 setInputtedHistoryText("9/10%");
         mainPresenter.setEqual();
@@ -169,7 +168,7 @@ public class MainPresenterTest {
         mainPresenter.addNumeral(20);
         Mockito.verify(viewMainContract, times(1)).
                 setInputtedHistoryText("9-20");
-        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERS_MULTY);
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERC_MULTY);
         Mockito.verify(viewMainContract, times(1)).
                 setInputtedHistoryText("9-20%");
         mainPresenter.setEqual();
@@ -188,7 +187,7 @@ public class MainPresenterTest {
         mainPresenter.addNumeral(20);
         Mockito.verify(viewMainContract, times(1)).
                 setInputtedHistoryText("9+20");
-        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERS_MULTY);
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERC_MULTY);
         Mockito.verify(viewMainContract, times(1)).
                 setInputtedHistoryText("9+20%");
         mainPresenter.setEqual();
@@ -582,13 +581,13 @@ public class MainPresenterTest {
     // следующую арифметическую операцию между ними: *, /, +, -
     @Test
     public void showErrorInputting_PERCENT_NEEDS_TWO_NUMBERS_Test() {
-        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERS_MULTY);
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERC_MULTY);
         Mockito.verify(viewMainContract, times(1)).
                 showErrorInputting(PERCENT_NEEDS_TWO_NUMBERS, ERRORS_INPUTTING_TYPE);
         mainPresenter.addNumeral(1);
         Mockito.verify(viewMainContract, times(1)).
                 setInputtedHistoryText("1");
-        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERS_MULTY);
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERC_MULTY);
         Mockito.verify(viewMainContract, times(2)).
                 showErrorInputting(PERCENT_NEEDS_TWO_NUMBERS, ERRORS_INPUTTING_TYPE);
     }
@@ -700,7 +699,7 @@ public class MainPresenterTest {
         mainPresenter.addNumeral(2);
         Mockito.verify(viewMainContract, times(1)).
                 setInputtedHistoryText("1+2");
-        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERS_MULTY);
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERC_MULTY);
         Mockito.verify(viewMainContract, times(1)).
                 setInputtedHistoryText("1+2%");
         mainPresenter.setNewAction(Constants.ACTIONS.ACT_PLUS);
@@ -709,7 +708,7 @@ public class MainPresenterTest {
         mainPresenter.addNumeral(3);
         Mockito.verify(viewMainContract, times(1)).
                 setInputtedHistoryText("1+2%+3");
-        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERS_MULTY);
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERC_MULTY);
         Mockito.verify(viewMainContract, times(1)).
                 showErrorInputting(MULTIPLE_PERCENT_IN_BRACKET, ERRORS_INPUTTING_TYPE);
     }
@@ -743,13 +742,13 @@ public class MainPresenterTest {
         mainPresenter.addNumeral(5);
         Mockito.verify(viewMainContract, times(1)).
                 setInputtedHistoryText("6+(6+5");
-        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERS_MULTY);
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERC_MULTY);
         Mockito.verify(viewMainContract, times(1)).
                 setInputtedHistoryText("6+(6+5%");
         mainPresenter.setBracketClose();
         Mockito.verify(viewMainContract, times(1)).
                 setInputtedHistoryText("6+(6+5%)");
-        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERS_MULTY);
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERC_MULTY);
         Mockito.verify(viewMainContract, times(1)).
                 setInputtedHistoryText("6+(6+5%)%");
         mainPresenter.setEqual();
@@ -777,7 +776,7 @@ public class MainPresenterTest {
         mainPresenter.addNumeral(5);
         Mockito.verify(viewMainContract, times(1)).
                 setInputtedHistoryText("7+(6+5");
-        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERS_MULTY);
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERC_MULTY);
         Mockito.verify(viewMainContract, times(1)).
                 setInputtedHistoryText("7+(6+5%");
         mainPresenter.setBracketClose();
@@ -798,7 +797,7 @@ public class MainPresenterTest {
         mainPresenter.addNumeral(5);
         Mockito.verify(viewMainContract, times(1)).
                 setInputtedHistoryText("7+(6+5%)+(6+5");
-        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERS_MULTY);
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERC_MULTY);
         Mockito.verify(viewMainContract, times(1)).
                 setInputtedHistoryText("7+(6+5%)+(6+5%");
         mainPresenter.setBracketClose();
@@ -823,7 +822,7 @@ public class MainPresenterTest {
         mainPresenter.addNumeral(4);
         Mockito.verify(viewMainContract, times(1)).
                 setInputtedHistoryText("(7+4");
-        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERS_MULTY);
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERC_MULTY);
         Mockito.verify(viewMainContract, times(1)).
                 setInputtedHistoryText("(7+4%");
         mainPresenter.setBracketClose();
@@ -835,7 +834,7 @@ public class MainPresenterTest {
         mainPresenter.addNumeral(5);
         Mockito.verify(viewMainContract, times(1)).
                 setInputtedHistoryText("(7+4%)+5");
-        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERS_MULTY);
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERC_MULTY);
         Mockito.verify(viewMainContract, times(1)).
                 setInputtedHistoryText("(7+4%)+5%");
         mainPresenter.setEqual();

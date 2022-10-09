@@ -321,8 +321,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else if (v.getId() == buttonPlus.getId()) {
             mainPresenter.setNewAction(ACTIONS.ACT_PLUS);
         } else if (v.getId() == buttonPercent.getId()) {
-            // Задаётся универсальное значение ACT_PERS_MULTY и оно уточняется в методе setNewAction
-            mainPresenter.setNewAction(ACTIONS.ACT_PERS_MULTY);
+            // Задаётся универсальное значение ACT_PERC_MULTY и оно уточняется в методе setNewAction
+            mainPresenter.setNewAction(ACTIONS.ACT_PERC_MULTY);
         } else if (v.getId() == buttonPlusMinus.getId()) {
             mainPresenter.changeSign();
         } else if (v.getId() == buttonStepen.getId()) {

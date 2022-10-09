@@ -209,10 +209,10 @@ public class CalcLogicImpl implements CalcLogic, Constants, Serializable {
             if (curNumber > 0) {
                 if ((inputNumbers.get(curNumber).getIsBracket()) &&
                         (inputNumbers.get(curNumber).getIsClose())) {
-                    if ((inputNumbers.get(curNumber).getAction() == ACTIONS.ACT_PERS_MULTY) ||
-                        ((inputNumbers.get(curNumber).getAction() == ACTIONS.ACT_PERS_DIV)) ||
-                        ((inputNumbers.get(curNumber).getAction() == ACTIONS.ACT_PERS_PLUS)) ||
-                        ((inputNumbers.get(curNumber).getAction() == ACTIONS.ACT_PERS_MINUS))) {
+                    if ((inputNumbers.get(curNumber).getAction() == ACTIONS.ACT_PERC_MULTY) ||
+                        ((inputNumbers.get(curNumber).getAction() == ACTIONS.ACT_PERC_DIV)) ||
+                        ((inputNumbers.get(curNumber).getAction() == ACTIONS.ACT_PERC_PLUS)) ||
+                        ((inputNumbers.get(curNumber).getAction() == ACTIONS.ACT_PERC_MINUS))) {
                         // Определение позиции (positionBracketBegin)
                         int positionBracketBegin = curNumber;
                         Dates prevDates;
@@ -228,19 +228,19 @@ public class CalcLogicImpl implements CalcLogic, Constants, Serializable {
                             }
                         }
                         if (inputNumbers.get(positionBracketBegin).getAction() ==
-                            ACTIONS.ACT_PERS_MULTY) {
+                            ACTIONS.ACT_PERC_MULTY) {
                             inputNumbers.get(positionBracketBegin).setAction(ACTIONS.ACT_MULTY);
                         }
                         if (inputNumbers.get(positionBracketBegin).getAction() ==
-                            ACTIONS.ACT_PERS_DIV) {
+                            ACTIONS.ACT_PERC_DIV) {
                             inputNumbers.get(positionBracketBegin).setAction(ACTIONS.ACT_DIV);
                         }
                         if (inputNumbers.get(positionBracketBegin).getAction() ==
-                            ACTIONS.ACT_PERS_PLUS) {
+                            ACTIONS.ACT_PERC_PLUS) {
                             inputNumbers.get(positionBracketBegin).setAction(ACTIONS.ACT_PLUS);
                         }
                         if (inputNumbers.get(positionBracketBegin).getAction() ==
-                            ACTIONS.ACT_PERS_MINUS) {
+                            ACTIONS.ACT_PERC_MINUS) {
                             inputNumbers.get(positionBracketBegin).setAction(ACTIONS.ACT_MINUS);
                         }
                     }
@@ -269,10 +269,10 @@ public class CalcLogicImpl implements CalcLogic, Constants, Serializable {
         if (curNumber > 0) {
             if ((inputNumbers.get(curNumber).getIsBracket()) &&
                     (inputNumbers.get(curNumber).getIsClose())) {
-                if ((inputNumbers.get(curNumber).getAction() == ACTIONS.ACT_PERS_MULTY) ||
-                    ((inputNumbers.get(curNumber).getAction() == ACTIONS.ACT_PERS_DIV)) ||
-                    ((inputNumbers.get(curNumber).getAction() == ACTIONS.ACT_PERS_PLUS)) ||
-                    ((inputNumbers.get(curNumber).getAction() == ACTIONS.ACT_PERS_MINUS))) {
+                if ((inputNumbers.get(curNumber).getAction() == ACTIONS.ACT_PERC_MULTY) ||
+                    ((inputNumbers.get(curNumber).getAction() == ACTIONS.ACT_PERC_DIV)) ||
+                    ((inputNumbers.get(curNumber).getAction() == ACTIONS.ACT_PERC_PLUS)) ||
+                    ((inputNumbers.get(curNumber).getAction() == ACTIONS.ACT_PERC_MINUS))) {
                     // Определение позиции (positionBracketBegin)
                     int positionBracketBegin = curNumber;
                     Dates prevDates;
@@ -288,19 +288,19 @@ public class CalcLogicImpl implements CalcLogic, Constants, Serializable {
                         }
                     }
                     if (inputNumbers.get(positionBracketBegin).getAction() ==
-                        ACTIONS.ACT_PERS_MULTY) {
+                        ACTIONS.ACT_PERC_MULTY) {
                         inputNumbers.get(positionBracketBegin).setAction(ACTIONS.ACT_MULTY);
                     }
                     if (inputNumbers.get(positionBracketBegin).getAction() ==
-                        ACTIONS.ACT_PERS_DIV) {
+                        ACTIONS.ACT_PERC_DIV) {
                         inputNumbers.get(positionBracketBegin).setAction(ACTIONS.ACT_DIV);
                     }
                     if (inputNumbers.get(positionBracketBegin).getAction() ==
-                        ACTIONS.ACT_PERS_PLUS) {
+                        ACTIONS.ACT_PERC_PLUS) {
                         inputNumbers.get(positionBracketBegin).setAction(ACTIONS.ACT_PLUS);
                     }
                     if (inputNumbers.get(positionBracketBegin).getAction() ==
-                        ACTIONS.ACT_PERS_MINUS) {
+                        ACTIONS.ACT_PERC_MINUS) {
                         inputNumbers.get(positionBracketBegin).setAction(ACTIONS.ACT_MINUS);
                     }
                 }
@@ -556,18 +556,18 @@ public class CalcLogicImpl implements CalcLogic, Constants, Serializable {
             case ACT_STEP:
                 result = Math.pow(number1, number2);
                 break;
-            case ACT_PERS_DIV:
+            case ACT_PERC_DIV:
                 result = (number1 * number2 != 0 ? (number1 / (number1 * number2 / 100)) : (0));
                 // Ошибка: деление на ноль
                 if (number1 * number2 == 0) errorCode = ERRORS_IN_STRING.ZERO_DIVIDE;
                 break;
-            case ACT_PERS_MULTY:
+            case ACT_PERC_MULTY:
                 result = number1 * (number1 * number2 / 100);
                 break;
-            case ACT_PERS_PLUS:
+            case ACT_PERC_PLUS:
                 result = number1 + number1 * number2 / 100;
                 break;
-            case ACT_PERS_MINUS:
+            case ACT_PERC_MINUS:
                 result = number1 - number1 * number2 / 100;
                 break;
             case ACT_DIV:
@@ -671,7 +671,7 @@ public class CalcLogicImpl implements CalcLogic, Constants, Serializable {
     @Override // Установка нового действия над числами
     public void setNewAction(ACTIONS action) {
         // Проверка возможности корректного задания знака процента
-        if (action == ACTIONS.ACT_PERS_MULTY) {
+        if (action == ACTIONS.ACT_PERC_MULTY) {
             if (inputNumbers.size() > 1) {
                 if (((!inputNumbers.get(curNumber - 1).getIsValue()) &&
                     (!inputNumbers.get(curNumber - 1).getIsClose())) ||
@@ -699,13 +699,13 @@ public class CalcLogicImpl implements CalcLogic, Constants, Serializable {
                             (!inputNumbers.get(indexSearchPercent).getIsClose()))
                             break;
                         if (((inputNumbers.get(indexSearchPercent).getAction() ==
-                            ACTIONS.ACT_PERS_MULTY) ||
+                            ACTIONS.ACT_PERC_MULTY) ||
                             (inputNumbers.get(indexSearchPercent).getAction() ==
-                            ACTIONS.ACT_PERS_DIV) ||
+                            ACTIONS.ACT_PERC_DIV) ||
                             (inputNumbers.get(indexSearchPercent).getAction() ==
-                            ACTIONS.ACT_PERS_MINUS) ||
+                            ACTIONS.ACT_PERC_MINUS) ||
                             (inputNumbers.get(indexSearchPercent).getAction() ==
-                            ACTIONS.ACT_PERS_PLUS)) &&
+                            ACTIONS.ACT_PERC_PLUS)) &&
                             // Случай, когда % ставится в скобке на ближайшем верхнем уровне
                             // за скобкой, например,
                             // 7 + (5 + 6)% + 5% (здесь два знака процента на ближайших уровнях)
@@ -787,7 +787,7 @@ public class CalcLogicImpl implements CalcLogic, Constants, Serializable {
         } else {
             isPrevDatesComplited = true;
         }
-        if ((action == ACTIONS.ACT_PERS_MULTY) && ((inputNumbers.get(curNumber).getIsValue()) ||
+        if ((action == ACTIONS.ACT_PERC_MULTY) && ((inputNumbers.get(curNumber).getIsValue()) ||
             (!inputNumbers.get(curNumber).getIsValue()))) {
             if ((inputNumbers.get(curNumber).getIsBracket()) &&
                 (inputNumbers.get(curNumber).getIsClose())) {
@@ -806,20 +806,20 @@ public class CalcLogicImpl implements CalcLogic, Constants, Serializable {
                 }
             }
             if (inputNumbers.get(positionBracketBegin).getAction() == ACTIONS.ACT_MULTY) {
-                inputNumbers.get(curNumber).setAction(ACTIONS.ACT_PERS_MULTY);
-                inputNumbers.get(positionBracketBegin).setAction(ACTIONS.ACT_PERS_MULTY);
+                inputNumbers.get(curNumber).setAction(ACTIONS.ACT_PERC_MULTY);
+                inputNumbers.get(positionBracketBegin).setAction(ACTIONS.ACT_PERC_MULTY);
             } else if (inputNumbers.get(positionBracketBegin).getAction() ==
                 ACTIONS.ACT_DIV) {
-                inputNumbers.get(curNumber).setAction(ACTIONS.ACT_PERS_DIV);
-                inputNumbers.get(positionBracketBegin).setAction(ACTIONS.ACT_PERS_DIV);
+                inputNumbers.get(curNumber).setAction(ACTIONS.ACT_PERC_DIV);
+                inputNumbers.get(positionBracketBegin).setAction(ACTIONS.ACT_PERC_DIV);
             } else if (inputNumbers.get(positionBracketBegin).getAction() ==
                 ACTIONS.ACT_PLUS) {
-                inputNumbers.get(curNumber).setAction(ACTIONS.ACT_PERS_PLUS);
-                inputNumbers.get(positionBracketBegin).setAction(ACTIONS.ACT_PERS_PLUS);
+                inputNumbers.get(curNumber).setAction(ACTIONS.ACT_PERC_PLUS);
+                inputNumbers.get(positionBracketBegin).setAction(ACTIONS.ACT_PERC_PLUS);
             } else if (inputNumbers.get(positionBracketBegin).getAction() ==
                 ACTIONS.ACT_MINUS) {
-                inputNumbers.get(curNumber).setAction(ACTIONS.ACT_PERS_MINUS);
-                inputNumbers.get(positionBracketBegin).setAction(ACTIONS.ACT_PERS_MINUS);
+                inputNumbers.get(curNumber).setAction(ACTIONS.ACT_PERC_MINUS);
+                inputNumbers.get(positionBracketBegin).setAction(ACTIONS.ACT_PERC_MINUS);
             } else {
                 // Вывести сообщение о том, что процент нужно применять только
                 // к простым арифметическим операциям *, /, +, -
@@ -827,7 +827,7 @@ public class CalcLogicImpl implements CalcLogic, Constants, Serializable {
                 inputNumbers.get(curNumber).setIsPercent(false);
             }
         } else {
-            if ((isPrevDatesComplited) && (action != ACTIONS.ACT_PERS_MULTY)) {
+            if ((isPrevDatesComplited) && (action != ACTIONS.ACT_PERC_MULTY)) {
                 add(false, false, FUNCTIONS.FUNC_NO, 1, 0d,
                     false, action, false);
                 curNumber++;
@@ -937,7 +937,7 @@ public class CalcLogicImpl implements CalcLogic, Constants, Serializable {
                         stringAction = "^" + outputStringFunctionOpen(curDates);
                     }
                     break;
-                case ACT_PERS_MULTY:
+                case ACT_PERC_MULTY:
                     if ((isBracket) && (!isClose)) {
                         stringAction = "*" + outputStringFunctionOpen(curDates);
                     } else if (isBracket) {
@@ -947,7 +947,7 @@ public class CalcLogicImpl implements CalcLogic, Constants, Serializable {
                             notZeroOrZero + "%" + (isClose ? ")" : "");
                     }
                     break;
-                case ACT_PERS_DIV:
+                case ACT_PERC_DIV:
                     if ((isBracket) && (!isClose)) {
                         stringAction = "/" + outputStringFunctionOpen(curDates);
                     } else if (isBracket) {
@@ -957,7 +957,7 @@ public class CalcLogicImpl implements CalcLogic, Constants, Serializable {
                             notZeroOrZero + "%" + (isClose ? ")" : "");
                     }
                     break;
-                case ACT_PERS_PLUS:
+                case ACT_PERC_PLUS:
                     if ((isBracket) && (!isClose)) {
                         stringAction = "+" + outputStringFunctionOpen(curDates);
                     } else if (isBracket) {
@@ -968,7 +968,7 @@ public class CalcLogicImpl implements CalcLogic, Constants, Serializable {
                             (isClose ? ")" : "");
                     }
                     break;
-                case ACT_PERS_MINUS:
+                case ACT_PERC_MINUS:
                     if ((isBracket) && (!isClose)) {
                         stringAction = "-" + outputStringFunctionOpen(curDates);
                     } else if (isBracket) {

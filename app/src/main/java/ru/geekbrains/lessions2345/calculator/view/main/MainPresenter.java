@@ -19,6 +19,7 @@ import java.io.Serializable;
 import java.util.Locale;
 import ru.geekbrains.lessions2345.calculator.R;
 import ru.geekbrains.lessions2345.calculator.core.CalcLogic;
+import ru.geekbrains.lessions2345.calculator.core.CalcLogicImpl;
 import ru.geekbrains.lessions2345.calculator.core.Constants;
 import ru.geekbrains.lessions2345.calculator.view.ViewConstants;
 import ru.geekbrains.lessions2345.calculator.view.ViewContract;
@@ -26,7 +27,7 @@ import ru.geekbrains.lessions2345.calculator.view.ViewContract;
 public class MainPresenter implements PresenterMainContract, Serializable, Parcelable {
     /** Исходные данные */ //region
     private ViewMainContract viewMain;
-    private final CalcLogic calcLogic = new CalcLogic(this::showErrorInputting);
+    private final CalcLogic calcLogicImpl = new CalcLogicImpl(this::showErrorInputting);
     public boolean doChangeRadius = false;
     //endregion
 
@@ -57,12 +58,12 @@ public class MainPresenter implements PresenterMainContract, Serializable, Parce
 
     @Override
     public void setMaxNumberSymbolsInOutputTextField(int maxNumberSymbolsInOutputTextField) {
-        calcLogic.setMaxNumberSymbolsInOutputTextField(maxNumberSymbolsInOutputTextField);
+        calcLogicImpl.setMaxNumberSymbolsInOutputTextField(maxNumberSymbolsInOutputTextField);
     }
 
     @Override
     public double addNumeral(int newNumeral) {
-        double result = calcLogic.addNumeral(newNumeral);
+        double result = calcLogicImpl.addNumeral(newNumeral);
         if (viewMain != null) viewMain.setInputtedHistoryText(String.format(Locale.getDefault(),
                 "%s", createOutput()));
         return result;
@@ -70,29 +71,29 @@ public class MainPresenter implements PresenterMainContract, Serializable, Parce
 
     @Override
     public void calculate() {
-        calcLogic.calculate();
+        calcLogicImpl.calculate();
     }
 
     @Override
     public void setCurZapitay() {
-        calcLogic.setCurZapitay();
+        calcLogicImpl.setCurZapitay();
         if (viewMain != null) viewMain.setInputtedHistoryText(String.format(Locale.getDefault(),
                 "%s", createOutput()));
     }
 
     @Override
     public void clearAll() {
-        calcLogic.clearAll();
+        calcLogicImpl.clearAll();
         calculate();
         getError();
-        if (viewMain != null) viewMain.setOutputResultText(calcLogic.getFinalResult());
+        if (viewMain != null) viewMain.setOutputResultText(calcLogicImpl.getFinalResult());
         if (viewMain != null) viewMain.setInputtedHistoryText(String.format(Locale.getDefault(),
                 "%s", createOutput()));
     }
 
     @Override
     public void clearOne() {
-        if (calcLogic.clearOne()) {
+        if (calcLogicImpl.clearOne()) {
             // TODO: Действие, если нужно как-то по-особому обновить поле с результатом
         }
         if (viewMain != null) viewMain.setInputtedHistoryText(String.format(Locale.getDefault(),
@@ -101,7 +102,7 @@ public class MainPresenter implements PresenterMainContract, Serializable, Parce
 
     @Override
     public void clearTwo() {
-        if (calcLogic.clearTwo()) {
+        if (calcLogicImpl.clearTwo()) {
             // TODO: Действие, если нужно как-то по-особому обновить поле с результатом
         }
         if (viewMain != null) viewMain.setInputtedHistoryText(String.format(Locale.getDefault(),
@@ -110,21 +111,21 @@ public class MainPresenter implements PresenterMainContract, Serializable, Parce
 
     @Override
     public void setNewAction(Constants.ACTIONS action) {
-        calcLogic.setNewAction(action);
+        calcLogicImpl.setNewAction(action);
         if (viewMain != null) viewMain.setInputtedHistoryText(String.format(Locale.getDefault(),
                 "%s", createOutput()));
     }
 
     @Override
     public void changeSign() {
-        calcLogic.changeSign();
+        calcLogicImpl.changeSign();
         if (viewMain != null) viewMain.setInputtedHistoryText(String.format(Locale.getDefault(),
                 "%s", createOutput()));
     }
 
     @Override
     public String setNewFunction(Constants.FUNCTIONS typeFuncInBracket) {
-        String result = calcLogic.setNewFunction(typeFuncInBracket);
+        String result = calcLogicImpl.setNewFunction(typeFuncInBracket);
         if (viewMain != null) viewMain.setInputtedHistoryText(String.format(Locale.getDefault(),
                 "%s", createOutput()));
         return result;
@@ -132,31 +133,31 @@ public class MainPresenter implements PresenterMainContract, Serializable, Parce
 
     @Override
     public boolean getPressedZapitay() {
-        return calcLogic.getPressedZapitay();
+        return calcLogicImpl.getPressedZapitay();
     }
 
     @Override
     public String createOutput() {
-        return calcLogic.createOutput();
+        return calcLogicImpl.createOutput();
     }
 
     @Override
     public String getFinalResult() {
-        return calcLogic.getFinalResult();
+        return calcLogicImpl.getFinalResult();
     }
 
     @Override
     public void setEqual() {
-        calcLogic.calculate();
+        calcLogicImpl.calculate();
         getError();
-        if (viewMain != null) viewMain.setOutputResultText(calcLogic.getFinalResult());
+        if (viewMain != null) viewMain.setOutputResultText(calcLogicImpl.getFinalResult());
     }
 
     @Override
     public void getError() {
         if (viewMain != null) viewMain.showErrorInString(
-            calcLogic.getErrorCode(), ERRORS_IN_STRING_TYPE);
-        calcLogic.clearErrorCode();
+            calcLogicImpl.getErrorCode(), ERRORS_IN_STRING_TYPE);
+        calcLogicImpl.clearErrorCode();
     }
 
     @Override
@@ -168,13 +169,13 @@ public class MainPresenter implements PresenterMainContract, Serializable, Parce
     @Override
     public void setBracketClose() {
         if (viewMain != null) viewMain.setInputtedHistoryText(String.format(Locale.getDefault(),
-                "%s", calcLogic.closeBracket()));
+                "%s", calcLogicImpl.closeBracket()));
     }
 
     @Override
     public void getInit() {
         if (viewMain != null) {
-            viewMain.setOutputResultText(calcLogic.getFinalResult());
+            viewMain.setOutputResultText(calcLogicImpl.getFinalResult());
             viewMain.setInputtedHistoryText(String.format(Locale.getDefault(),
                     "%s", createOutput()));
         }

@@ -23,7 +23,7 @@ public interface ViewConstants {
         NIGHT_THEME        // Ночная тема
     }
 
-    // SpannableText
+    // Изменение размера текста для отображения степени
     Float SQUARE_TEXT_RELATIVE_SIZE = 0.65f;
 
 }

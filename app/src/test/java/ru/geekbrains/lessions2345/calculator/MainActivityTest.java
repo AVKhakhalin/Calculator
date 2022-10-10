@@ -38,7 +38,6 @@ import static ru.geekbrains.lessions2345.calculator.view.ViewConstants.DEFAULT_B
 import static ru.geekbrains.lessions2345.calculator.view.ViewConstants.SQUARE_TEXT_RELATIVE_SIZE;
 
 @RunWith(AndroidJUnit4.class)
-// Устранение ошибки: Failed to create a Robolectric sandbox: Android SDK 30 requires Java 9 (have Java 8)
 @Config(sdk = {Build.VERSION_CODES.O_MR1})
 public class MainActivityTest {
 
@@ -65,8 +64,7 @@ public class MainActivityTest {
     }
 
     /** Тестирование корректности загрузки MainActivity */ //region
-    @Test
-    // Проверка корректности создания класса MainActivity
+    @Test // Проверка корректности создания класса MainActivity
     public void activity_AssertNotNull() {
         // Получаем объект MainActivity
         scenario.onActivity(Assert::assertNotNull);
@@ -90,8 +88,8 @@ public class MainActivityTest {
             }
         });
     }
-    @Test // Проверка наличия в макете MainActivity элементов дневной темы
-    public void activityDayElements_NotNull() {
+    @Test // Проверка наличия в макете MainActivity элементов калькулятора
+    public void activityElements_NotNull() {
         scenario.onActivity(new ActivityScenario.ActivityAction<MainActivity>() {
             @Override
             public void perform(MainActivity activity) {
@@ -161,7 +159,7 @@ public class MainActivityTest {
     //endregion
 
     /** Проверка наличия корректного текста в элементах */ //region
-    @Test // Проверка наличия текста в поле text для элементов дневной темы
+    @Test // Проверка наличия текста в поле text для элементов калькулятора
     public void activityDayElements_HasText() {
         scenario.onActivity(new ActivityScenario.ActivityAction<MainActivity>() {
             @Override
@@ -229,7 +227,7 @@ public class MainActivityTest {
     //endregion
 
     /** Проверка видимости элементов на макете MainActivity */ //region
-    @Test // Проверка видимости элемента с фоном
+    @Test // Проверка видимости элемента калькулятора с фоном
     public void activityBackgroundTheme_IsVisible() {
         scenario.onActivity(new ActivityScenario.ActivityAction<MainActivity>() {
             @Override
@@ -240,7 +238,7 @@ public class MainActivityTest {
             }
         });
     }
-    @Test // Проверка видимости элементов
+    @Test // Проверка видимости элементов калькулятора
     public void activityDayElements_AreVisible() {
         scenario.onActivity(new ActivityScenario.ActivityAction<MainActivity>() {
             @Override
@@ -336,8 +334,8 @@ public class MainActivityTest {
     //endregion
 
     /** Проверка работоспособности элементов */ //region
-    @Test // Проверка работоспособности элементов дневной темы
-    public void activityDayElements_IsWorking() {
+    @Test // Проверка работоспособности элементов калькулятора
+    public void activityElements_IsWorking() {
         scenario.onActivity(new ActivityScenario.ActivityAction<MainActivity>() {
             @Override
             public void perform(MainActivity activity) {

@@ -68,7 +68,7 @@ public class MainActivityEspressoTest {
         });
     }
 
-    @Test // Проверка наличия элементов
+    @Test // Проверка наличия элементов калькулятора
     public void activityDayThemeElements_NotNull() {
         scenario.onActivity(new ActivityScenario.ActivityAction<MainActivity>() {
             @Override
@@ -150,8 +150,8 @@ public class MainActivityEspressoTest {
         Espresso.onView(withId(R.id.background_theme)).check(matches(isDisplayed()));
     }
 
-    @Test // Проверка частичного отображения на экране элементов дневной темы
-    public void activityDayThemeElements_Displayed() {
+    @Test // Проверка частичного отображения на экране элементов калькулятора
+    public void activityElements_Displayed() {
         Espresso.onView(withId(R.id.zero)).check(matches(isDisplayed()));
         Espresso.onView(withId(R.id.one)).check(matches(isDisplayed()));
         Espresso.onView(withId(R.id.two)).check(matches(isDisplayed()));
@@ -188,7 +188,7 @@ public class MainActivityEspressoTest {
         onView(withId(R.id.background_theme)).check(matches(isCompletelyDisplayed()));
     }
 
-    @Test // Проверка полного отображения на экране элементов дневной темы
+    @Test // Проверка полного отображения на экране элементов калькулятора
     public void activityDayThemeElements_CompletedDisplayed() {
         Espresso.onView(withId(R.id.zero)).check(matches(isCompletelyDisplayed()));
         Espresso.onView(withId(R.id.one)).check(matches(isCompletelyDisplayed()));
@@ -221,7 +221,7 @@ public class MainActivityEspressoTest {
         Espresso.onView(withId(R.id.inputted_history_text)).check(matches(isCompletelyDisplayed()));
     }
 
-    @Test // Проверка отображения корректного текста на элементах
+    @Test // Проверка отображения корректного текста на элементах калькулятора
     public void activityDayThemeElements_IsCorrectText() {
         Espresso.onView(withId(R.id.zero)).check(matches(withText("0")));
         Espresso.onView(withId(R.id.one)).check(matches(withText("1")));

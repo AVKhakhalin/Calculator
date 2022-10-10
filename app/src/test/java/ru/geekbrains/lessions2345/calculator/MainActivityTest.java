@@ -38,7 +38,6 @@ import static ru.geekbrains.lessions2345.calculator.view.ViewConstants.DEFAULT_B
 import static ru.geekbrains.lessions2345.calculator.view.ViewConstants.SQUARE_TEXT_RELATIVE_SIZE;
 
 @RunWith(AndroidJUnit4.class)
-// Устранение ошибки: Failed to create a Robolectric sandbox: Android SDK 30 requires Java 9 (have Java 8)
 @Config(sdk = {Build.VERSION_CODES.O_MR1})
 public class MainActivityTest {
 

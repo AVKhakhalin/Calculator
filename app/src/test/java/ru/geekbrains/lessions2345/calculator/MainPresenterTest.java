@@ -45,7 +45,7 @@ public class MainPresenterTest {
         mainPresenter = new MainPresenter(viewMainContract);
     }
 
-    @Test // Проверка работоспособности метода addNumeral()
+    @Test // 1. Проверка работоспособности метода addNumeral(): 1234567890
     public void addNumeral_Test() {
         assertEquals(mainPresenter.addNumeral(1), 1D);
         assertEquals(mainPresenter.addNumeral(2), 12D);
@@ -59,7 +59,7 @@ public class MainPresenterTest {
         assertEquals(mainPresenter.addNumeral(0), 1234567890D);
     }
 
-    @Test // Проверка корректности выполнения метода createOutput()
+    @Test // 2. Проверка корректности выполнения метода createOutput(): 2
     public void createOutput_Test() {
         mainPresenter.addNumeral(2);
         Mockito.verify(viewMainContract, times(1)).
@@ -67,7 +67,7 @@ public class MainPresenterTest {
         assertEquals(mainPresenter.createOutput(), "2");
     }
 
-    @Test // Проверка корректности выполнения метода getFinalResult()
+    @Test // 3. Проверка корректности выполнения метода getFinalResult(): 2
     public void getFinalResult_Test() {
         mainPresenter.addNumeral(2);
         Mockito.verify(viewMainContract, times(1)).
@@ -76,14 +76,14 @@ public class MainPresenterTest {
         assertEquals(mainPresenter.getFinalResult(), "2");
     }
 
-    @Test // Проверка корректности выполнения setBracketOpen()
+    @Test // 4. Проверка корректности выполнения setBracketOpen(): (
     public void setBracketOpen_Test() {
         mainPresenter.setBracketOpen();
         Mockito.verify(viewMainContract, times(2)).
                 setInputtedHistoryText("(");
     }
 
-    @Test // Проверка корректности выполнения setBracketClose()
+    @Test // 5. Проверка корректности выполнения setBracketClose(): (1)
     public void setBracketClose_Test() {
         mainPresenter.setBracketOpen();
         Mockito.verify(viewMainContract, times(2)).
@@ -92,18 +92,24 @@ public class MainPresenterTest {
         mainPresenter.setBracketClose();
         Mockito.verify(viewMainContract, times(1)).
                 setInputtedHistoryText("(1)");
+        mainPresenter.setEqual();
+        Mockito.verify(viewMainContract, times(1)).
+                setOutputResultText("1");
     }
 
-    // Проверка корректности выполнения setBracketClose()
-    // при попытке её закрыть в самом начале строки
+    // 6. Проверка выполнения setBracketClose()
+    // при попытке её закрыть в самом начале строки: )
     @Test
     public void setBracketClose_IN_BEGIN_ROW_Test() {
         mainPresenter.setBracketClose();
         Mockito.verify(viewMainContract, times(1)).
                 setInputtedHistoryText("");
+        mainPresenter.setEqual();
+        Mockito.verify(viewMainContract, times(1)).
+                setOutputResultText("0");
     }
 
-    @Test // Проверка корректности выполнения действия возведения в степень
+    @Test // 7. Проверка корректности выполнения действия возведения в степень: 2^3=8
     public void setNewAction_ACT_STEP_Test() {
         mainPresenter.addNumeral(2);
         Mockito.verify(viewMainContract, times(1)).
@@ -119,7 +125,9 @@ public class MainPresenterTest {
                 setOutputResultText("8");
     }
 
-    @Test // Проверка корректности выполнения действия произведения на процент от числа
+    // 8. Проверка корректности выполнения действия произведения
+    // на процент от числа: 9*10%=8,1
+    @Test
     public void setNewAction_ACT_PERS_MULTY_Test() {
         mainPresenter.addNumeral(9);
         Mockito.verify(viewMainContract, times(1)).
@@ -138,7 +146,7 @@ public class MainPresenterTest {
                 setOutputResultText("8,1");
     }
 
-    @Test // Проверка корректности выполнения действия деления на процент от числа
+    @Test // 9. Проверка корректности выполнения действия деления на процент от числа: 9/10%=10
     public void setNewAction_ACT_PERS_DIV_Test() {
         mainPresenter.addNumeral(9);
         Mockito.verify(viewMainContract, times(1)).
@@ -157,7 +165,7 @@ public class MainPresenterTest {
                 setOutputResultText("10");
     }
 
-    @Test // Проверка корректности выполнения действия вычитания процента от числа
+    @Test // 10. Проверка корректности выполнения действия вычитания процента от числа: 9-20%=7.2
     public void setNewAction_ACT_PERS_MINUS_Test() {
         mainPresenter.addNumeral(9);
         Mockito.verify(viewMainContract, times(1)).
@@ -176,7 +184,7 @@ public class MainPresenterTest {
                 setOutputResultText("7,2");
     }
 
-    @Test // Проверка корректности выполнения действия сложения с процентом от числа
+    @Test // 11. Проверка корректности выполнения действия сложения с процентом от числа: 9+20%=10.8
     public void setNewAction_ACT_PERS_PLUS_Test() {
         mainPresenter.addNumeral(9);
         Mockito.verify(viewMainContract, times(1)).
@@ -195,23 +203,23 @@ public class MainPresenterTest {
                 setOutputResultText("10,8");
     }
 
-    @Test // Проверка корректности выполнения действия умножения
+    @Test // 12. Проверка корректности выполнения действия умножения: 8*7=56
     public void setNewAction_ACT_MULTY_Test() {
-        mainPresenter.addNumeral(1);
+        mainPresenter.addNumeral(8);
         Mockito.verify(viewMainContract, times(1)).
-                setInputtedHistoryText("1");
+                setInputtedHistoryText("8");
         mainPresenter.setNewAction(Constants.ACTIONS.ACT_MULTY);
         Mockito.verify(viewMainContract, times(1)).
-                setInputtedHistoryText("1*");
-        mainPresenter.addNumeral(1);
+                setInputtedHistoryText("8*");
+        mainPresenter.addNumeral(7);
         Mockito.verify(viewMainContract, times(1)).
-                setInputtedHistoryText("1*1");
+                setInputtedHistoryText("8*7");
         mainPresenter.setEqual();
         Mockito.verify(viewMainContract, times(1)).
-                setOutputResultText("1");
+                setOutputResultText("56");
     }
 
-    @Test // Проверка корректности выполнения действия деления
+    @Test // 13. Проверка корректности выполнения действия деления: 6/2=3
     public void setNewAction_ACT_DIV_Test() {
         mainPresenter.addNumeral(6);
         Mockito.verify(viewMainContract, times(1)).
@@ -227,7 +235,7 @@ public class MainPresenterTest {
                 setOutputResultText("3");
     }
 
-    @Test // Проверка корректности выполнения действия вычитания
+    @Test // 14. Проверка корректности выполнения действия вычитания: 1-1=0
     public void setNewAction_ACT_MINUS_Test() {
         mainPresenter.addNumeral(1);
         Mockito.verify(viewMainContract, times(1)).
@@ -243,7 +251,7 @@ public class MainPresenterTest {
                 setOutputResultText("0");
     }
 
-    @Test // Проверка корректности выполнения действия сложения
+    @Test // 15. Проверка корректности выполнения действия сложения: 1+1=2
     public void setNewAction_ACT_PLUS_Test() {
         mainPresenter.addNumeral(1);
         Mockito.verify(viewMainContract, times(1)).
@@ -259,7 +267,8 @@ public class MainPresenterTest {
             setOutputResultText("2");
     }
 
-    // Проверка установки максимального количества символов для отображения в результирующем поле
+    // 16. Проверка установки максимального количества символов
+    // для отображения в результирующем поле: 1234567890123=1,234568e+12, 1234567890123=1,235e+12
     @Test
     public void setMaxNumberSymbolsInOutputTextField_Test() {
         mainPresenter.addNumeral(1);
@@ -311,7 +320,7 @@ public class MainPresenterTest {
             setOutputResultText("1,235e+12");
     }
 
-    @Test // Проверка корректности работы метод calculate()
+    @Test // 17. Проверка корректности работы метод calculate(): 1+2*3-5/2=4.5
     public void calculate_Test() {
         mainPresenter.addNumeral(1);
         Mockito.verify(viewMainContract, times(1)).
@@ -344,7 +353,7 @@ public class MainPresenterTest {
         assertEquals(mainPresenter.getFinalResult(), "4,5");
     }
 
-    @Test // Проверка корректности работы метода setEqual()
+    @Test // 18. Проверка корректности работы метода setEqual(): 1+2*3-5/2=4.5
     public void setEqual_Test() {
         mainPresenter.addNumeral(1);
         Mockito.verify(viewMainContract, times(1)).
@@ -378,7 +387,7 @@ public class MainPresenterTest {
                 setOutputResultText("4,5");
     }
 
-    @Test // Проверка корректности работы метода setCurZapitay()
+    @Test // 19. Проверка корректности работы метода setCurZapitay(): 12.2
     public void setCurZapitay_Test() {
         mainPresenter.addNumeral(1);
         Mockito.verify(viewMainContract, times(1)).
@@ -393,9 +402,12 @@ public class MainPresenterTest {
         mainPresenter.addNumeral(2);
         Mockito.verify(viewMainContract, times(1)).
                 setInputtedHistoryText("12.2");
+        mainPresenter.setEqual();
+        Mockito.verify(viewMainContract, times(1)).
+                setOutputResultText("12,2");
     }
 
-    @Test // Проверка корректности работы метода getPressedZapitay()
+    @Test // 20. Проверка корректности работы метода getPressedZapitay(): 1.2
     public void getPressedZapitay_Test() {
         mainPresenter.addNumeral(1);
         Mockito.verify(viewMainContract, times(1)).
@@ -409,9 +421,12 @@ public class MainPresenterTest {
         assertTrue(mainPresenter.getPressedZapitay());
         mainPresenter.setCurZapitay();
         assertFalse(mainPresenter.getPressedZapitay());
+        mainPresenter.setEqual();
+        Mockito.verify(viewMainContract, times(1)).
+                setOutputResultText("1,2");
     }
 
-    @Test // Проверка корректности работы метода clearAll()
+    @Test // 21. Проверка корректности работы метода clearAll(): 12"C"
     public void clearAll_Test() {
         mainPresenter.addNumeral(1);
         Mockito.verify(viewMainContract, times(1)).
@@ -422,9 +437,12 @@ public class MainPresenterTest {
         mainPresenter.clearAll();
         Mockito.verify(viewMainContract, times(1)).
                 setInputtedHistoryText("");
+        mainPresenter.setEqual();
+        Mockito.verify(viewMainContract, times(2)).
+                setOutputResultText("0");
     }
 
-    @Test // Проверка корректности работы метода clearOne()
+    @Test // 22. Проверка корректности работы метода clearOne(): 12"<-"
     public void clearOne_Test() {
         mainPresenter.addNumeral(1);
         Mockito.verify(viewMainContract, times(1)).
@@ -433,13 +451,14 @@ public class MainPresenterTest {
         Mockito.verify(viewMainContract, times(1)).
                 setInputtedHistoryText("12");
         mainPresenter.clearOne();
-        // TODO: Не понятно, почему метод setInputedHistoryText() вызывается 2 раза.
-        //  Надо потом разобраться. Благодаря тестированию это было установлено ;)
         Mockito.verify(viewMainContract, times(2)).
                 setInputtedHistoryText("1");
+        mainPresenter.setEqual();
+        Mockito.verify(viewMainContract, times(1)).
+                setOutputResultText("1");
     }
 
-    @Test // Проверка корректности работы метода clearTwo()
+    @Test // 23. Проверка корректности работы метода clearTwo(): 1-2"<--"
     public void clearTwo_Test() {
         mainPresenter.addNumeral(1);
         Mockito.verify(viewMainContract, times(1)).
@@ -451,13 +470,14 @@ public class MainPresenterTest {
         Mockito.verify(viewMainContract, times(1)).
                 setInputtedHistoryText("1-2");
         mainPresenter.clearTwo();
-        // TODO: Не понятно, почему метод setInputedHistoryText() вызывается 2 раза.
-        //  Надо потом разобраться. Благодаря тестированию это было установлено ;)
         Mockito.verify(viewMainContract, times(2)).
                 setInputtedHistoryText("1");
+        mainPresenter.setEqual();
+        Mockito.verify(viewMainContract, times(1)).
+                setOutputResultText("1");
     }
 
-    @Test // Проверка корректности работы метода changeSign()
+    @Test // 24. Проверка корректности работы метода changeSign(): 1"+/-"
     public void changeSign_Test() {
         mainPresenter.addNumeral(1);
         Mockito.verify(viewMainContract, times(1)).
@@ -465,9 +485,12 @@ public class MainPresenterTest {
         mainPresenter.changeSign();
         Mockito.verify(viewMainContract, times(1)).
                 setInputtedHistoryText("-1");
+        mainPresenter.setEqual();
+        Mockito.verify(viewMainContract, times(1)).
+                setOutputResultText("-1");
     }
 
-    @Test // Проверка корректности выполнения setNewFunction()
+    @Test // 25. Проверка корректности выполнения setNewFunction(): √(4)
     public void setNewFunction_Test() {
         mainPresenter.setNewFunction(Constants.FUNCTIONS.FUNC_SQRT);
         mainPresenter.addNumeral(4);
@@ -481,7 +504,7 @@ public class MainPresenterTest {
                 setOutputResultText("2");
     }
 
-    @Test // Проверка корректности выполнения getError() без ошибок
+    @Test // 26. Проверка корректности выполнения getError() без ошибок: 4
     public void getError_NO_ERRORS_Test() {
         mainPresenter.addNumeral(4);
         Mockito.verify(viewMainContract, times(1)).
@@ -491,7 +514,7 @@ public class MainPresenterTest {
                 showErrorInString(NO, ERRORS_IN_STRING_TYPE);
     }
 
-    @Test // Проверка корректности выполнения getError() для подкоренного значения
+    @Test // 27. Проверка корректности выполнения getError() для подкоренного выражения: √((-4))
     public void getError_SQRT_MINUS_Test() {
         mainPresenter.setNewFunction(Constants.FUNCTIONS.FUNC_SQRT);
         mainPresenter.addNumeral(4);
@@ -508,7 +531,8 @@ public class MainPresenterTest {
                 showErrorInString(SQRT_MINUS, ERRORS_IN_STRING_TYPE);
     }
 
-    @Test // Проверка корректности выполнения getError() для равенства открытых и закрытых скобок
+    // 28. Проверка корректности выполнения getError() для равенства открытых и закрытых скобок: (4
+    @Test
     public void getError_EQUALS_OPEN_CLOSED_BRACKETS_Test() {
         mainPresenter.setBracketOpen();
         Mockito.verify(viewMainContract, times(2)).
@@ -521,7 +545,7 @@ public class MainPresenterTest {
                 showErrorInString(BRACKET_DISBALANCE, ERRORS_IN_STRING_TYPE);
     }
 
-    @Test // Проверка корректности выполнения getError() для деления на ноль
+    @Test // 29. Проверка корректности выполнения getError() для деления на ноль: 4/0
     public void getError_ZERO_DIVIDE_Test() {
         mainPresenter.addNumeral(4);
         Mockito.verify(viewMainContract, times(1)).
@@ -537,8 +561,8 @@ public class MainPresenterTest {
                 showErrorInString(ZERO_DIVIDE, ERRORS_IN_STRING_TYPE);
     }
 
-    // Проверка корректности выполнения showErrorInputting()
-    // для простановки числа сразу же после скобки без указания действйи с ним
+    // 30. Проверка корректности выполнения showErrorInputting()
+    // для простановки числа сразу же после скобки без указания действйи с ним: (5)1
     @Test
     public void showErrorInputting_NUMBER_AFTER_BRACKET_Test() {
         mainPresenter.setBracketOpen();
@@ -555,8 +579,9 @@ public class MainPresenterTest {
                 showErrorInputting(NUMBER_AFTER_BRACKET, ERRORS_INPUTTING_TYPE);
     }
 
-    // Проверка корректности выполнения showErrorInputting()
-    // для показа уведомление о том, что для задания целой части числа вполне хватит и одного нуля
+    // 31. Проверка корректности выполнения showErrorInputting()
+    // для показа уведомление о том, что для задания нулевой целой части числа
+    // вполне хватит и одного нуля: 00
     @Test
     public void showErrorInputting_MANY_ZERO_IN_INTEGER_PART_Test() {
         mainPresenter.addNumeral(0);
@@ -567,18 +592,33 @@ public class MainPresenterTest {
                 showErrorInputting(MANY_ZERO_IN_INTEGER_PART, ERRORS_INPUTTING_TYPE);
     }
 
-    // Проверка корректности выполнения showErrorInputting()
-    // для показа уведомления, если не ввести число сначала
+    // 32. Проверка корректности выполнения showErrorInputting()
+    // для показа уведомления, если не ввести число сначала:
     @Test
     public void showErrorInputting_INPUT_NUMBER_FIRST_Test() {
-        mainPresenter.setNewAction(Constants.ACTIONS.ACT_MINUS);
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_STEP);
         Mockito.verify(viewMainContract, times(1)).
+                showErrorInputting(INPUT_NUMBER_FIRST, ERRORS_INPUTTING_TYPE);
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERC_MULTY);
+        Mockito.verify(viewMainContract, times(1)).
+                showErrorInputting(PERCENT_NEEDS_TWO_NUMBERS, ERRORS_INPUTTING_TYPE);
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_MULTY);
+        Mockito.verify(viewMainContract, times(2)).
+                showErrorInputting(INPUT_NUMBER_FIRST, ERRORS_INPUTTING_TYPE);
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_DIV);
+        Mockito.verify(viewMainContract, times(3)).
+                showErrorInputting(INPUT_NUMBER_FIRST, ERRORS_INPUTTING_TYPE);
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_MINUS);
+        Mockito.verify(viewMainContract, times(4)).
+                showErrorInputting(INPUT_NUMBER_FIRST, ERRORS_INPUTTING_TYPE);
+        mainPresenter.setNewAction(Constants.ACTIONS.ACT_PLUS);
+        Mockito.verify(viewMainContract, times(5)).
                 showErrorInputting(INPUT_NUMBER_FIRST, ERRORS_INPUTTING_TYPE);
     }
 
-    // Проверка корректности выполнения showErrorInputting()
+    // 33. Проверка корректности выполнения showErrorInputting()
     // для показа уведомления о том, что для применения процента нужно ввести два числа и любую
-    // следующую арифметическую операцию между ними: *, /, +, -
+    // следующую арифметическую операцию между ними (*, /, +, -):  %, 1%
     @Test
     public void showErrorInputting_PERCENT_NEEDS_TWO_NUMBERS_Test() {
         mainPresenter.setNewAction(Constants.ACTIONS.ACT_PERC_MULTY);
@@ -592,9 +632,9 @@ public class MainPresenterTest {
                 showErrorInputting(PERCENT_NEEDS_TWO_NUMBERS, ERRORS_INPUTTING_TYPE);
     }
 
-    // Проверка корректности выполнения showErrorInputting()
+    // 34. Проверка корректности выполнения showErrorInputting()
     // для показа уведомления о том, что нельзя производить смену знака,
-    // предварительно не задав число или функцию
+    // предварительно не задав число или функцию: (1)"+/-"
     @Test
     public void showErrorInputting_CHANGE_SIGN_EMPTY_Test() {
         mainPresenter.changeSign();
@@ -614,9 +654,9 @@ public class MainPresenterTest {
                 showErrorInputting(CHANGE_SIGN_EMPTY, ERRORS_INPUTTING_TYPE);
     }
 
-    // Проверка корректности выполнения showErrorInputting()
+    // 35. Проверка корректности выполнения showErrorInputting()
     // для показа уведомления о том, что нельзя создать новую открытую скобку,
-    // потому что не указано перед скобкой действие
+    // потому что не указано перед скобкой действие: (1)(
     @Test
     public void showErrorInputting_OPEN_BRACKET_ON_EMPTY_ACTION_Test() {
         mainPresenter.setBracketOpen();
@@ -633,9 +673,9 @@ public class MainPresenterTest {
                 showErrorInputting(OPEN_BRACKET_ON_EMPTY_ACTION, ERRORS_INPUTTING_TYPE);
     }
 
-    // Проверка корректности выполнения showErrorInputting()
+    // 36. Проверка корректности выполнения showErrorInputting()
     // для показа уведомления о том, что нельзя поставить закрывающую скобку, если
-    // предварительно не поставить ей соответствующую открывающую скобку
+    // предварительно не поставить ей соответствующую открывающую скобку: (1))
     @Test
     public void showErrorInputting_CLOSE_BRACKET_ON_EMPTY_OPEN_BRACKET_Test() {
         mainPresenter.setBracketClose();
@@ -655,7 +695,8 @@ public class MainPresenterTest {
                 showErrorInputting(CLOSE_BRACKET_ON_EMPTY_OPEN_BRACKET, ERRORS_INPUTTING_TYPE);
     }
 
-    @Test // Проверка корректности выполнения showErrorInputting() для пустого выражения в скобках
+    // 37. Проверка корректности выполнения showErrorInputting() для пустого выражения в скобках: ()
+    @Test
     public void showErrorInputting_CLOSE_BRACKET_ON_EMPTY_Test() {
         mainPresenter.setBracketOpen();
         Mockito.verify(viewMainContract, times(2)).
@@ -665,9 +706,9 @@ public class MainPresenterTest {
                 showErrorInputting(CLOSE_BRACKET_ON_EMPTY, ERRORS_INPUTTING_TYPE);
     }
 
-    // Проверка корректности выполнения showErrorInputting()
+    // 38. Проверка корректности выполнения showErrorInputting()
     // для показа уведомления о том, что нельзя закрывающую скобку ставить
-    // на действии без указания числа
+    // на действии без указания числа: (1+)
     @Test
     public void showErrorInputting_CLOSE_BRACKET_ON_ACTION_WITHOUT_NUMBER_Test() {
         mainPresenter.setBracketOpen();
@@ -684,10 +725,10 @@ public class MainPresenterTest {
                 showErrorInputting(CLOSE_BRACKET_ON_ACTION_WITHOUT_NUMBER, ERRORS_INPUTTING_TYPE);
     }
 
-    // Проверка корректности выполнения showErrorInputting()
+    // 39. Проверка корректности выполнения showErrorInputting()
     // для показа уведомления о том, что без скобок или в рамках одной скобки нельзя вводить знак
     // процента больше одного раза. Если нужно произвести вычисление процента несколько раз,
-    // то нужно каждую такую конструкцию оборачивать в отдельную скобку
+    // то нужно каждую такую конструкцию оборачивать в отдельную скобку: 1+2%+3%
     @Test
     public void showErrorInputting_MULTIPLE_PERCENT_IN_BRACKET_Test() {
         mainPresenter.addNumeral(1);
@@ -713,7 +754,7 @@ public class MainPresenterTest {
                 showErrorInputting(MULTIPLE_PERCENT_IN_BRACKET, ERRORS_INPUTTING_TYPE);
     }
 
-    @Test // Проверка корректности выполнения getInit()
+    @Test // 40. Проверка корректности выполнения getInit()
     public void getInit_Test() {
         mainPresenter.getInit();
         Mockito.verify(viewMainContract, times(1)).
@@ -722,7 +763,7 @@ public class MainPresenterTest {
                 setOutputResultText("0");
     }
 
-    @Test // Проверка корректности задания процента после скобки с процентом: 6+(6+5%)%
+    @Test // 41. Проверка корректности задания процента после скобки с процентом: 6+(6+5%)%
     public void setPercentAfterBracketWithPercent_Test() {
         mainPresenter.addNumeral(6);
         Mockito.verify(viewMainContract, times(1)).
@@ -756,7 +797,7 @@ public class MainPresenterTest {
                 setOutputResultText("6,378");
     }
 
-    @Test // Проверка корректности задания процента во второй скобке подряд: 7+(6+5%)+(6+5%)
+    @Test // 42. Проверка корректности задания процента во второй скобке подряд: 7+(6+5%)+(6+5%)
     public void setPercentIntoTwoBrackets_Test() {
         mainPresenter.addNumeral(7);
         Mockito.verify(viewMainContract, times(1)).
@@ -808,7 +849,7 @@ public class MainPresenterTest {
                 setOutputResultText("19,6");
     }
 
-    @Test // Проверка корректности задания процента в первой скобке и без скобки: (7+4%)+5%
+    @Test // 43. Проверка корректности задания процента в первой скобке и без скобки: (7+4%)+5%
     public void setPercentIntoFirstBracketAndWithoutBracket_Test() {
         mainPresenter.setBracketOpen();
         Mockito.verify(viewMainContract, times(2)).
@@ -842,7 +883,7 @@ public class MainPresenterTest {
                 setOutputResultText("7,644");
     }
 
-    @Test // Проверка корректности задания пустых скобок
+    @Test // 44. Проверка корректности задания пустых скобок: (((6+5))+(5))
     public void emptyBracketSet_Test() {
         mainPresenter.setBracketOpen();
         Mockito.verify(viewMainContract, times(2)).
@@ -888,7 +929,9 @@ public class MainPresenterTest {
                 setOutputResultText("16");
     }
 
-    @Test // Проверка корректности задания пустых скобок в различной комбинации уровней
+    // 45. Проверка корректности задания пустых скобок в различной комбинации уровней:
+    // ((((6+5)))+((5))-4)
+    @Test
     public void emptyBracketWithDifferentLevelsSet_Test() {
         mainPresenter.setBracketOpen();
         Mockito.verify(viewMainContract, times(2)).
@@ -952,7 +995,7 @@ public class MainPresenterTest {
                 setOutputResultText("12");
     }
 
-    @Test // Проверка возможности поставить несколько нулей в целой части числа: 0000.1
+    @Test // 46. Проверка возможности поставить несколько нулей в целой части числа: 0000.1
     public void setMultipleZeroInDecimalPartOfNumber_Test() {
         mainPresenter.addNumeral(0);
         Mockito.verify(viewMainContract, times(1)).

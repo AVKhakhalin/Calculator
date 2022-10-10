@@ -1,4 +1,4 @@
-package ru.geekbrains.lessions2345.calculator.model;
+package ru.geekbrains.lessions2345.calculator.core.model;
 
 import android.annotation.SuppressLint;
 
@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import ru.geekbrains.lessions2345.calculator.core.Constants;
 
 // Класс для хранения единичных данных, используется в списке
-public class Dates implements Constants {
+public class InputData implements Constants {
     // Признак, является ли данный элемент скобкой: true = да; false = нет;
     // открывающаяся скобка является пустым объектом, в неё потом размещается результат вычислений
     // всех операций в данной скобке; пустой объект имеет вначале value = 0d;
@@ -64,9 +64,9 @@ public class Dates implements Constants {
     // опять начнут вводиться цифры только в целую часть числа и т.д.
     private boolean turnOffZapitay;
 
-    public Dates(boolean _isBracket, boolean _isClose, FUNCTIONS _typeFuncInBracket,
-                 int _bracketLevel, int _sign, double _value, boolean _isValue, ACTIONS _action,
-                 boolean _isPercent) {
+    public InputData(boolean _isBracket, boolean _isClose, FUNCTIONS _typeFuncInBracket,
+                     int _bracketLevel, int _sign, double _value, boolean _isValue, ACTIONS _action,
+                     boolean _isPercent) {
         isBracket = _isBracket;
         isClose = _isClose;
         typeFuncInBracket = _typeFuncInBracket;
@@ -82,9 +82,9 @@ public class Dates implements Constants {
         turnOffZapitay = true;
     }
 
-    public Dates(boolean _isBracket, boolean _isClose, FUNCTIONS _typeFuncInBracket,
-                 int _bracketLevel, int _sign, double _value, boolean _isValue, ACTIONS _action,
-                 boolean _isPercent, int _numberZapitay, boolean _turnOffZapitay) {
+    public InputData(boolean _isBracket, boolean _isClose, FUNCTIONS _typeFuncInBracket,
+                     int _bracketLevel, int _sign, double _value, boolean _isValue, ACTIONS _action,
+                     boolean _isPercent, int _numberZapitay, boolean _turnOffZapitay) {
         isBracket = _isBracket;
         isClose = _isClose;
         typeFuncInBracket = _typeFuncInBracket;

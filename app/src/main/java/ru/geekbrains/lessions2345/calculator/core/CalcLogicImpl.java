@@ -37,7 +37,7 @@ public class CalcLogicImpl implements CalcLogic, Constants, Serializable {
     private ListIterator<InputData> iterInputNumbersForCalc;
     // Признак нажатой кнопки запятой
     private boolean pressedZapitay = false;
-    // Переменная, хранящая окончательный результат вычислений
+    // Переменная, хранящая окончательный результат вычислений в формате double
     private double finalResult = 0d;
     // Ошибки вычислений
     private ERRORS_IN_STRING errorCode = ERRORS_IN_STRING.NO;
@@ -425,15 +425,11 @@ public class CalcLogicImpl implements CalcLogic, Constants, Serializable {
                                     curBracketValue.getTurnOffZapitay()));
                             }
                             result = moveOnWithoutBracket(inputNumbersForBaseCalc);
-                            if (errorCode != ERRORS_IN_STRING.NO) {
-                                return;
-                            }
+                            if (errorCode != ERRORS_IN_STRING.NO) return;
                             inputNumbersForBracketCalc.get(startBracketIndex).
                                 setValue(doFunction(result, inputNumbersForBracketCalc.
                                 get(startBracketIndex).getTypeFuncInBracket()));
-                            if (errorCode != ERRORS_IN_STRING.NO) {
-                                return;
-                            }
+                            if (errorCode != ERRORS_IN_STRING.NO) return;
                             inputNumbersForBracketCalc.get(startBracketIndex).
                                 setTypeFuncInBracket(FUNCTIONS.FUNC_NO);
                             inputNumbersForBracketCalc.get(startBracketIndex).setIsValue(true);
@@ -482,7 +478,7 @@ public class CalcLogicImpl implements CalcLogic, Constants, Serializable {
                 errorCode = ERRORS_IN_STRING.SQRT_MINUS;
             }
         }
-        // Подключить новую функцию для вычислений здесь
+        // Подключить новую функцию для вычислений здесь *!*
         // TODO
 //        else if (typeFuncInBracket == FUNCTIONS.) {
 //            result =
@@ -597,12 +593,9 @@ public class CalcLogicImpl implements CalcLogic, Constants, Serializable {
         pressedZapitay = !pressedZapitay; // Отслеживание нажатия на кнопку "Zapitay"
         if (inputNumbers.get(curNumber).getTurnOffZapitay()) {
             inputNumbers.get(curNumber).setTurnOffZapitay(false);
-            if (inputNumbers.get(curNumber).getNumberZapitay() < 0) {
+            if (inputNumbers.get(curNumber).getNumberZapitay() < 0)
                 inputNumbers.get(curNumber).setNumberZapitay(0);
-            }
-        } else {
-            inputNumbers.get(curNumber).setTurnOffZapitay(true);
-        }
+        } else inputNumbers.get(curNumber).setTurnOffZapitay(true);
     }
 
     // Установка открытой скобки самой по себе, так для функции, поскольку функции без скобок
@@ -616,11 +609,10 @@ public class CalcLogicImpl implements CalcLogic, Constants, Serializable {
                 add(true, false, typeFuncInBracket, 1, 0d, false,
                     ACTIONS.ACT_PLUS, false);
                 curNumber++;
-            } else {
+            } else
                 // Вывод ошибки о невозможности создания новой открытой скобки,
                 // потому что не указано перед скобкой действие
                 errorMessages.sendErrorInputting(OPEN_BRACKET_ON_EMPTY_ACTION);
-            }
         } else {
             if ((inputNumbers.get(curNumber).getTypeFuncInBracket() == FUNCTIONS.FUNC_NO) &&
                 (!inputNumbers.get(curNumber).getIsValue())) {
@@ -628,15 +620,13 @@ public class CalcLogicImpl implements CalcLogic, Constants, Serializable {
                 inputNumbers.get(curNumber).setIsBracket(true);
                 inputNumbers.get(curNumber).setBracketLevel(curBracketLevel);
                 inputNumbers.get(curNumber).setTypeFuncInBracket(typeFuncInBracket);
-            } else {
+            } else
                 // Вывод ошибки о невозможности создания новой открытой скобки,
                 // потому что не указано перед скобкой действие
                 errorMessages.sendErrorInputting(OPEN_BRACKET_ON_EMPTY_ACTION);
-            }
         }
-        if (maxBracketLevel < curBracketLevel) {
+        if (maxBracketLevel < curBracketLevel)
             maxBracketLevel = curBracketLevel;
-        }
         return createOutput();
     }
 
@@ -888,7 +878,7 @@ public class CalcLogicImpl implements CalcLogic, Constants, Serializable {
                 if (curInputData.getSign() == 1) stringFunction = "\u221A(";
                 else stringFunction = "-\u221A(";
 //          } else if (curInputData.getTypeFuncInBracket() == FUNCTIONS.) {
-                // Сюда можно добавить другие функции для их отображения
+                // Сюда можно добавить другие функции для их отображения *!*
                 // TODO
 //                if (curInputData.getSign() == 1) stringFunction = "...";
 //                else stringFunction = "-...";
@@ -918,9 +908,8 @@ public class CalcLogicImpl implements CalcLogic, Constants, Serializable {
             valueString = (curInputData.getSign() < 0 ? "-" : "") +
                 (curInputData.getIntegerPartValue().length() > 0 ?
                 curInputData.getIntegerPartValue() : "0");
-            if ((!turnOffZapitay) || (curInputData.getRealPartValue().length() > 0)) {
+            if ((!turnOffZapitay) || (curInputData.getRealPartValue().length() > 0))
                 valueString += ".";
-            }
             valueString = valueString + (curInputData.getRealPartValue().length() > 0 ?
                 curInputData.getRealPartValue() : "");
         }
@@ -930,109 +919,97 @@ public class CalcLogicImpl implements CalcLogic, Constants, Serializable {
                 ("(" + String.format("%s", valueString) + ")");
             switch (action) {
                 case ACT_STEP:
-                    if (isValue) {
+                    if (isValue)
                         stringAction = "^" + outputStringFunctionOpen(curInputData) +
                         String.format("%s", valueString) + (isClose ? ")" : "");
-                    } else {
+                    else
                         stringAction = "^" + outputStringFunctionOpen(curInputData);
-                    }
                     break;
                 case ACT_PERC_MULTY:
-                    if ((isBracket) && (!isClose)) {
+                    if ((isBracket) && (!isClose))
                         stringAction = "*" + outputStringFunctionOpen(curInputData);
-                    } else if (isBracket) {
+                    else if (isBracket)
                         stringAction = ")%";
-                    } else {
+                    else
                         stringAction = "*" + outputStringFunctionOpen(curInputData) +
                             notZeroOrZero + "%" + (isClose ? ")" : "");
-                    }
                     break;
                 case ACT_PERC_DIV:
-                    if ((isBracket) && (!isClose)) {
+                    if ((isBracket) && (!isClose))
                         stringAction = "/" + outputStringFunctionOpen(curInputData);
-                    } else if (isBracket) {
+                    else if (isBracket)
                         stringAction = ")%";
-                    } else {
+                    else
                         stringAction = "/" + outputStringFunctionOpen(curInputData) +
                             notZeroOrZero + "%" + (isClose ? ")" : "");
-                    }
                     break;
                 case ACT_PERC_PLUS:
-                    if ((isBracket) && (!isClose)) {
+                    if ((isBracket) && (!isClose))
                         stringAction = "+" + outputStringFunctionOpen(curInputData);
-                    } else if (isBracket) {
+                    else if (isBracket)
                         stringAction = ")%";
-                    } else {
+                    else
                         stringAction = (!isPrevBracketOpen ? "+" : "") +
                             outputStringFunctionOpen(curInputData) + notZeroOrZero + "%" +
                             (isClose ? ")" : "");
-                    }
                     break;
                 case ACT_PERC_MINUS:
-                    if ((isBracket) && (!isClose)) {
+                    if ((isBracket) && (!isClose))
                         stringAction = "-" + outputStringFunctionOpen(curInputData);
-                    } else if (isBracket) {
+                    else if (isBracket)
                         stringAction = ")%";
-                    } else {
+                    else
                         stringAction = "-" + outputStringFunctionOpen(curInputData) +
                             notZeroOrZero + "%" + (isClose ? ")" : "");
-                    }
                     break;
                 case ACT_MULTY:
-                    if (isValue) {
+                    if (isValue)
                         stringAction = "*" + outputStringFunctionOpen(curInputData) +
                             notZeroOrZero + (isClose ? ")" : "");
-                    } else {
+                    else
                         stringAction = "*" + outputStringFunctionOpen(curInputData) +
                             (isClose ? ")" : "");
-                    }
                     break;
                 case ACT_DIV:
-                    if (isValue) {
+                    if (isValue)
                         stringAction = "/" + outputStringFunctionOpen(curInputData) +
                             notZeroOrZero + (isClose ? ")" : "");
-                    } else {
+                    else
                         stringAction = "/" + outputStringFunctionOpen(curInputData) +
                             (isClose ? ")" : "");
-                    }
                     break;
                 case ACT_PLUS:
-                    if (isValue) {
+                    if (isValue)
                         stringAction = (!isPrevBracketOpen ? "+" : "") +
                             outputStringFunctionOpen(curInputData) + notZeroOrZero +
                             (isClose ? ")" : "");
-                    } else {
-                        if (!curInputData.getIsClose()) {
+                    else
+                        if (!curInputData.getIsClose())
                             stringAction = (!isPrevBracketOpen ? "+" : "") +
                                 outputStringFunctionOpen(curInputData);
-                        } else {
+                        else
                             stringAction = ")";
-                        }
-                    }
                     break;
                 case ACT_MINUS:
-                    if (isValue) {
+                    if (isValue)
                         stringAction = (!isPrevBracketOpen ? "-" : "") +
                             outputStringFunctionOpen(curInputData) + notZeroOrZero +
                             (isClose ? ")" : "");
-                    } else {
-                        if (!curInputData.getIsClose()) {
+                    else
+                        if (!curInputData.getIsClose())
                             stringAction = (!isPrevBracketOpen ? "-" : "") +
                                 outputStringFunctionOpen(curInputData);
-                        } else {
+                        else
                             stringAction = ")";
-                        }
-                    }
                     break;
             }
         } else {
             if (action == ACTIONS.ACT_PLUS) {
-                if (isValue) {
+                if (isValue)
                     stringAction = outputStringFunctionOpen(curInputData) +
                         String.format("%s", valueString);
-                } else {
+                else
                     stringAction = outputStringFunctionOpen(curInputData);
-                }
             }
         }
         return stringAction;
@@ -1044,12 +1021,19 @@ public class CalcLogicImpl implements CalcLogic, Constants, Serializable {
     }
 
     @Override
-    public String getFinalResult() {
+    public String getFinalStringResult() {
         String finalResultString = "";
-        if (errorCode == ERRORS_IN_STRING.NO) {
+        if (errorCode == ERRORS_IN_STRING.NO)
             finalResultString = numberFormatOutput(finalResult, maxNumberSymbolsInOutputTextField);
-        }
         return finalResultString;
+    }
+
+    @Override
+    public double getFinalDoubleResult() {
+        double finalResultDouble = 0.0;
+        if (errorCode == ERRORS_IN_STRING.NO)
+            finalResultDouble = finalResult;
+        return finalResultDouble;
     }
 
     public static String numberFormatOutput(double number, int numberSymbols) {
@@ -1076,9 +1060,8 @@ public class CalcLogicImpl implements CalcLogic, Constants, Serializable {
             if (numberString.length() - (number >= 0 ? 2 : 3) <=
                 (numberSymbols >= MAX_NUMBER_SYMBOLS_IN_OUTPUT_TEXT_FIELD ?
                 MAX_FRACTIONAL_SYMBOLS_IN_SMALL_NUMBER_OUTPUT_TEXT_FIELD :
-                MAX_FRACTIONAL_SYMBOLS_IN_SMALL_NUMBER_OUTPUT_TEXT_FIELD - 2)) {
+                MAX_FRACTIONAL_SYMBOLS_IN_SMALL_NUMBER_OUTPUT_TEXT_FIELD - 2))
                 return numberString;
-            }
         } else if (number <= -1) {
             for (int i = 0; i < numberSymbols - 1; i++) {
                 comparedNumber *= 10d;
@@ -1110,14 +1093,12 @@ public class CalcLogicImpl implements CalcLogic, Constants, Serializable {
 
     private static String createFormat(int numberSymbols, int i) {
         StringBuilder format = new StringBuilder();
-        for (int j = 0; j <= i; j++) {
+        for (int j = 0; j <= i; j++)
             format.append("#");
-        }
         if (i < numberSymbols - 2) {
             format.append(".");
-            for (int j = 0; j < numberSymbols - 2 - i; j++) {
+            for (int j = 0; j < numberSymbols - 2 - i; j++)
                 format.append("#");
-            }
         }
         return format.toString();
     }

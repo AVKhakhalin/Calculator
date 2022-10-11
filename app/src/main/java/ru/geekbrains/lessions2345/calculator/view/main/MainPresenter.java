@@ -86,7 +86,7 @@ public class MainPresenter implements PresenterMainContract, Serializable, Parce
         calcLogicImpl.clearAll();
         calculate();
         getError();
-        if (viewMain != null) viewMain.setOutputResultText(calcLogicImpl.getFinalResult());
+        if (viewMain != null) viewMain.setOutputResultText(calcLogicImpl.getFinalStringResult());
         if (viewMain != null) viewMain.setInputtedHistoryText(String.format(Locale.getDefault(),
                 "%s", createOutput()));
     }
@@ -143,14 +143,14 @@ public class MainPresenter implements PresenterMainContract, Serializable, Parce
 
     @Override
     public String getFinalResult() {
-        return calcLogicImpl.getFinalResult();
+        return calcLogicImpl.getFinalStringResult();
     }
 
     @Override
     public void setEqual() {
         calcLogicImpl.calculate();
         getError();
-        if (viewMain != null) viewMain.setOutputResultText(calcLogicImpl.getFinalResult());
+        if (viewMain != null) viewMain.setOutputResultText(calcLogicImpl.getFinalStringResult());
     }
 
     @Override
@@ -175,7 +175,7 @@ public class MainPresenter implements PresenterMainContract, Serializable, Parce
     @Override
     public void getInit() {
         if (viewMain != null) {
-            viewMain.setOutputResultText(calcLogicImpl.getFinalResult());
+            viewMain.setOutputResultText(calcLogicImpl.getFinalStringResult());
             viewMain.setInputtedHistoryText(String.format(Locale.getDefault(),
                     "%s", createOutput()));
         }

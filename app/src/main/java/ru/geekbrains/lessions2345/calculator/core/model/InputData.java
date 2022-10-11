@@ -37,12 +37,12 @@ public class InputData implements Constants {
     // в число внесли, то isValue = true; по-умолчанию isValue = false
     private boolean isValue;
     // Производимые действия над числом (по-умолчанию стоит сумма ACT_PLUS):
-    // ACT_STEP         - возведение в степень (ACT_STEP);
     // ACT_PERC_MULTY   - вычисление произведения на процент от числа (ACT_PERC_MULTY);
     // ACT_PERC_DIV     - вычисление деления на процент от числа (ACT_PERC_DIV);
     // ACT_PERC_MINUS   - вычисление вычистания процента от числа (ACT_PERC_MINUS);
     // ACT_PERC_PLUS    - вычисление сложения с процентом от числа (ACT_PERC_PLUS);
     // ACT_MULTY        - умножение (ACT_MULTY);
+    // ACT_STEP         - возведение в степень (ACT_STEP);
     // ACT_DIV          - деление (ACT_DIV);
     // ACT_MINUS        - вычитание (ACT_MINUS)
     // ACT_PLUS         - сложение (ACT_PLUS);
@@ -127,18 +127,16 @@ public class InputData implements Constants {
     @SuppressLint("DefaultLocale")
     public String getIntegerPartValue() {
         String resultString = "";
-        for (Integer integer: integerPartValue) {
+        for (Integer integer: integerPartValue)
             resultString = String.format("%s%d", resultString, integer);
-        }
         return resultString;
     }
 
     @SuppressLint("DefaultLocale")
     public String getRealPartValue() {
         String resultString = "";
-        for (Integer integer: realPartValue) {
+        for (Integer integer: realPartValue)
             resultString = String.format("%s%d", resultString, integer);
-        }
         return resultString;
     }
 

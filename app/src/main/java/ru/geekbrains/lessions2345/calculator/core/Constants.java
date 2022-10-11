@@ -6,11 +6,11 @@ public interface Constants {
 
     // Действия
     enum ACTIONS {
-        ACT_STEP,         // возведение в степень (ACT_STEP)
         ACT_PERC_MULTY,   // вычисление произведения на процент от числа (ACT_PERC_MULTY)
         ACT_PERC_DIV,     // вычисление деления на процент от числа (ACT_PERC_DIV)
         ACT_PERC_MINUS,   // вычисление вычитания процента от числа (ACT_PERC_MINUS)
         ACT_PERC_PLUS,    // вычисление сложения с процентом от числа (ACT_PERC_PLUS)
+        ACT_STEP,         // возведение в степень (ACT_STEP)
         ACT_MULTY,        // умножение (ACT_MULTY)
         ACT_DIV,          // деление (ACT_DIV)
         ACT_MINUS,        // вычитание (ACT_MINUS)

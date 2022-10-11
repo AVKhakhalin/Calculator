@@ -877,9 +877,8 @@ public class CalcLogicImpl implements CalcLogic, Constants, Serializable {
             if (curInputData.getTypeFuncInBracket() == FUNCTIONS.FUNC_SQRT) {
                 if (curInputData.getSign() == 1) stringFunction = "\u221A(";
                 else stringFunction = "-\u221A(";
+            // TODO: Сюда можно добавить другие функции для их отображения *!*
 //          } else if (curInputData.getTypeFuncInBracket() == FUNCTIONS.) {
-                // Сюда можно добавить другие функции для их отображения *!*
-                // TODO
 //                if (curInputData.getSign() == 1) stringFunction = "...";
 //                else stringFunction = "-...";
             } else {

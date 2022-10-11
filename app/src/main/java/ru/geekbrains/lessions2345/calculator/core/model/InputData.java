@@ -127,18 +127,16 @@ public class InputData implements Constants {
     @SuppressLint("DefaultLocale")
     public String getIntegerPartValue() {
         String resultString = "";
-        for (Integer integer: integerPartValue) {
+        for (Integer integer: integerPartValue)
             resultString = String.format("%s%d", resultString, integer);
-        }
         return resultString;
     }
 
     @SuppressLint("DefaultLocale")
     public String getRealPartValue() {
         String resultString = "";
-        for (Integer integer: realPartValue) {
+        for (Integer integer: realPartValue)
             resultString = String.format("%s%d", resultString, integer);
-        }
         return resultString;
     }
 

@@ -34,7 +34,9 @@ public interface CalcLogic extends Serializable {
     // Вычисление результата на основании введённой строки скобок, чисел, действий и функций
     void calculate();
     // Получение результата вычислений в виде переменной типа String
-    String getFinalResult();
+    String getFinalStringResult();
+    // Получение результата вычислений в виде переменной типа Double
+    double getFinalDoubleResult();
     // Вывод информации о введённой строке
     String createOutput();
     // Получение кода ошибки

@@ -919,109 +919,97 @@ public class CalcLogicImpl implements CalcLogic, Constants, Serializable {
                 ("(" + String.format("%s", valueString) + ")");
             switch (action) {
                 case ACT_STEP:
-                    if (isValue) {
+                    if (isValue)
                         stringAction = "^" + outputStringFunctionOpen(curInputData) +
                         String.format("%s", valueString) + (isClose ? ")" : "");
-                    } else {
+                    else
                         stringAction = "^" + outputStringFunctionOpen(curInputData);
-                    }
                     break;
                 case ACT_PERC_MULTY:
-                    if ((isBracket) && (!isClose)) {
+                    if ((isBracket) && (!isClose))
                         stringAction = "*" + outputStringFunctionOpen(curInputData);
-                    } else if (isBracket) {
+                    else if (isBracket)
                         stringAction = ")%";
-                    } else {
+                    else
                         stringAction = "*" + outputStringFunctionOpen(curInputData) +
                             notZeroOrZero + "%" + (isClose ? ")" : "");
-                    }
                     break;
                 case ACT_PERC_DIV:
-                    if ((isBracket) && (!isClose)) {
+                    if ((isBracket) && (!isClose))
                         stringAction = "/" + outputStringFunctionOpen(curInputData);
-                    } else if (isBracket) {
+                    else if (isBracket)
                         stringAction = ")%";
-                    } else {
+                    else
                         stringAction = "/" + outputStringFunctionOpen(curInputData) +
                             notZeroOrZero + "%" + (isClose ? ")" : "");
-                    }
                     break;
                 case ACT_PERC_PLUS:
-                    if ((isBracket) && (!isClose)) {
+                    if ((isBracket) && (!isClose))
                         stringAction = "+" + outputStringFunctionOpen(curInputData);
-                    } else if (isBracket) {
+                    else if (isBracket)
                         stringAction = ")%";
-                    } else {
+                    else
                         stringAction = (!isPrevBracketOpen ? "+" : "") +
                             outputStringFunctionOpen(curInputData) + notZeroOrZero + "%" +
                             (isClose ? ")" : "");
-                    }
                     break;
                 case ACT_PERC_MINUS:
-                    if ((isBracket) && (!isClose)) {
+                    if ((isBracket) && (!isClose))
                         stringAction = "-" + outputStringFunctionOpen(curInputData);
-                    } else if (isBracket) {
+                    else if (isBracket)
                         stringAction = ")%";
-                    } else {
+                    else
                         stringAction = "-" + outputStringFunctionOpen(curInputData) +
                             notZeroOrZero + "%" + (isClose ? ")" : "");
-                    }
                     break;
                 case ACT_MULTY:
-                    if (isValue) {
+                    if (isValue)
                         stringAction = "*" + outputStringFunctionOpen(curInputData) +
                             notZeroOrZero + (isClose ? ")" : "");
-                    } else {
+                    else
                         stringAction = "*" + outputStringFunctionOpen(curInputData) +
                             (isClose ? ")" : "");
-                    }
                     break;
                 case ACT_DIV:
-                    if (isValue) {
+                    if (isValue)
                         stringAction = "/" + outputStringFunctionOpen(curInputData) +
                             notZeroOrZero + (isClose ? ")" : "");
-                    } else {
+                    else
                         stringAction = "/" + outputStringFunctionOpen(curInputData) +
                             (isClose ? ")" : "");
-                    }
                     break;
                 case ACT_PLUS:
-                    if (isValue) {
+                    if (isValue)
                         stringAction = (!isPrevBracketOpen ? "+" : "") +
                             outputStringFunctionOpen(curInputData) + notZeroOrZero +
                             (isClose ? ")" : "");
-                    } else {
-                        if (!curInputData.getIsClose()) {
+                    else
+                        if (!curInputData.getIsClose())
                             stringAction = (!isPrevBracketOpen ? "+" : "") +
                                 outputStringFunctionOpen(curInputData);
-                        } else {
+                        else
                             stringAction = ")";
-                        }
-                    }
                     break;
                 case ACT_MINUS:
-                    if (isValue) {
+                    if (isValue)
                         stringAction = (!isPrevBracketOpen ? "-" : "") +
                             outputStringFunctionOpen(curInputData) + notZeroOrZero +
                             (isClose ? ")" : "");
-                    } else {
-                        if (!curInputData.getIsClose()) {
+                    else
+                        if (!curInputData.getIsClose())
                             stringAction = (!isPrevBracketOpen ? "-" : "") +
                                 outputStringFunctionOpen(curInputData);
-                        } else {
+                        else
                             stringAction = ")";
-                        }
-                    }
                     break;
             }
         } else {
             if (action == ACTIONS.ACT_PLUS) {
-                if (isValue) {
+                if (isValue)
                     stringAction = outputStringFunctionOpen(curInputData) +
                         String.format("%s", valueString);
-                } else {
+                else
                     stringAction = outputStringFunctionOpen(curInputData);
-                }
             }
         }
         return stringAction;
@@ -1033,12 +1021,19 @@ public class CalcLogicImpl implements CalcLogic, Constants, Serializable {
     }
 
     @Override
-    public String getFinalResult() {
+    public String getFinalStringResult() {
         String finalResultString = "";
-        if (errorCode == ERRORS_IN_STRING.NO) {
+        if (errorCode == ERRORS_IN_STRING.NO)
             finalResultString = numberFormatOutput(finalResult, maxNumberSymbolsInOutputTextField);
-        }
         return finalResultString;
+    }
+
+    @Override
+    public double getFinalDoubleResult() {
+        double finalResultDouble = 0.0;
+        if (errorCode == ERRORS_IN_STRING.NO)
+            finalResultDouble = finalResult;
+        return finalResultDouble;
     }
 
     public static String numberFormatOutput(double number, int numberSymbols) {
@@ -1065,9 +1060,8 @@ public class CalcLogicImpl implements CalcLogic, Constants, Serializable {
             if (numberString.length() - (number >= 0 ? 2 : 3) <=
                 (numberSymbols >= MAX_NUMBER_SYMBOLS_IN_OUTPUT_TEXT_FIELD ?
                 MAX_FRACTIONAL_SYMBOLS_IN_SMALL_NUMBER_OUTPUT_TEXT_FIELD :
-                MAX_FRACTIONAL_SYMBOLS_IN_SMALL_NUMBER_OUTPUT_TEXT_FIELD - 2)) {
+                MAX_FRACTIONAL_SYMBOLS_IN_SMALL_NUMBER_OUTPUT_TEXT_FIELD - 2))
                 return numberString;
-            }
         } else if (number <= -1) {
             for (int i = 0; i < numberSymbols - 1; i++) {
                 comparedNumber *= 10d;
@@ -1099,14 +1093,12 @@ public class CalcLogicImpl implements CalcLogic, Constants, Serializable {
 
     private static String createFormat(int numberSymbols, int i) {
         StringBuilder format = new StringBuilder();
-        for (int j = 0; j <= i; j++) {
+        for (int j = 0; j <= i; j++)
             format.append("#");
-        }
         if (i < numberSymbols - 2) {
             format.append(".");
-            for (int j = 0; j < numberSymbols - 2 - i; j++) {
+            for (int j = 0; j < numberSymbols - 2 - i; j++)
                 format.append("#");
-            }
         }
         return format.toString();
     }

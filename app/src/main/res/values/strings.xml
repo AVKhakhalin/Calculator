@@ -12,6 +12,7 @@
     <string name="error_many_zero_in_integer_part">Для задания целой части числа хватит и одного нуля</string>
     <string name="error_input_number_first">Нужно сначала ввести число</string>
     <string name="error_needs_two_numbers">Для применения процента нужно ввести два числа с любой из 4-х арифметических операций между ними (*, /, +, -)</string>
+    <string name="error_needs_two_numbers_out_bracket">Для применения процента после скобки нужно, чтобы другое число было ранее введено до этой скобки</string>
     <string name="error_change_sign_empty">Нельзя производить смену знака, предварительно не задав число или функцию. Ноль не может иметь отрицательный знак</string>
     <string name="error_open_bracket_on_empty_action">Нельзя создать новую открытую скобку, потому что не указано перед скобкой действие</string>
     <string name="error_close_bracket_on_empty_open_bracket">Нельзя поставить закрывающую скобку, если предварительно не поставить ей соответствующую открывающую скобку</string>

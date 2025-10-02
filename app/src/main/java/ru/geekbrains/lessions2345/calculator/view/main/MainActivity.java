@@ -236,6 +236,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         getString(R.string.error_needs_two_numbers),
                     errorType);
                 break;
+            case PERCENT_NEEDS_TWO_NUMBERS_OUT_BRACKET:
+                showErrorMessage(getResources().
+                                getString(R.string.error_needs_two_numbers_out_bracket),
+                        errorType);
+                break;
             case CHANGE_SIGN_EMPTY:
                 showErrorMessage(getResources().
                         getString(R.string.error_change_sign_empty),

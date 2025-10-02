@@ -10,6 +10,8 @@ import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTT
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.NUMBER_AFTER_BRACKET;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.OPEN_BRACKET_ON_EMPTY_ACTION;
 import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.PERCENT_NEEDS_TWO_NUMBERS;
+import static ru.geekbrains.lessions2345.calculator.core.Constants.ERRORS_INPUTTING.PERCENT_NEEDS_TWO_NUMBERS_OUT_BRACKET;
+
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -663,11 +665,16 @@ public class CalcLogicImpl implements CalcLogic, Constants, Serializable {
         // Проверка возможности корректного задания знака процента
         if (action == ACTIONS.ACT_PERC_MULTY) {
             if (inputNumbers.size() > 1) {
-                if (((!inputNumbers.get(curNumber - 1).getIsValue()) &&
-                    (!inputNumbers.get(curNumber - 1).getIsClose())) ||
-                    ((!inputNumbers.get(curNumber).getIsValue()) &&
-                    (!inputNumbers.get(curNumber).getIsClose())) ||
-                    (inputNumbers.get(curNumber).getAction() == ACTIONS.ACT_STEP)) {
+                if (!isExistOtherNumbersWithCurrentBracketLevel()) {
+                    // Вывод сообщения о том, что для применения процента после скобки
+                    // нужно, чтобы другое число было ранее введено до этой скобки
+                    errorMessages.sendErrorInputting(PERCENT_NEEDS_TWO_NUMBERS_OUT_BRACKET);
+                    return;
+                } else if (((!inputNumbers.get(curNumber - 1).getIsValue()) &&
+                        (!inputNumbers.get(curNumber - 1).getIsClose())) ||
+                        ((!inputNumbers.get(curNumber).getIsValue()) &&
+                        (!inputNumbers.get(curNumber).getIsClose())) ||
+                        (inputNumbers.get(curNumber).getAction() == ACTIONS.ACT_STEP)) {
                     // Вывести сообщение о том, что для применения процента нужно ввести два числа
                     // с любой из 4-х арифметических операцией между ними: *, /, +, -
                     errorMessages.sendErrorInputting(PERCENT_NEEDS_TWO_NUMBERS);
@@ -676,9 +683,7 @@ public class CalcLogicImpl implements CalcLogic, Constants, Serializable {
                     int indexSearchPercent = curNumber;
                     int curPercBracketLevel =
                         inputNumbers.get(indexSearchPercent).getBracketLevel();
-                    int numberPercBrackets = 0;
                     boolean existStartCloseBracket = false;
-                    int numberNumberInBracket = 0;
                     while ((indexSearchPercent >= 0) && (inputNumbers.get(indexSearchPercent).
                         getBracketLevel() >= curPercBracketLevel)) {
                         // Условие выхода, если анализ производится внутри скобки
@@ -686,8 +691,9 @@ public class CalcLogicImpl implements CalcLogic, Constants, Serializable {
                         if ((inputNumbers.get(indexSearchPercent).getBracketLevel() ==
                             curPercBracketLevel) &&
                             (inputNumbers.get(indexSearchPercent).getIsBracket()) &&
-                            (!inputNumbers.get(indexSearchPercent).getIsClose()))
+                            (!inputNumbers.get(indexSearchPercent).getIsClose())) {
                             break;
+                        }
                         if (((inputNumbers.get(indexSearchPercent).getAction() ==
                             ACTIONS.ACT_PERC_MULTY) ||
                             (inputNumbers.get(indexSearchPercent).getAction() ==
@@ -723,21 +729,11 @@ public class CalcLogicImpl implements CalcLogic, Constants, Serializable {
                             (!inputNumbers.get(indexSearchPercent).getIsClose()) &&
                             (inputNumbers.get(indexSearchPercent).getBracketLevel() ==
                             curPercBracketLevel + 1)) {
-                            if (existStartCloseBracket) existStartCloseBracket = false;
-                            else numberPercBrackets++;
-                        } else if ((inputNumbers.get(indexSearchPercent).getIsValue()) &&
-                            (inputNumbers.get(indexSearchPercent).getBracketLevel() ==
-                            curPercBracketLevel)) {
-                            numberNumberInBracket++;
+                            if (existStartCloseBracket) {
+                                existStartCloseBracket = false;
+                            }
                         }
                         indexSearchPercent--;
-                    }
-                    if (numberPercBrackets + numberNumberInBracket < 2) {
-                        // Вывести сообщение о том, что для применения процента нужно ввести
-                        // два числа и любую следующую арифметическую операцию между ними:
-                        // *, /, +, -
-                        errorMessages.sendErrorInputting(PERCENT_NEEDS_TWO_NUMBERS);
-                        return;
                     }
                 }
             } else {
@@ -1110,5 +1106,47 @@ public class CalcLogicImpl implements CalcLogic, Constants, Serializable {
     @Override
     public void clearErrorCode() {
         errorCode = ERRORS_IN_STRING.NO;
+    }
+
+    // Проверка наличия других чисел в введённой строке с уровнем скобок таким же или ниже,
+    // как у последнего элемента строки (нужно для корректности задания процента)
+    private boolean isExistOtherNumbersWithCurrentBracketLevel() {
+        if (!inputNumbers.isEmpty()) {
+            int inputNumbersLastIndex = inputNumbers.size() - 1;
+            int lastElementBracketLevel = inputNumbers.getLast().getBracketLevel();
+            boolean isLastElementExistBracket = inputNumbers.getLast().getIsBracket();
+            boolean isOpenBracketFound = false;
+            for (int i = inputNumbersLastIndex; i >= 0; i--) {
+                if (isLastElementExistBracket) {
+                    // Случай, если последний элемент является скобкой
+                    // Поиск числа с другой закрывающей скобкой
+                    if ((inputNumbers.get(i).getIsValue()) &&
+                            (inputNumbers.get(i).getIsBracket()) &&
+                            (inputNumbers.get(i).getIsClose()) &&
+                            (inputNumbers.get(i).getBracketLevel() <= lastElementBracketLevel)) {
+                        return true;
+                    }
+                    //region Поиск числа с таким же или ниже уровнем
+                    //       после первой открывающей скобки
+                    if ((inputNumbers.get(i).getIsBracket()) &&
+                            (!inputNumbers.get(i).getIsClose())) {
+                        isOpenBracketFound = true;
+                    }
+                    if ((isOpenBracketFound) &&
+                            ((inputNumbers.get(i).getIsValue()) &&
+                                    (inputNumbers.get(i).getBracketLevel() <= lastElementBracketLevel))) {
+                        return true;
+                    }
+                    //endregion
+                } else {
+                    // Случай, если последний элемент не является скобкой
+                    if (((inputNumbers.get(i).getIsValue()) &&
+                            (inputNumbers.get(i).getBracketLevel() <= lastElementBracketLevel))) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }

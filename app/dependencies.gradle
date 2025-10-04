@@ -1,21 +1,21 @@
-def androidXVersion = "1.3.1"
+def androidXVersion = "1.6.1"
 def kotlinKTXVersion = "1.3.2"
 def kotlinJDK7Version = "1.5.20"
 def kotlinCoroutinescoreVersion = "1.5.1"
 def kotlinCoroutineandroidVersion = "1.5.0"
 def designMaterialVersion = "1.4.0"
-def designConstrlayoutVersion = "2.1.1"
-def testJunitVersion = "4.12"
-def testExtVersion = "1.1.2"
-def testRunnerVersion = "1.2.0"
-def testEspressocoreVersion = "3.2.0"
+def designConstrlayoutVersion = "2.1.4"
+def testJunitVersion = "4.13.2"
+def testExtVersion = "1.2.0"
+def testRunnerVersion = "1.7.0"
+def testEspressocoreVersion = "3.5.0"
 def testMockitoCoreVersion = "3.3.3"
 def testMockitoInlineVersion = "2.8.9"
 def testMockitoKotlinVersion = "1.5.0"
 def testRobolectricVersion = "4.5.1"
-def testRobolectricCoreVersion = "1.4.0"
-def testRobolectricJunitVersion = "1.1.2"
-def testRobolectricEspressoVersion = "3.3.0"
+def testRobolectricCoreVersion = "1.5.0"
+def testRobolectricJunitVersion = "1.3.0"
+def testRobolectricEspressoVersion = "3.7.0"
 def roomVersion = "2.4.0"
 def roomJDBCVersion = "3.34.0"
 def daggerVersion = "2.39.1"
@@ -82,88 +82,88 @@ ext {
     tests.robolectricespressointents =
             "androidx.test.espresso:espresso-intents:$testRobolectricEspressoVersion"
     // Room
-    room = [:]
-    libs.room = room
-    room.runtime = "androidx.room:room-runtime:$roomVersion"
-    room.compiler = "androidx.room:room-compiler:$roomVersion"
-    room.m1Support = "org.xerial:sqlite-jdbc:$roomJDBCVersion"
-    room.rxJava3 = "androidx.room:room-rxjava3:$roomVersion"
-    room.ktx = "androidx.room:room-ktx:$roomVersion"
+//    room = [:]
+//    libs.room = room
+//    room.runtime = "androidx.room:room-runtime:$roomVersion"
+//    room.compiler = "androidx.room:room-compiler:$roomVersion"
+//    room.m1Support = "org.xerial:sqlite-jdbc:$roomJDBCVersion"
+//    room.rxJava3 = "androidx.room:room-rxjava3:$roomVersion"
+//    room.ktx = "androidx.room:room-ktx:$roomVersion"
     // Dagger
-    dagger = [:]
-    libs.dagger = dagger
-    dagger.daggger = "com.google.dagger:dagger:$daggerVersion"
-    dagger.runtime = "com.google.dagger:dagger-android:$daggerVersion"
-    dagger.support = "com.google.dagger:dagger-android-support:$daggerVersion"
-    dagger.processor = "com.google.dagger:dagger-android-processor:$daggerVersion"
-    dagger.compiler = "com.google.dagger:dagger-compiler:$daggerVersion"
-    dagger.addsupport = "com.google.dagger:dagger-android-support:$daggerAddSupportVersion"
+//    dagger = [:]
+//    libs.dagger = dagger
+//    dagger.daggger = "com.google.dagger:dagger:$daggerVersion"
+//    dagger.runtime = "com.google.dagger:dagger-android:$daggerVersion"
+//    dagger.support = "com.google.dagger:dagger-android-support:$daggerVersion"
+//    dagger.processor = "com.google.dagger:dagger-android-processor:$daggerVersion"
+//    dagger.compiler = "com.google.dagger:dagger-compiler:$daggerVersion"
+//    dagger.addsupport = "com.google.dagger:dagger-android-support:$daggerAddSupportVersion"
     // Koin
-    koin = [:]
-    libs.koin = koin
+//    koin = [:]
+//    libs.koin = koin
     //Koin core features
-    koin.core = "io.insert-koin:koin-core:$koinVersion"
+//    koin.core = "io.insert-koin:koin-core:$koinVersion"
     //Koin main features for Android (Scope,ViewModel ...)
-    koin.android = "io.insert-koin:koin-android:$koinVersion"
+//    koin.android = "io.insert-koin:koin-android:$koinVersion"
 //    koin.viewmodel = "io.insert-koin:koin-android-viewmodel:$koinVersion"
     //Koin Java Compatibility
-    koin.compat = "io.insert-koin:koin-android-compat:$koinVersion"
+//    koin.compat = "io.insert-koin:koin-android-compat:$koinVersion"
     // Koin for Retrofit 2 coroutines (needs for CoroutineCallAdapterFactory())
-    koin.retrofitcoroutines = "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$koinRetrofitcoroutinesVersion"
+//    koin.retrofitcoroutines = "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$koinRetrofitcoroutinesVersion"
     // Koin for Tests
-    koin.testsandroidx = "androidx.test:core:$koinTestsandroidxVersion"
-    koin.testsio = "io.insert-koin:koin-test:$koinVersion"
+//    koin.testsandroidx = "androidx.test:core:$koinTestsandroidxVersion"
+//    koin.testsio = "io.insert-koin:koin-test:$koinVersion"
     // Coroutines
-    coroutines = [:]
-    libs.coroutines = coroutines
-    coroutines.android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
+//    coroutines = [:]
+//    libs.coroutines = coroutines
+//    coroutines.android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
     // Retrofit
-    retrofit = [:]
-    libs.retrofit = retrofit
-    retrofit.runtime = "com.squareup.retrofit2:retrofit:$retrofitVersion"
-    retrofit.gson = "com.squareup.retrofit2:converter-gson:$retrofitGsonVersion"
-    retrofit.rxJava2 = "com.squareup.retrofit2:adapter-rxjava2:$retrofitRxjava2Version"
-    retrofit.rxJava3 = "com.squareup.retrofit2:adapter-rxjava3:$retrofitRxjava3Version"
-    retrofit.interceptor = "com.squareup.okhttp3:logging-interceptor:$retrofitInterceptorVersion"
+//    retrofit = [:]
+//    libs.retrofit = retrofit
+//    retrofit.runtime = "com.squareup.retrofit2:retrofit:$retrofitVersion"
+//    retrofit.gson = "com.squareup.retrofit2:converter-gson:$retrofitGsonVersion"
+//    retrofit.rxJava2 = "com.squareup.retrofit2:adapter-rxjava2:$retrofitRxjava2Version"
+//    retrofit.rxJava3 = "com.squareup.retrofit2:adapter-rxjava3:$retrofitRxjava3Version"
+//    retrofit.interceptor = "com.squareup.okhttp3:logging-interceptor:$retrofitInterceptorVersion"
     // OkHTTP
-    okHTTP = [:]
-    libs.okHTTP = okHTTP
-    okHTTP.runtime = "com.squareup.okhttp3:okhttp:$okHTTPVersion"
+//    okHTTP = [:]
+//    libs.okHTTP = okHTTP
+//    okHTTP.runtime = "com.squareup.okhttp3:okhttp:$okHTTPVersion"
     // Glide
-    glide = [:]
-    libs.glide = glide
-    glide.runtime = "com.github.bumptech.glide:glide:$glideVersion"
-    glide.compiler = "com.github.bumptech.glide:compiler:$glideVersion"
+//    glide = [:]
+//    libs.glide = glide
+//    glide.runtime = "com.github.bumptech.glide:glide:$glideVersion"
+//    glide.compiler = "com.github.bumptech.glide:compiler:$glideVersion"
     // Picasso
-    picasso = [:]
-    libs.picasso = picasso
-    picasso.runtime = "com.squareup.picasso:picasso:$picassoVersion"
+//    picasso = [:]
+//    libs.picasso = picasso
+//    picasso.runtime = "com.squareup.picasso:picasso:$picassoVersion"
     // RxJava
-    rxJava = [:]
-    libs.rxJava = rxJava
+//    rxJava = [:]
+//    libs.rxJava = rxJava
 //    rxJava.android = "io.reactivex.rxjava3:rxandroid:$rxJavaVersion"
 //    rxJava.reactive = "io.reactivex.rxjava3:rxjava:$rxJavaVersion"
-    rxJava.android = "io.reactivex.rxjava2:rxandroid:$rxJavaAndroidVersion"
-    rxJava.reactive = "io.reactivex.rxjava3:rxjava:$rxJavaRxJavaVersion"
+//    rxJava.android = "io.reactivex.rxjava2:rxandroid:$rxJavaAndroidVersion"
+//    rxJava.reactive = "io.reactivex.rxjava3:rxjava:$rxJavaRxJavaVersion"
     // Cicerony
-    cicerony = [:]
-    libs.cicerony = cicerony
-    cicerony.runtime = "com.github.terrakok:cicerone:$ciceronyVersion"
+//    cicerony = [:]
+//    libs.cicerony = cicerony
+//    cicerony.runtime = "com.github.terrakok:cicerone:$ciceronyVersion"
     // Moxy
-    moxy = [:]
-    libs.moxy = moxy
-    moxy.community = "com.github.moxy-community:moxy:$moxyVersion"
-    moxy.compiler = "com.github.moxy-community:moxy-compiler:$moxyVersion"
-    moxy.ktx = "com.github.moxy-community:moxy-ktx:$moxyVersion"
-    moxy.androidx = "com.github.moxy-community:moxy-androidx:$moxyVersion"
+//    moxy = [:]
+//    libs.moxy = moxy
+//    moxy.community = "com.github.moxy-community:moxy:$moxyVersion"
+//    moxy.compiler = "com.github.moxy-community:moxy-compiler:$moxyVersion"
+//    moxy.ktx = "com.github.moxy-community:moxy-ktx:$moxyVersion"
+//    moxy.androidx = "com.github.moxy-community:moxy-androidx:$moxyVersion"
     // Lifecycle:
-    lifecycle = [:]
-    libs.lifecycle = lifecycle
-    lifecycle.extensions = "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
+//    lifecycle = [:]
+//    libs.lifecycle = lifecycle
+//    lifecycle.extensions = "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
     // LiveData
-    lifecycle.ktx = "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
+//    lifecycle.ktx = "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
     // Lifecycles only (without ViewModel or LiveData)
-    lifecycle.runtimektx = "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion"
-    lifecycle.process = "androidx.lifecycle:lifecycle-process:$lifecycleVersion"
-    lifecycle.java8 = "androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion"
+//    lifecycle.runtimektx = "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion"
+//    lifecycle.process = "androidx.lifecycle:lifecycle-process:$lifecycleVersion"
+//    lifecycle.java8 = "androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion"
 }

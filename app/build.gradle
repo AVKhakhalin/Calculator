@@ -3,14 +3,14 @@ plugins {
 }
 
 android {
-    compileSdk 35
+    compileSdk 33
 
     namespace 'ru.geekbrains.lessions2345.calculator'
 
     defaultConfig {
         applicationId "ru.geekbrains.lessions2345.calculator"
         minSdkVersion 14
-        targetSdkVersion 35
+        targetSdkVersion 33
         versionCode 2
         versionName "1.1"
 
